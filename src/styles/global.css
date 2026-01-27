@@ -57,6 +57,7 @@
 
   --typo-pretendard-semibold-15: 600 15px Pretendard;
   --typo-pretendard-medium-15: 500 15px Pretendard;
+  --typo-pretendard-samll-15: 300 15px Pretendard;
 
   --typo-pretendard-semibold-14: 600 14px Pretendard;
 }
@@ -67,7 +68,7 @@
 #root {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 20px 65px;
 }
 /* =====================
      Global Reset
