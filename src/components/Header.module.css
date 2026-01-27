@@ -1,7 +1,25 @@
+<<<<<<< HEAD
 header {
   width: 1198px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 40px 0;
+=======
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  width: 98px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  line-height: 36px;
+  border-radius: 37px;
+>>>>>>> 0ea41ce578f6ac0eaa1d90b5434bebe16f151e70
 }
