@@ -1,0 +1,35 @@
+/* SearchBar.module.css */
+.searchBar {
+  position: relative;
+  margin-bottom: 40px;
+  margin-top: 32px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* 클릭 방지 */
+}
+
+.input {
+  width: 100%;
+  height: 55px;
+  padding: 0px 53px;
+  border: 1px solid var(--text-line);
+  border-radius: 49px;
+  font: var(--typo-pretendard-small-18);
+  color: var(--text-primary);
+}
+
+.input::placeholder {
+  color: var(--color-gray);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-blue);
+}

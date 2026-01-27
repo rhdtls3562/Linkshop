@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  width: 98px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  line-height: 36px;
+  border-radius: 37px;
+}
