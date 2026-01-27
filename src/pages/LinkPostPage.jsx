@@ -1,4 +1,5 @@
-import { ProductItem } from '../components/ProductItem';
+import { ProductUploader } from '../components/ProductUploader';
+import { ShopManagement } from '../components/ShopManagement';
 import styles from './LinkPostPage.module.css';
 export function LinkPostPage() {
   return (
@@ -11,13 +12,13 @@ export function LinkPostPage() {
               추가
             </button>
           </div>
-          <ProductItem />
+          <ProductUploader />
         </div>
         <div className={styles.container}>
           <div className={styles.head}>
             <h2 className={styles.title}>내 쇼핑몰</h2>
           </div>
-          <ProductItem />
+          <ShopManagement />
         </div>
       </main>
     </>
