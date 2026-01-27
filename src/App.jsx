@@ -1,8 +1,15 @@
-import React from "react";
-import ShopListPage from "./pages/ShopListPage";
+import { Routes, Route } from 'react-router-dom';
+import './styles/global.css';
+import { Layout } from './components/Layout';
 
 function App() {
-  return <ShopListPage />;
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}></Route>
+      </Routes>
+    </>
+  );
 }
 
 export default App;
