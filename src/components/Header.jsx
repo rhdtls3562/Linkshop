@@ -1,21 +1,27 @@
-import { Link } from 'react-router-dom';
-import logoImg from '../assets/logo.svg';
-import { Button } from './Button';
-import styles from './Header.module.css';
+import { Link, useLocation } from "react-router-dom";
+import styles from "./Header.module.css";
+import logo from "../assets/logo.svg";
+import { Button } from "./Button";
 
-export function Header() {
+export default function Header() {
+  const location = useLocation();
+  const isCreatePage = location.pathname === "/create";
+
   return (
-    <>
-      <header>
-        <Link to="/list">
-          <div className={styles.logo}>
-            <img src={logoImg} alt="링크샵 로고" />
-          </div>
-        </Link>
-        <Link to="/list">
-          <Button>돌아가기</Button>
-        </Link>
-      </header>
-    </>
+    <header className={styles.header}>
+      <Link to="/">
+        <img src={logo} alt="링크샵 로고" />
+      </Link>
+
+      {isCreatePage ? (
+        <Button as={Link} to="/" className={styles.createBtn}>
+          돌아가기
+        </Button>
+      ) : (
+        <Button as={Link} to="/create" className={styles.createBtn}>
+          생성하기
+        </Button>
+      )}
+    </header>
   );
 }
