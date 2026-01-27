@@ -64,7 +64,6 @@ function ShopListPage() {
 
   return (
     <div className={styles.container}>
-      <Header />
       <SearchBar />
       <Filter />
       <ShopList shops={shops} />

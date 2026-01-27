@@ -1,7 +1,40 @@
-header {
-  width: 1198px;
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 40px 0;
+}
+
+.header a {
+  display: flex;
+  align-items: center;
+}
+
+.header img {
+  height: 30px;
+}
+
+/* 생성하기 / 돌아가기 버튼 */
+.createBtn {
+  background-color: var(--button-bg);
+  color: var(--color-white);
+  border: none;
+  padding: 0 20px;
+  border-radius: 37px;
+  height: 36px;
+  cursor: pointer;
+  font: var(--typo-pretendard-semibold-14);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none; /* Link일 때 밑줄 제거 */
+}
+
+.createBtn:focus,
+.createBtn:focus-visible {
+  outline: none;
+}
+
+.createBtn:active {
+  transform: none;
 }

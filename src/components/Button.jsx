@@ -1,10 +1,10 @@
-import styles from './Button.module.css';
-export function Button({ color = 'primary', children }) {
-  return (
-    <>
-      <button className={`${styles.btn} ${styles[`btn--${color}`]}`}>
-        {children}
-      </button>
-    </>
-  );
+import React from "react";
+
+export function Button({
+  as: As = "button",
+  className = "",
+  children,
+  ...props
+}) {
+  return React.createElement(As, { className, ...props }, children);
 }

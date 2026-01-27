@@ -1,4 +1,19 @@
 .main {
+  width: 698px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font: var(--typo-pretendard-semibold-16);
+}
+.btn {
+  background: none;
+  border: none;
+  font: var(--typo-pretendard-bold-16);
 }

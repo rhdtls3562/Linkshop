@@ -10,21 +10,22 @@ Input 컴포넌트 공통 CSS
 .input {
   background: none;
   border: none;
-  color: #222;
+  color: var(--color-grey);
+  font: var(--typo-pretendard-regular-17);
 }
-.input::placeholder {
-  color: #bdbdbd;
+input::placeholder {
+  color: var(--color-grey);
 }
-/* .input:focus-visible {
-  border: none;
-} */
+label {
+  font: var(--typo-pretendard-semibold-14);
+}
 
 /* =====================
 File Input CSS
 ===================== */
 p.input {
   margin: 0;
-  color: #bdbdbd;
+  color: var(--color-grey);
 }
 .fileInput {
   display: none;
@@ -38,8 +39,8 @@ p.input {
   height: fit-content;
   padding: 6px 12px;
   background-color: transparent;
-  border: 1px solid #222222;
-  color: #222222;
+  border: 1px solid var(--color-black);
+  color: var(--color-black);
   cursor: pointer;
   border-radius: 8px;
 }
