@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.likes {
+  font: var(--typo-pretendard-semibold-16);
+  color: var(--icon-stress);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.heart {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+.count {
+  font: var(--typo-pretendard-regular-16);
+  color: var(--text-primary);
+}
