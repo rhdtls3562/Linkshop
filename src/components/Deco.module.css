@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.deco {
+  width: 100%; /* 이미지 크기 */
+  max-width: 1200px;
+  height: 40px; /* 높이 */
+  object-fit: cover;
+  background-color: #f5f5f5; /* 필요시 색상 */
+}
+
