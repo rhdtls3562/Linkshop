@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./ShopCard.module.css";
-import heart_line from "../assets/heart_line.svg";
-import heart from "../assets/heart.svg";
 import shopIcon from "../assets/shop.svg";
+import LikeButton from "../components/LikeButton";
 
 function ShopCard({ shop }) {
   return (
@@ -11,15 +10,13 @@ function ShopCard({ shop }) {
         <div className={styles.avatar}>
           <img src={shopIcon} alt="상점" />
         </div>
+
         <div className={styles.info}>
           <h2>{shop.name}</h2>
           <p>{shop.username}</p>
         </div>
-        <button className={styles.likes}>
-          <img src={heart_line} alt="좋아요" />
-          <img src={heart} className={styles.heart} alt="좋아요 활성" />
-        </button>
-        <div>{shop.likes}</div>
+
+        <LikeButton count={shop.likes} />
       </div>
 
       <p className={styles.productTitle}>대표 상품 {shop.products.length}</p>

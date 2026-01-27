@@ -41,24 +41,6 @@
   margin: 2px 0;
 }
 
-.likes {
-  font: var(--typo-pretendard-semibold-16);
-  color: var(--icon-stress);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  position: relative;
-  margin-right: -10px;
-}
-
-.heart {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: none;
-}
-
 .productImages {
   display: grid;
   grid-template-columns: repeat(3, 95px);
@@ -82,11 +64,4 @@
 
 .productTitle {
   margin-bottom: 8px;
-}
-
-/* 태블릿 이하에서 1열 */
-@media (max-width: 768px) {
-  .productImages {
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
