@@ -1,12 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import './styles/global.css';
-import { Layout } from './components/Layout';
+import { LinkPostPage } from './pages/LinkPostPage';
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Layout />}></Route>
+        {/* Path 변경 필요 -> /listpost */}
+        <Route path="/" element={<LinkPostPage />}></Route>
       </Routes>
     </>
   );

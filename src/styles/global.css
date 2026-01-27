@@ -60,14 +60,6 @@
 
   --typo-pretendard-semibold-14: 600 14px Pretendard;
 }
-
-/* =====================
-     확인 필요!
-     ===================== */
-#root {
-  max-width: 1920px;
-  margin: 0 auto;
-}
 /* =====================
      Global Reset
      ===================== */
@@ -117,4 +109,14 @@ textarea {
   font-family: inherit;
   border: none;
   outline: none;
+}
+
+/* =====================
+     확인 필요!
+     ===================== */
+#root {
+  max-width: 1920px;
+  margin: 0 auto;
+  display: grid;
+  justify-content: center;
 }
