@@ -1,0 +1,25 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 40px;
+  padding-bottom: 65px;
+}
+
+.createBtn {
+  background-color: var(--button-bg);
+  color: var(--color-white);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font: var(--typo-pretendard-semibold-14);
+}
+
+.createBtn:hover {
+  opacity: 0.9;
+}
+
+.createBtn:disabled {
+  background-color: var(--button-disabled);
+  cursor: not-allowed;
+}
