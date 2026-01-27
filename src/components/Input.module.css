@@ -41,6 +41,7 @@ p.input {
   background-color: transparent;
   border: 1px solid var(--color-black);
   color: var(--color-black);
+  font: var(--typo-pretendard-medium-14);
   cursor: pointer;
   border-radius: 8px;
 }

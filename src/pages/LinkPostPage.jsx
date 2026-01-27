@@ -1,3 +1,4 @@
+import { Button } from '../components/Button';
 import { ProductUploader } from '../components/ProductUploader';
 import { ShopManagement } from '../components/ShopManagement';
 import styles from './LinkPostPage.module.css';
@@ -20,6 +21,9 @@ export function LinkPostPage() {
           </div>
           <ShopManagement />
         </div>
+        <Button type="button" className={styles.createbtn}>
+          생성하기
+        </Button>
       </main>
     </>
   );
