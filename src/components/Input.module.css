@@ -17,6 +17,7 @@ Input 컴포넌트 공통 CSS
   background: none;
   color: var(--color-gray);
   font: var(--typo-pretendard-regular-17);
+  line-height: 1.5;
 }
 input::placeholder {
   color: var(--color-gray);
@@ -38,8 +39,8 @@ p.input {
 
 .uploadButton {
   position: absolute;
-  top: 8px;
-  right: 0;
+  top: 22px;
+  right: 28px;
   width: fit-content;
   height: fit-content;
   padding: 6px 12px;
