@@ -21,6 +21,10 @@
   display: none;
 }
 
+.heart.active {
+  display: block;
+}
+
 .count {
   font: var(--typo-pretendard-regular-16);
   color: var(--text-primary);
