@@ -1,9 +1,9 @@
 // App.jsx
-import { Routes, Route } from 'react-router-dom';
-import './styles/global.css';
-import ShopListPage from './pages/ShopListPage';
-import Header from './components/Header';
-import { LinkPostPage } from './pages/LinkPostPage';
+import { Routes, Route } from "react-router-dom";
+import "./styles/global.css";
+import ShopListPage from "./pages/ShopListPage";
+import Header from "./components/Header";
+import { LinkPostPage } from "./pages/LinkPostPage";
 
 function App() {
   return (
