@@ -1,8 +1,8 @@
 import { TextInput } from './TextInput';
-import styles from './ProductItem.module.css';
+import styles from './ProductUploader.module.css';
 import { FileInput } from './FileInput';
 
-export function ProductItem() {
+export function ProductUploader() {
   return (
     <>
       <form className={styles.form}>
