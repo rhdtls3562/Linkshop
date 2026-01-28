@@ -10,5 +10,5 @@ export default function Back({ children = "돌아가기", onClick }) {
         </span>
         <span className={styles.text}>{children}</span>
         </button>
-    );
+    ) ;
  }
