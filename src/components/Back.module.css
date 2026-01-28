@@ -1,0 +1,42 @@
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap:0px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* 왼쪽 작은 네모*/
+.iconBox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    box-sizing: border-box;
+}
+
+.icon {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+/*오른쪽 텍스트 박스*/
+.text {
+    color: #888790;
+    height: 24px;
+    border: 2px solid #ffffff;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    font-size :16px;
+    font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
+    
+}
+
