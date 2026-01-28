@@ -9,3 +9,5 @@ function SearchResultPage() {
     </div>
   );
 }
+
+export default SearchResultPage;
