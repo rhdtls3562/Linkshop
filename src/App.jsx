@@ -1,0 +1,20 @@
+// App.jsx
+import { Routes, Route } from "react-router-dom";
+import "./styles/global.css";
+import ShopListPage from "./pages/ShopListPage";
+import Header from "./components/Header";
+import { LinkPostPage } from "./pages/LinkPostPage";
+
+function App() {
+  return (
+    <>
+      <Header /> {/* 모든 페이지에 공통 Header */}
+      <Routes>
+        <Route path="/" element={<ShopListPage />} />
+        <Route path="/linkpost" element={<LinkPostPage />} />
+      </Routes>
+    </>
+  );
+}
+
+export default App;

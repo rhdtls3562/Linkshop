@@ -1,0 +1,67 @@
+.card {
+  background: #fafafb;
+  border-radius: 24px;
+  padding: 20px;
+  max-width: 589px; /* width → max-width */
+  width: 100%; /* 추가 */
+  height: auto; /* 고정 높이 제거 */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  font-size: 40px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5f5f5f;
+  border-radius: 50%;
+}
+
+.info {
+  flex: 1;
+}
+
+.info h2 {
+  font: var(--typo-pretendard-medium-18);
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.info p {
+  font: var(--typo-pretendard-regular-16);
+  color: var(--color-gray);
+  margin: 2px 0;
+}
+
+.productImages {
+  display: grid;
+  grid-template-columns: repeat(3, 95px);
+  gap: 12px;
+}
+
+.productImages > div {
+  width: 95px;
+  height: 95px;
+  border-radius: 8px;
+  overflow: hidden; /* 넘치는 부분 숨기기 */
+  background-color: #ececec;
+}
+
+.productImages img {
+  width: 120%; /* 이미지만 확대 */
+  height: 120%;
+  object-fit: cover;
+  transform: translate(-8%, -8%); /* 중앙 정렬 */
+}
+
+.productTitle {
+  margin-bottom: 8px;
+}

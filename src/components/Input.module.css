@@ -1,0 +1,63 @@
+/* =====================
+Input 컴포넌트 공통 CSS
+===================== */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+.input {
+  background: none;
+  border: none;
+  color: var(--color-gray);
+  font: var(--typo-pretendard-regular-17);
+}
+input::placeholder {
+  color: var(--color-gray);
+}
+label {
+  font: var(--typo-pretendard-semibold-14);
+}
+
+/* =====================
+File Input CSS
+===================== */
+p.input {
+  margin: 0;
+  color: var(--color-gray);
+}
+.fileInput {
+  display: none;
+}
+
+.uploadButton {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  width: fit-content;
+  height: fit-content;
+  padding: 6px 12px;
+  background-color: transparent;
+  border: 1px solid var(--color-black);
+  color: var(--color-black);
+  font: var(--typo-pretendard-medium-14);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* =====================
+Password Input CSS
+===================== */
+.passwordContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.passwordContainer input {
+  flex-grow: 1;
+}
+.btnEye {
+  border: none;
+  background-color: transparent;
+}
