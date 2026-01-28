@@ -21,7 +21,7 @@ export function ShopManagement() {
           id="shopUrl"
           type="text"
           label="URL"
-          placeholder="원화로 표기해 주세요."
+          placeholder="Url을 입력해 주세요."
         />
         <TextInput
           id="userId"

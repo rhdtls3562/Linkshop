@@ -1,8 +1,14 @@
+import { useState } from 'react';
+import { ActionCompleteModal } from '../components/ActionCompleteModal';
 import { Button } from '../components/Button';
 import { ProductUploader } from '../components/ProductUploader';
 import { ShopManagement } from '../components/ShopManagement';
+import { Toast } from '../components/Toast';
 import styles from './LinkPostPage.module.css';
 export function LinkPostPage() {
+  // 모달용 임시 스테이트
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <main className={styles.main}>
@@ -21,9 +27,19 @@ export function LinkPostPage() {
           </div>
           <ShopManagement />
         </div>
-        <Button type="button" className={styles.createbtn}>
+        <Button
+          type="button"
+          className={styles.createbtn}
+          onClick={() => setIsModalOpen(true)}
+        >
           생성하기
         </Button>
+        <Toast isOpen={isModalOpen} message="등록 완료!" />
+        <ActionCompleteModal
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+          message="등록이 완료되었습니다."
+        />
       </main>
     </>
   );
