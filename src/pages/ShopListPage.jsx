@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ShopList from "../components/ShopList";
 import styles from "./ShopListPage.module.css";
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import Filter from "../components/Filter";
 import black_jacket from "../assets/black_jacket.png";
 import red_jacket from "../assets/red_jacket.png";
