@@ -8,7 +8,7 @@ Input 컴포넌트 공통 CSS
   gap: 10px;
   position: relative;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 .wrapper:focus-within {
   border: 1px solid var(--color-blue);
@@ -66,4 +66,22 @@ Password Input CSS
 .btnEye {
   border: none;
   background-color: transparent;
+}
+
+/* =====================
+에러 메시지 CSS
+===================== */
+.wrapper.errorInput {
+  border: 1px solid var(--text-error);
+}
+
+.wrapper.errorInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+.errorMessage {
+  color: var(--text-error);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }

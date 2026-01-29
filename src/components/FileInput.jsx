@@ -1,15 +1,7 @@
 import styles from "./Input.module.css";
+import shopCardStyles from "./ShopCard.module.css";
 
-import black_jacket from "../assets/black_jacket.png";
-import red_jacket from "../assets/red_jacket.png";
-import brwon_jacket from "../assets/brown_jacket.png";
-
-export function FileInput({ id, label, placeholder }) {
-  const intialProducts = [
-    { id: 1, img: black_jacket },
-    { id: 2, img: red_jacket },
-    { id: 3, img: brwon_jacket },
-  ];
+export function FileInput({ id, label, placeholder, prdList }) {
   return (
     <>
       <div className={styles.wrapper}>
@@ -20,17 +12,20 @@ export function FileInput({ id, label, placeholder }) {
         </label>
         {/* 디자인을 위해 실제 인풋은 숨김 처리 */}
         <input id={id} type="file" className={styles.fileInput} />
+
+        {/* 상품 리스트가 존재할 경우 이미지 미리보기 렌더링 */}
+        {prdList && (
+          <div className={shopCardStyles.productImages}>
+            {prdList.map((prd) => {
+              return (
+                <div key={prd.id}>
+                  <img src={prd.img} alt="대표 상품" />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-      {/* 상품 이미지 미리보기 -> 컴포넌트로 나눠야함 */}
-      {/* <ul className={styles.imgWrapper}>
-        {intialProducts.map((prd) => {
-          return (
-            <li key={prd.id}>
-              <img src={prd.img} alt="" />
-            </li>
-          );
-        })}
-      </ul> */}
     </>
   );
 }
