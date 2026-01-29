@@ -1,5 +1,5 @@
-import { createPortal } from 'react-dom';
-import styles from './ActionCompleteModal.module.css';
+import { createPortal } from "react-dom";
+import styles from "./ActionCompleteModal.module.css";
 export function ActionCompleteModal({ isOpen, onClose, message }) {
   if (!isOpen) {
     return null;
@@ -15,6 +15,6 @@ export function ActionCompleteModal({ isOpen, onClose, message }) {
         </div>
       </div>
     </>,
-    document.getElementById('modal-root')
+    document.getElementById("modal-root")
   );
 }

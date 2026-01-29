@@ -1,4 +1,4 @@
-import styles from './Toast.module.css';
+import styles from "./Toast.module.css";
 export function Toast({ isOpen, message }) {
   if (!isOpen) {
     return null;

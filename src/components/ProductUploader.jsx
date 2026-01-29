@@ -1,6 +1,6 @@
-import { TextInput } from './TextInput';
-import styles from './ProductUploader.module.css';
-import { FileInput } from './FileInput';
+import { TextInput } from "./TextInput";
+import styles from "./ProductUploader.module.css";
+import { FileInput } from "./FileInput";
 
 export function ProductUploader() {
   return (

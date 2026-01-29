@@ -1,8 +1,8 @@
-import styles from './Input.module.css';
+import styles from "./Input.module.css";
 
-import black_jacket from '../assets/black_jacket.png';
-import red_jacket from '../assets/red_jacket.png';
-import brwon_jacket from '../assets/brown_jacket.png';
+import black_jacket from "../assets/black_jacket.png";
+import red_jacket from "../assets/red_jacket.png";
+import brwon_jacket from "../assets/brown_jacket.png";
 
 export function FileInput({ id, label, placeholder }) {
   const intialProducts = [
