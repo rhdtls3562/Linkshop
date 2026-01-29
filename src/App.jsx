@@ -4,6 +4,7 @@ import "./styles/global.css";
 import ShopListPage from "./pages/ShopListPage";
 import Header from "./components/Header";
 import { LinkPostPage } from "./pages/LinkPostPage";
+import SearchResultPage from "./pages/SearchResultPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ShopListPage />} />
         <Route path="/linkpost" element={<LinkPostPage />} />
+        <Route path="/search" element={<SearchResultPage />} />
       </Routes>
     </>
   );
