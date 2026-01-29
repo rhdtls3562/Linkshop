@@ -1,0 +1,36 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-index-modal);
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal {
+  width: 343px;
+  height: 172px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  background-color: var(--color-white);
+}
+.message {
+  font: var(--typo-pretendard-medium-17);
+  color: var(--color-black);
+}
+.btn {
+  width: 160px;
+  height: 50px;
+  background-color: var(--color-dk-gray);
+  border: none;
+  border-radius: 37px;
+  color: var(--color-white);
+}
