@@ -1,0 +1,32 @@
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(to right, #222222, #999999);
+  height: 40px;
+  line-height: 40px;
+  font-family: "Press Start 2P", system-ui;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 30s linear infinite;
+}
+
+.content {
+  display: flex;
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  white-space: nowrap;
+  word-spacing: -3px;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

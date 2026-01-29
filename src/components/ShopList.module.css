@@ -4,7 +4,6 @@
   gap: 24px;
 }
 
-/* 태블릿 이하에서 1열 */
 @media (max-width: 768px) {
   .shopList {
     grid-template-columns: repeat(1, 1fr);

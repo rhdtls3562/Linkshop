@@ -5,7 +5,7 @@ import { Button } from "./Button";
 
 export default function Header() {
   const location = useLocation();
-  const isCreatePage = location.pathname === "/create";
+  const isCreatePage = location.pathname === "/linkpost";
 
   return (
     <header className={styles.header}>
@@ -18,7 +18,7 @@ export default function Header() {
           돌아가기
         </Button>
       ) : (
-        <Button as={Link} to="/create" className={styles.createBtn}>
+        <Button as={Link} to="/linkpost" className={styles.createBtn}>
           생성하기
         </Button>
       )}

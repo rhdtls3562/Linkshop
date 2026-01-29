@@ -2,29 +2,36 @@
 Input 컴포넌트 공통 CSS
 ===================== */
 .wrapper {
+  padding: 15px 28px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   position: relative;
+  border: 1px solid transparent;
+  border-radius: 25px;
+}
+.wrapper:focus-within {
+  border: 1px solid var(--color-blue);
 }
 .input {
   background: none;
-  border: none;
-  color: #222;
+  color: var(--color-gray);
+  font: var(--typo-pretendard-regular-17);
+  line-height: 1.5;
 }
-.input::placeholder {
-  color: #bdbdbd;
+input::placeholder {
+  color: var(--color-gray);
 }
-/* .input:focus-visible {
-  border: none;
-} */
+label {
+  font: var(--typo-pretendard-semibold-14);
+}
 
 /* =====================
 File Input CSS
 ===================== */
 p.input {
   margin: 0;
-  color: #bdbdbd;
+  color: var(--color-gray);
 }
 .fileInput {
   display: none;
@@ -32,14 +39,49 @@ p.input {
 
 .uploadButton {
   position: absolute;
-  top: 8px;
-  right: 0;
+  top: 22px;
+  right: 28px;
   width: fit-content;
   height: fit-content;
   padding: 6px 12px;
   background-color: transparent;
-  border: 1px solid #222222;
-  color: #222222;
+  border: 1px solid var(--color-black);
+  color: var(--color-black);
+  font: var(--typo-pretendard-medium-14);
   cursor: pointer;
   border-radius: 8px;
+}
+
+/* =====================
+Password Input CSS
+===================== */
+.passwordContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+.passwordContainer input {
+  flex-grow: 1;
+}
+.btnEye {
+  border: none;
+  background-color: transparent;
+}
+
+/* =====================
+에러 메시지 CSS
+===================== */
+.wrapper.errorInput {
+  border: 1px solid var(--text-error);
+}
+
+.wrapper.errorInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+.errorMessage {
+  color: var(--text-error);
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }

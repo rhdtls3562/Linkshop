@@ -60,6 +60,7 @@
   --typo-pretendard-samll-15: 300 15px Pretendard;
 
   --typo-pretendard-semibold-14: 600 14px Pretendard;
+  --typo-pretendard-medium-14: 500 14px Pretendard;
 }
 
 /* =====================
@@ -116,11 +117,7 @@ textarea {
 }
 /* global.css에 추가 */
 body {
-  font-family:
-    Pretendard,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     sans-serif;
   color: var(--text-primary);
 }
