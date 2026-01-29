@@ -76,8 +76,7 @@ Password Input CSS
 }
 
 .wrapper.errorInput:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+  /* outline: none; */
 }
 .errorMessage {
   color: var(--text-error);
