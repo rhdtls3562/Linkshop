@@ -10,9 +10,11 @@
 
 /* 왼쪽 작은 네모*/
 .iconBox {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #ffffff;
+    width: 15px;
+    height: 14px;
+    margin-top: 27px;
+    margin-bottom: 20px;
+    
     display: flex;
     align-items: center;
     justify-content: center; 
@@ -28,13 +30,15 @@
 /*오른쪽 텍스트 박스*/
 .text {
     color: #888790;
-    height: 24px;
-    border: 2px solid #ffffff;
-    padding: 0 10px;
+    width: 56px;
+    height: 16px;
+    margin-top: 27px;
+    margin-bottom: 20px;
+    
     display: flex;
     align-items: center;
     font-size :16px;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1;
     box-sizing: border-box ;
     

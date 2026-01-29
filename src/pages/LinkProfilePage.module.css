@@ -1,0 +1,37 @@
+.no {
+  width: 1200px;
+  height: 266px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: #FAFAFB;
+}
+
+.shop {
+  font-size: 40px;
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #222222;
+  border-radius: 50%;
+}
+
+.nugnri {
+  font-size: 32px;
+  font-weight: 800;
+  color: #14151A;
+
+margin-top: 16px;
+}
+
+.pumpkin {
+  font-size: 16px;
+  font-weight: 400;
+  color: #888790;
+
+  margin-top: 8px;
+}
