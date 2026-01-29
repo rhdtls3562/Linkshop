@@ -2,7 +2,7 @@
   background: #fafafb;
   border-radius: 24px;
   padding: 20px;
-  max-width: 589px; /* width → max-width */
+  max-width: 696px;
   width: 100%; /* 추가 */
   height: auto; /* 고정 높이 제거 */
 }
@@ -64,4 +64,17 @@
 
 .productTitle {
   margin-bottom: 8px;
+}
+
+@media (max-width: 420px) {
+  .productImages {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .productImages > div {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 정사각형 유지 */
+  }
 }
