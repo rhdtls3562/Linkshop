@@ -74,13 +74,3 @@ Password Input CSS
 .wrapper.errorInput {
   border: 1px solid var(--text-error);
 }
-
-.wrapper.errorInput:focus {
-  /* outline: none; */
-}
-.errorMessage {
-  color: var(--text-error);
-  font-size: 12px;
-  margin-top: 4px;
-  display: block;
-}
