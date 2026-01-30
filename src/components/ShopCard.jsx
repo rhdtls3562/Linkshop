@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ShopCard.module.css";
 import shopIcon from "../assets/shop.svg";
 import LikeButton from "../components/LikeButton";
+import ProductImageGrid from "../components/ProductImageGrid";
 
 function ShopCard({ shop }) {
   return (
@@ -21,15 +22,7 @@ function ShopCard({ shop }) {
 
       <p className={styles.productTitle}>대표 상품 {shop.products.length}</p>
 
-      <div className={styles.productImages}>
-        {shop.products.map((img, idx) => (
-          <div key={idx}>
-            {" "}
-            {/* div로 감싸기 */}
-            <img src={img} alt="상품" />
-          </div>
-        ))}
-      </div>
+      <ProductImageGrid images={shop.products} />
     </div>
   );
 }
