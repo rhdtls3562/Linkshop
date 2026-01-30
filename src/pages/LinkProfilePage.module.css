@@ -1,16 +1,16 @@
 .no {
   width: 1200px;
   height: 266px;
+  position: relative; /* 이게 핵심 */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  justify-content: center;
-  background-color: #FAFAFB;
+  background-color: #fafafb;
 }
 
+/* 상점 아이콘 */
 .shop {
-  font-size: 40px;
   width: 84px;
   height: 84px;
   display: flex;
@@ -18,20 +18,90 @@
   justify-content: center;
   background-color: #222222;
   border-radius: 50%;
+  margin-top: 24px;
 }
 
+/* 상점 이름 */
 .nugnri {
   font-size: 32px;
   font-weight: 800;
-  color: #14151A;
-
-margin-top: 16px;
+  color: #14151a;
+  margin-top: 16px;
 }
 
+/* 아이디 */
 .pumpkin {
   font-size: 16px;
   font-weight: 400;
   color: #888790;
-
   margin-top: 8px;
+}
+
+/* 왼쪽 위 LikeButton 위치 */
+.like {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+}
+
+/* 오른쪽 위 메뉴 영역 */
+.menuWrapper {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 아이콘 버튼 */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.iconButton img {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+/* 드롭다운 메뉴 */
+.menuBox {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  width: 120px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 메뉴 아이템을 버튼으로 */
+.menuItem {
+  width: 100%;
+  padding: 10px 12px;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: #f2f2f2;
+}
+
+.text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #14151a;
+
+  width: 60px;
+  height: 19px;
+  margin-top: 23px;
+
 }
