@@ -14,25 +14,22 @@ export function ShopManagement() {
         />
         <TextInput
           id="shopName"
-          type="text"
           label="이름"
           placeholder="표시하고 싶은 이름을 적어주세요."
         />
         <TextInput
           id="shopUrl"
-          type="text"
           label="URL"
           placeholder="Url을 입력해 주세요."
         />
         <TextInput
           id="userId"
-          type="emal"
+          type="email"
           label="유저 ID"
           placeholder="유저 ID를 입력해 주세요."
         />
         <PasswordInput
           id="userPw"
-          type="password"
           label="비밀번호"
           placeholder="비밀번호를 입력해 주세요."
         />
