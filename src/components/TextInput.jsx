@@ -10,6 +10,7 @@ export function TextInput({
   ...props
 }) {
   const { value, error, handleChange, validate } = useInputValidation();
+  console.log("value:", value);
 
   const classNames = `${styles.input} ${className}`;
 
@@ -19,9 +20,9 @@ export function TextInput({
         <label htmlFor={id}>{label}</label>
         <input
           id={id}
+          className={classNames}
           value={value}
           onChange={handleChange}
-          className={classNames}
           onBlur={validate} // 포커스가 사라질 때 검사
           {...props}
         />

@@ -40,6 +40,9 @@
   color: var(--color-white);
   font: var(--typo-pretendard-semibold-17);
 }
+.createbtn.active {
+  background-color: var(--color-dk-gray);
+}
 @media (max-width: 768px) {
   .main {
     width: 100%;

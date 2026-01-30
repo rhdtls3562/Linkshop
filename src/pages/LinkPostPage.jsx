@@ -8,6 +8,7 @@ import styles from "./LinkPostPage.module.css";
 export function LinkPostPage() {
   // 모달용 임시 스테이트
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isAllFilled = "true";
 
   return (
     <>
@@ -29,7 +30,11 @@ export function LinkPostPage() {
         </div>
         <Button
           type="button"
-          className={styles.createbtn}
+          className={
+            isAllFilled
+              ? `${styles.createbtn} ${styles.active}`
+              : styles.createbtn
+          }
           onClick={() => setIsModalOpen(true)}
         >
           생성하기

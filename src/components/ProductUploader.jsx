@@ -4,13 +4,15 @@ import { FileInput } from "./FileInput";
 import black_jacket from "../assets/black_jacket.png";
 import red_jacket from "../assets/red_jacket.png";
 import brwon_jacket from "../assets/brown_jacket.png";
+import { useState } from "react";
 
 export function ProductUploader() {
-  const intialProducts = [
-    { id: 1, img: black_jacket },
-    { id: 2, img: red_jacket },
-    { id: 3, img: brwon_jacket },
-  ];
+  // const intialProducts = [
+  //   { id: 1, img: black_jacket },
+  //   { id: 2, img: red_jacket },
+  //   { id: 3, img: brwon_jacket },
+  // ];
+  const intialProducts = [black_jacket, red_jacket, brwon_jacket];
   return (
     <>
       <form className={styles.form}>
