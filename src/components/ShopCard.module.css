@@ -47,34 +47,6 @@
   gap: 12px;
 }
 
-.productImages > div {
-  width: 95px;
-  height: 95px;
-  border-radius: 8px;
-  overflow: hidden; /* 넘치는 부분 숨기기 */
-  background-color: #ececec;
-}
-
-.productImages img {
-  width: 120%; /* 이미지만 확대 */
-  height: 120%;
-  object-fit: cover;
-  transform: translate(-8%, -8%); /* 중앙 정렬 */
-}
-
 .productTitle {
   margin-bottom: 8px;
-}
-
-@media (max-width: 420px) {
-  .productImages {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .productImages > div {
-    width: 100%;
-    aspect-ratio: 1 / 1; /* 정사각형 유지 */
-  }
 }
