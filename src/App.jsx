@@ -1,4 +1,4 @@
-// App.jsx
+// App.jsx test
 import { Routes, Route } from "react-router-dom";
 import "./styles/global.css";
 import ShopListPage from "./pages/ShopListPage";
