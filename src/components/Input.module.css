@@ -2,7 +2,7 @@
 Input 컴포넌트 공통 CSS
 ===================== */
 .wrapper {
-  padding: 15px 28px;
+  padding: 10px 28px;
   display: flex;
   flex-direction: column;
   gap: 10px;

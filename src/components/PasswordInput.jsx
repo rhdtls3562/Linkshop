@@ -2,15 +2,14 @@ import { useState } from "react";
 import styles from "./Input.module.css";
 import eyeOff from "../assets/btn_visibility_off.svg";
 import eyeOn from "../assets/btn_visibility_on.svg";
+import { ErrorMessage } from "./ErrorMessage";
+import { useInputValidation } from "../hooks/useInputValidation";
 
-export function PasswordInput({
-  id,
-  label,
-  type = "text",
-  className = "",
-  ...props
-}) {
+export function PasswordInput({ id, label, className = "", ...props }) {
+  const { value, error, handleChange, validate } = useInputValidation(); // 인풋 값
+
   const classNames = `${styles.input} ${className}`;
+
   // 비밀번호 보기 버튼
   const [inputType, setInputType] = useState("password");
   const handleTogglePassword = () => {
@@ -18,10 +17,18 @@ export function PasswordInput({
   };
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} ${error ? styles.errorInput : ""}`}>
         <label htmlFor={id}>{label}</label>
         <div className={styles.passwordContainer}>
-          <input id={id} type={inputType} className={classNames} {...props} />
+          <input
+            id={id}
+            value={value}
+            onChange={handleChange}
+            type={inputType}
+            className={classNames}
+            onBlur={validate} // 포커스가 사라질 때 검사
+            {...props}
+          />
           <button
             type="button"
             className={styles.btnEye}
@@ -35,6 +42,8 @@ export function PasswordInput({
             />
           </button>
         </div>
+        {/* 에러 메시지가 있을 때만 노출 */}
+        {error && <ErrorMessage message={error} />}
       </div>
     </>
   );
