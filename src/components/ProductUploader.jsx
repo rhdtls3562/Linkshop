@@ -1,10 +1,9 @@
 import { TextInput } from "./TextInput";
 import styles from "./ProductUploader.module.css";
 import { FileInput } from "./FileInput";
-import black_jacket from "../assets/black_jacket.png";
-import red_jacket from "../assets/red_jacket.png";
-import brwon_jacket from "../assets/brown_jacket.png";
-import { useState } from "react";
+import shop1_img1 from "../assets/shop1_product1.png";
+import shop1_img2 from "../assets/shop1_product2.png";
+import shop1_img3 from "../assets/shop1_product3.png";
 
 export function ProductUploader() {
   // const intialProducts = [
@@ -12,7 +11,7 @@ export function ProductUploader() {
   //   { id: 2, img: red_jacket },
   //   { id: 3, img: brwon_jacket },
   // ];
-  const intialProducts = [black_jacket, red_jacket, brwon_jacket];
+  const intialProducts = [shop1_img1, shop1_img2, shop1_img3];
   return (
     <>
       <form className={styles.form}>

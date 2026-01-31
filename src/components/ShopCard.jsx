@@ -14,15 +14,18 @@ function ShopCard({ shop }) {
 
         <div className={styles.info}>
           <h2>{shop.name}</h2>
-          <p>{shop.username}</p>
+          <p>@{shop.userId}</p>
         </div>
 
-        <LikeButton count={shop.likes} />
+        <LikeButton count={shop.likes} linkShopId={shop.id} />
       </div>
 
-      <p className={styles.productTitle}>대표 상품 {shop.products.length}</p>
+      <p className={styles.productTitle}>
+        대표 상품 {shop.products?.length ?? 0}
+      </p>
 
-      <ProductImageGrid images={shop.products} />
+      <ProductImageGrid shopId={shop.id} />
+      {/* productCount prop 제거 */}
     </div>
   );
 }
