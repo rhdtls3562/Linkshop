@@ -7,9 +7,17 @@ import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
 export function LinkPostPage() {
+  // product 데이터 저장
+  const [productData, setProductData] = useState(null);
+
+  const handleProductData = (e) => {
+    setProductData(e);
+  };
+
   // 모달용 임시 스테이트
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isAllFilled = false;
+  const isAllFilled =
+    productData !== null && Object.values(productData).every(Boolean);
 
   return (
     <>
@@ -21,7 +29,7 @@ export function LinkPostPage() {
               추가
             </button>
           </div>
-          <ProductUploader />
+          <ProductUploader productsData={handleProductData} />
         </div>
         <div className={styles.container}>
           <div className={styles.head}>

@@ -3,14 +3,20 @@ import { useEffect } from "react";
 import styles from "./Input.module.css";
 import ProductImageGrid from "./ProductImageGrid";
 
-export function FileInput({ id, label, placeholder, initialPreview }) {
+export function FileInput({
+  id,
+  label,
+  placeholder,
+  initialPreview,
+  updateField,
+}) {
   const [fileData, setFileData] = useState(null);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    console.log("file:", file);
+    console.log("✅ FileInput 컴포넌트의 file :", file);
 
     const objectUrl = URL.createObjectURL(file); // 업로드 한 파일 URL을 생성
 
@@ -21,7 +27,9 @@ export function FileInput({ id, label, placeholder, initialPreview }) {
       size: file.size,
       type: file.type,
     });
-    console.log("fileData", fileData);
+    console.log("objectUrl", objectUrl);
+
+    // updateField(e); // ProductUploader 컴포넌트에 보내줄 값
   };
 
   useEffect(() => {

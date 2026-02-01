@@ -4,6 +4,7 @@ import { ErrorMessage } from "./ErrorMessage";
 import styles from "./Input.module.css";
 
 export function TextInput({
+  updateField = "",
   id,
   label,
   type = "text",
@@ -13,8 +14,8 @@ export function TextInput({
   const { value, error, handleChange, validate } = useInputValidation();
 
   const wrappedChange = (e) => {
-    handleChange(e);
-    console.log([`${label}: `, value]);
+    handleChange(e); // 인풋 값 에러 확인 함수
+    updateField(e); // ProductUploader 컴포넌트에 보내줄 값
   };
 
   const classNames = `${styles.input} ${className}`;
