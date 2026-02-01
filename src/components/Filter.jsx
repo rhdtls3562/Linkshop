@@ -13,9 +13,20 @@ function Filter() {
   return (
     <>
       {/* 필터 버튼 */}
-      <div className={styles.filter} onClick={() => setIsOpen(true)}>
-        <button className={styles.textBtn}>{selected}</button>
-        <button type="button" className={styles.arrowBtn}>
+      <div className={styles.filter}>
+        <button
+          type="button"
+          className={styles.textBtn}
+          onClick={() => setIsOpen(true)}
+        >
+          {selected}
+        </button>
+
+        <button
+          type="button"
+          className={styles.arrowBtn}
+          onClick={() => setIsOpen(true)}
+        >
           <img src={arrow} alt="화살표" />
         </button>
       </div>
