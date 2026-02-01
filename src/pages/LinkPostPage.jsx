@@ -5,6 +5,7 @@ import { ProductUploader } from "../components/ProductUploader";
 import { ShopManagement } from "../components/ShopManagement";
 import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
+
 export function LinkPostPage() {
   // 모달용 임시 스테이트
   const [isModalOpen, setIsModalOpen] = useState(false);

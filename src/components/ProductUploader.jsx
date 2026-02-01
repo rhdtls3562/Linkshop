@@ -3,7 +3,7 @@ import styles from "./ProductUploader.module.css";
 import { FileInput } from "./FileInput";
 import { SHOP_IMAGES } from "../components/images";
 
-export function ProductUploader() {
+export function ProductUploader({}) {
   const initialProducts = SHOP_IMAGES.shop1;
 
   return (
@@ -13,7 +13,6 @@ export function ProductUploader() {
           id="productImg"
           label="상품 대표 이미지"
           placeholder="상품 이미지를 첨부해 주세요."
-          prdList={initialProducts}
         />
         <TextInput
           id="productName"

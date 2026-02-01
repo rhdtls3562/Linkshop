@@ -1,19 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useRef } from "react";
 import styles from "./Input.module.css";
 import ProductImageGrid from "./ProductImageGrid";
 
-export function FileInput({
-  id,
-  label,
-  placeholder,
-  prdList,
-  initialPreview = "",
-}) {
-  const inputRef = useRef();
+export function FileInput({ id, label, placeholder, initialPreview }) {
   const [fileData, setFileData] = useState(null);
-  const [preview, setPreview] = useState(initialPreview);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
@@ -21,32 +12,17 @@ export function FileInput({
 
     console.log("file:", file);
 
-    const objectUrl = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(file); // 업로드 한 파일 URL을 생성
 
     setFileData({
       file, // 실제 File 객체 (서버 전송용)
-      preview: objectUrl, // 미리보기 URL
+      previewUrl: objectUrl, // 미리보기 URL
       name: file.name,
       size: file.size,
       type: file.type,
-      // idx: fileData.length + 1,
     });
     console.log("fileData", fileData);
   };
-
-  // 업로드 한 파일의 URL을 생성하는 로직
-  // useEffect(() => {
-  //   if (!file) {
-  //     setPreview(initialPreview);
-  //     return;
-  //   }
-  //   const objectUrl = URL.createObjectURL(file);
-  //   setPreview(objectUrl);
-  //   console.log("objectUrl: ", objectUrl);
-  //   return () => {
-  //     URL.revokeObjectURL(objectUrl);
-  //   };
-  // }, [file]);
 
   useEffect(() => {
     return () => {
@@ -76,12 +52,12 @@ export function FileInput({
         {fileData && (
           <img
             className={styles.preview}
-            src={fileData.preview}
+            src={fileData.previewUrl || initialPreview}
             alt="업로드 이미지 미리보기"
           />
         )}
 
-        {/* 컴포넌트 확인 필요 */}
+        {/* 확인 필요 */}
         {/* {fileData && <ProductImageGrid fileData={fileData} />} */}
       </div>
     </>

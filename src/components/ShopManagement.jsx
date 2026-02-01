@@ -8,9 +8,9 @@ export function ShopManagement() {
     <>
       <form className={styles.form}>
         <FileInput
-          id="productImg"
-          label="상품 대표 이미지"
-          placeholder="상품 이미지를 첨부해 주세요."
+          id="shopImg"
+          label="쇼핑몰 대표 이미지"
+          placeholder="쇼핑몰 이미지를 첨부해 주세요."
         />
         <TextInput
           id="shopName"

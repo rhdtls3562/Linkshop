@@ -21,13 +21,13 @@ export function PasswordInput({ id, label, className = "", ...props }) {
         <label htmlFor={id}>{label}</label>
         <div className={styles.passwordContainer}>
           <input
+            {...props}
             id={id}
             value={value}
             onChange={handleChange}
             type={inputType}
             className={classNames}
             onBlur={validate} // 포커스가 사라질 때 검사
-            {...props}
           />
           <button
             type="button"
