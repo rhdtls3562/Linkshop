@@ -1,10 +1,9 @@
 import { TextInput } from "./TextInput";
 import { FileInput } from "./FileInput";
-import { SHOP_IMAGES } from "../components/images";
 import styles from "./ProductUploader.module.css";
 
 export function ProductUploader({ formData, setFormData }) {
-  const initialProducts = SHOP_IMAGES.shop1;
+  const initialProducts = [];
 
   // 하위 인풋 컴포넌트에서 전달받은 name, value로 폼 상태 업데이트
   const handleChange = (name, value) => {
