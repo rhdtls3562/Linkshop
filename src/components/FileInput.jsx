@@ -1,59 +1,55 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Input.module.css";
-import ProductImageGrid from "./ProductImageGrid";
 
-export function FileInput({
-  id,
-  label,
-  placeholder,
-  prdList,
-  initialPreview = "",
-}) {
-  const inputRef = useRef();
-  const [file, setFile] = useState();
+export function FileInput({ id, label, placeholder, initialPreview = "" }) {
   const [preview, setPreview] = useState(initialPreview);
+  const objectUrlRef = useRef(null);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
-    // const nextFile = e.target;
-    console.log("nextFile:", file);
-    setFile(file);
+    if (!file) return;
+
+    // 이전 blob URL 정리
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    objectUrlRef.current = objectUrl;
+    setPreview(objectUrl);
   };
 
+  // 언마운트 시 blob URL 정리
   useEffect(() => {
-    if (!file) {
-      setPreview(initialPreview);
-      return;
-    }
-    const objectUrl = URL.createObjectURL(file);
-    setPreview(objectUrl);
-    console.log("objectUrl: ", objectUrl);
     return () => {
-      URL.revokeObjectURL(objectUrl);
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
     };
-  }, [file]);
+  }, []);
 
   return (
-    <>
-      <div className={styles.wrapper}>
-        <label htmlFor={id}>{label}</label>
-        <p className={styles.input}>{placeholder}</p>
-        <label htmlFor={id} className={styles.uploadButton}>
-          파일 첨부
-        </label>
-        {/* 디자인을 위해 실제 인풋은 숨김 처리 */}
-        <input
-          id={id}
-          type="file"
-          className={styles.fileInput}
-          onClick={handleChange}
-        />
+    <div className={styles.wrapper}>
+      <label htmlFor={id}>{label}</label>
+      <p className={styles.input}>{placeholder}</p>
 
-        {/* 상품 리스트가 존재할 경우 이미지 미리보기 렌더링 */}
-        {file && <ProductImageGrid images={prdList} />}
-      </div>
-    </>
+      <label htmlFor={id} className={styles.uploadButton}>
+        파일 첨부
+      </label>
+
+      <input
+        id={id}
+        type="file"
+        className={styles.fileInput}
+        onChange={handleChange}
+        accept="image/*"
+      />
+
+      {preview && (
+        <div className={styles.previewContainer}>
+          <img src={preview} alt="미리보기" className={styles.previewImage} />
+        </div>
+      )}
+    </div>
   );
 }

@@ -1,0 +1,20 @@
+// shop1: [
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770000867201/shop1_product1.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770000981285/shop1_product2.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001006770/shop1_product3.png",
+// ],
+// shop2: [
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001025987/shop2_product1.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001042419/shop2_product2.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001058627/shop2_product3.png",
+// ],
+// shop3: [
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001078294/shop3_product1.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001097898/shop3_product2.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001114922/shop3_product3.png",
+// ],
+// shop4: [
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001137543/shop4_product1.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770001170417/shop4_product2.png",
+//   "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770000536023/shop4_product3.png",
+// ]
