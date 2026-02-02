@@ -1,13 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./Input.module.css";
 
-export function FileInput({ id, label, placeholder, initialPreview = "" }) {
+export function FileInput({
+  id,
+  label,
+  placeholder,
+  initialPreview = "",
+  onChange,
+}) {
   const [preview, setPreview] = useState(initialPreview);
   const objectUrlRef = useRef(null);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    console.log("✅ FileInput 컴포넌트의 file :", file);
 
     // 이전 blob URL 정리
     if (objectUrlRef.current) {
@@ -17,6 +25,8 @@ export function FileInput({ id, label, placeholder, initialPreview = "" }) {
     const objectUrl = URL.createObjectURL(file);
     objectUrlRef.current = objectUrl;
     setPreview(objectUrl);
+
+    onChange([e.target.id], objectUrl); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
   };
 
   // 언마운트 시 blob URL 정리
