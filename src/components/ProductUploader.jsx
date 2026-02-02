@@ -1,10 +1,9 @@
 import { TextInput } from "./TextInput";
 import styles from "./ProductUploader.module.css";
 import { FileInput } from "./FileInput";
-import { SHOP_IMAGES } from "../components/images";
 
 export function ProductUploader() {
-  const initialProducts = SHOP_IMAGES.shop1;
+  const initialProducts = [];
 
   return (
     <>

@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./ShopCard.module.css";
 import shopIcon from "../assets/shop.svg";
 import LikeButton from "../components/LikeButton";
-import ProductImageGrid from "../components/ProductImageGrid";
 
 function ShopCard({ shop }) {
   return (
@@ -24,8 +23,13 @@ function ShopCard({ shop }) {
         대표 상품 {shop.products?.length ?? 0}
       </p>
 
-      <ProductImageGrid shopId={shop.id} />
-      {/* productCount prop 제거 */}
+      <div className={styles.productImages}>
+        {shop.products?.slice(0, 3).map((product) => (
+          <div key={product.id} className={styles.productImageWrapper}>
+            <img src={product.imageUrl} alt={product.name} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
