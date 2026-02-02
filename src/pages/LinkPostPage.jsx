@@ -23,7 +23,36 @@ export function LinkPostPage() {
     // API 테스트 코드
     // ================================
 
-    // const BASE_URL = "https://linkshop-api.vercel.app/22-3";
+    const BASE_URL = "https://linkshop-api.vercel.app";
+    const formData = new FormData();
+
+    formData.append("image", shopData.shopImg);
+
+    try {
+      const response = await fetch(`${BASE_URL}/images/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const responseText = await response.text();
+      console.log("응답 상태:", response.status);
+      console.log("응답 내용:", responseText);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = JSON.parse(responseText);
+      console.log("생성 완료:", data);
+
+      // setIsModalOpen(true);
+    } catch (error) {
+      console.error("API 호출 에러:", error);
+      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      console.log("Finally");
+    }
+
     // const myHeaders = new Headers();
     // myHeaders.append("Content-Type", "application/json");
 
@@ -79,17 +108,22 @@ export function LinkPostPage() {
   };
 
   // 모든 인풋 값이 채워졌는지 확인
-  const isAllFilled =
-    Object.keys(productData).length >= 3 &&
-    Object.values(productData).every((val) => val !== "" && val !== null) &&
-    Object.keys(shopData).length >= 5 &&
-    Object.values(shopData).every((val) => val !== "" && val !== null);
+  const isAllFilled = true;
+  // Object.keys(productData).length >= 3 &&
+  // Object.values(productData).every((val) => val !== "" && val !== null) &&
+  // Object.keys(shopData).length >= 5 &&
+  // Object.values(shopData).every((val) => val !== "" && val !== null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <main className={styles.main}>
+        {/* 이미지 업로드 테스트 코드 */}
+        <img src="https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770037574264/dice-purple-1.svg" />
+        <img src="https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770036833681/Group%2011.png" />
+        {/* 이미지 업로드 테스트 코드 */}
+
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.container}>
             <div className={styles.head}>
@@ -117,7 +151,7 @@ export function LinkPostPage() {
                 : styles.createbtn
             }
             disabled={!isAllFilled}
-            onClick={() => setIsModalOpen(isAllFilled)}
+            // onClick={() => setIsModalOpen(isAllFilled)}
           >
             생성하기
           </Button>

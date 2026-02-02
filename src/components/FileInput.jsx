@@ -15,7 +15,7 @@ export function FileInput({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    console.log("✅ FileInput 컴포넌트의 file :", file);
+    console.log("FileInput 컴포넌트의 file :", file);
 
     // 이전 blob URL 정리
     if (objectUrlRef.current) {
@@ -26,7 +26,7 @@ export function FileInput({
     objectUrlRef.current = objectUrl;
     setPreview(objectUrl);
 
-    onChange([e.target.id], objectUrl); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
+    onChange([e.target.id], e.target.files[0]); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
   };
 
   // 언마운트 시 blob URL 정리
