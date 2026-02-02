@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useInputValidation } from "../hooks/useInputValidation";
 import { ErrorMessage } from "./ErrorMessage";
 import styles from "./Input.module.css";
@@ -9,13 +9,14 @@ export function TextInput({
   label,
   type = "text",
   className = "",
+  onChange,
   ...props
 }) {
   const { value, error, handleChange, validate } = useInputValidation();
 
   const wrappedChange = (e) => {
     handleChange(e); // 인풋 값 에러 확인 함수
-    updateField(e); // ProductUploader 컴포넌트에 보내줄 값
+    onChange([e.target.id], e.target.value); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
   };
 
   const classNames = `${styles.input} ${className}`;

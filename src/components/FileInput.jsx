@@ -8,7 +8,7 @@ export function FileInput({
   label,
   placeholder,
   initialPreview,
-  updateField,
+  onChange,
 }) {
   const [fileData, setFileData] = useState(null);
 
@@ -29,7 +29,7 @@ export function FileInput({
     });
     console.log("objectUrl", objectUrl);
 
-    // updateField(e); // ProductUploader 컴포넌트에 보내줄 값
+    onChange([e.target.id], objectUrl); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
   };
 
   useEffect(() => {
