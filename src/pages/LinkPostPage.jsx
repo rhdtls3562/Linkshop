@@ -80,9 +80,9 @@ export function LinkPostPage() {
 
   // 모든 인풋 값이 채워졌는지 확인
   const isAllFilled =
-    Object.keys(productData).length > 0 &&
+    Object.keys(productData).length >= 3 &&
     Object.values(productData).every((val) => val !== "" && val !== null) &&
-    Object.keys(shopData).length > 0 &&
+    Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);

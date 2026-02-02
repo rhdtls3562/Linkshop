@@ -5,16 +5,29 @@ import eyeOn from "../assets/btn_visibility_on.svg";
 import { ErrorMessage } from "./ErrorMessage";
 import { useInputValidation } from "../hooks/useInputValidation";
 
-export function PasswordInput({ id, label, className = "", ...props }) {
+export function PasswordInput({
+  id,
+  label,
+  className = "",
+  onChange,
+  ...props
+}) {
   const { value, error, handleChange, validate } = useInputValidation(); // 인풋 값
+
+  const wrappedChange = (e) => {
+    handleChange(e); // 인풋 값 에러 확인 함수
+    onChange([e.target.id], e.target.value); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
+  };
 
   const classNames = `${styles.input} ${className}`;
 
   // 비밀번호 보기 버튼
   const [inputType, setInputType] = useState("password");
+
   const handleTogglePassword = () => {
     setInputType((prevType) => (prevType === "password" ? "text" : "password"));
   };
+
   return (
     <>
       <div className={`${styles.wrapper} ${error ? styles.errorInput : ""}`}>
@@ -24,7 +37,7 @@ export function PasswordInput({ id, label, className = "", ...props }) {
             {...props}
             id={id}
             value={value}
-            onChange={handleChange}
+            onChange={wrappedChange}
             type={inputType}
             className={classNames}
             onBlur={validate} // 포커스가 사라질 때 검사
