@@ -12,13 +12,15 @@ export function ActionCompleteModal({
   return createPortal(
     <>
       <div className={styles.overlay}>
-        {isCreateCompleted && (
+        {isCreateCompleted ? (
           <div className={styles.modal}>
             <p className={styles.message}>{message}</p>
             <button className={styles.btn} onClick={onClose}>
               확인
             </button>
           </div>
+        ) : (
+          <div className={styles.loading}></div>
         )}
       </div>
     </>,
