@@ -8,6 +8,9 @@ import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
 export function LinkPostPage() {
+  // 모달 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // 두 컴포넌트의 데이터를 각각 관리
   const [productData, setProductData] = useState({});
   const [shopData, setShopData] = useState({});
@@ -132,8 +135,6 @@ export function LinkPostPage() {
     Object.values(productData).every((val) => val !== "" && val !== null) &&
     Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
