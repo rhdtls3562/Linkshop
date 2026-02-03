@@ -9,7 +9,7 @@ function ShopList({ shops, lastItemRef }) {
         const isLast = index === shops.length - 1;
 
         return (
-          <div key={shop.id} ref={isLast ? lastItemRef : null}>
+          <div key={`${shop.id}-${index}`} ref={isLast ? lastItemRef : null}>
             <ShopCard shop={shop} />
           </div>
         );
