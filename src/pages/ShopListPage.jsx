@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import SearchBar from "../components/SearchBar";
-import ShopList from "../components/ShopList";
 import Filter from "../components/Filter";
 import styles from "./ShopListPage.module.css";
+import ShopList from "../components/ShopList";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
 const TEAM_ID = "22-3";
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 1;
 
 function ShopListPage() {
   const [shops, setShops] = useState([]);
@@ -16,7 +16,6 @@ function ShopListPage() {
 
   const observer = useRef();
 
-  // 마지막 아이템 감지
   const lastItem = useCallback(
     (node) => {
       if (loading || !hasMore) return;
@@ -34,7 +33,6 @@ function ShopListPage() {
     [loading, hasMore]
   );
 
-  // 페이지마다 데이터 로드
   useEffect(() => {
     setLoading(true);
 
@@ -44,10 +42,12 @@ function ShopListPage() {
       .then((res) => res.json())
       .then((data) => {
         const list = Array.isArray(data) ? data : data.list ?? [];
+
+        // 중복 데이터 테스트용으로 그냥 이어붙이기
         setShops((prev) => [...prev, ...list]);
         setHasMore(list.length > 0);
       })
-      .catch((error) => console.error(error))
+      .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, [page]);
 
