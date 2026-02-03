@@ -7,6 +7,7 @@ import { useInputValidation } from "../hooks/useInputValidation";
 
 export function PasswordInput({
   id,
+  name,
   label,
   className = "",
   onChange,
@@ -16,7 +17,7 @@ export function PasswordInput({
 
   const wrappedChange = (e) => {
     handleChange(e); // 인풋 값 에러 확인 함수
-    onChange([e.target.id], e.target.value); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
+    onChange(name, e.target.value); // 부모한테 보내줄 값
   };
 
   const classNames = `${styles.input} ${className}`;
@@ -36,6 +37,7 @@ export function PasswordInput({
           <input
             {...props}
             id={id}
+            name={name}
             value={value}
             onChange={wrappedChange}
             type={inputType}

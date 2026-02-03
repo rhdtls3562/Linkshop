@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
@@ -13,18 +12,29 @@ export function LinkPostPage() {
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
   // 두 컴포넌트의 데이터를 각각 관리
-  const [productData, setProductData] = useState({});
+  const [productDataList, setProductDataList] = useState([
+    {
+      id: self.crypto.randomUUID().slice(0, 4), // 초기 상품 1개
+      productName: "",
+      productPrice: "",
+      productImg: "",
+    },
+  ]);
   const [shopData, setShopData] = useState({});
+
+  // 상품 업로더 개수 관리
+  const [uploaders, setUploaders] = useState([0]);
 
   // 모든 인풋에 값이 채워졌는지 확인
   const isAllFilled =
-    Object.keys(productData).length >= 3 &&
-    Object.values(productData).every((val) => val !== "" && val !== null) &&
+    Object.keys(productDataList).length >= 3 &&
+    Object.values(productDataList).every((val) => val !== "" && val !== null) &&
     Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
   // =============================
   // 이미지 업로드 함수
+  // =============================
   const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
     const formData = new FormData();
@@ -38,15 +48,15 @@ export function LinkPostPage() {
       });
 
       const responseText = await response.text();
-      console.log("handleImageUpload 응답 상태:", response.status);
-      console.log("handleImageUpload 응답 내용:", responseText);
+      // console.log("handleImageUpload 응답 상태:", response.status);
+      // console.log("handleImageUpload 응답 내용:", responseText);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = JSON.parse(responseText);
-      console.log("✅ 이미지 업로드 완료:", data);
+      // console.log("✅ 이미지 업로드 완료:", data);
 
       // URL 반환되는지 확인
       if (!data.url) {
@@ -60,14 +70,19 @@ export function LinkPostPage() {
       console.error("handleImageUpload API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
-      console.log("handleImageUpload 함수 완료");
+      console.log("📍handleImageUpload 함수 완료");
     }
   };
 
   // =============================
   // 최종 제출 함수
+  // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log("제출할 데이터:", {
+    //   products: productDataList,
+    //   shop: shopData,
+    // });
 
     // 모달 오버레이 오픈
     setIsModalOpen(true);
@@ -80,15 +95,22 @@ export function LinkPostPage() {
       }
 
       // 2. Product 이미지 업로드
-      let productImageUrl = productData.imageUrl;
-      if (productData.productImg instanceof File) {
-        productImageUrl = await handleImageUpload(productData.productImg);
-      }
+      const uploadedProducts = await Promise.all(
+        productDataList.map(async (product) => {
+          let productImageUrl = product.productImg;
 
-      console.log("제출할 데이터:", {
-        product: productData,
-        shop: shopData,
-      });
+          // 이미지 파일 업로드
+          if (product.productImg instanceof File) {
+            productImageUrl = await handleImageUpload(product.productImg);
+          }
+
+          return {
+            price: Number(productDataList.productPrice) || 0,
+            imageUrl: productImageUrl?.trim() || "",
+            name: productDataList.productName?.trim() || "",
+          };
+        })
+      );
 
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
       const myHeaders = new Headers();
@@ -101,19 +123,13 @@ export function LinkPostPage() {
           urlName: shopData.shopName?.trim() || "",
           shopUrl: shopData.shopUrl?.trim() || "",
         },
-        products: [
-          {
-            price: Number(productData.productPrice) || 0,
-            imageUrl: productImageUrl?.trim() || "",
-            name: productData.productName?.trim() || "",
-          },
-        ],
+        products: uploadedProducts,
         password: shopData.userPw || "",
         userId: shopData.userId,
         name: shopData.shopName?.trim(),
       });
 
-      console.log("handleSubmit requestBody:", requestBody);
+      // console.log("handleSubmit requestBody:", requestBody);
 
       // 4. API 호출
       const response = await fetch(`${BASE_URL}/linkshops`, {
@@ -140,17 +156,35 @@ export function LinkPostPage() {
       // 모달 오버레이 닫기(등록 완료 창 제외)
       setIsModalOpen(false);
     } finally {
-      console.log("handleSubmit 함수 완료");
+      console.log("📍 handleSubmit 함수 완료");
     }
   };
 
-  const [uploaders, setUploaders] = useState([0]);
-
   // =============================
   // 상품 인스턴스 추가 버튼 클릭 핸들러
+  // =============================
   const handleAddProductUploader = (e) => {
-    setUploaders([...uploaders, uploaders.length]);
-    console.log(uploaders);
+    const newProduct = {
+      id: self.crypto.randomUUID().slice(0, 4),
+      productName: "",
+      productPrice: "",
+      productImg: "",
+    };
+    setProductDataList([...productDataList, newProduct]); // 기존 상품 리스트에 새 상품 추가
+    setUploaders([...uploaders, uploaders.length]); // 상품 업로더 추가
+  };
+
+  // =============================
+  // 상품 데이터 업데이트 함수 (자식에서 받은 데이터로 특정 객체 업데이트)
+  // =============================
+  const updateProduct = (id, updatedData) => {
+    setProductDataList(
+      productDataList.map((product) =>
+        product.id === id
+          ? { ...product, ...updatedData } // 기존 데이터에 새 데이터 병합
+          : product
+      )
+    );
   };
 
   return (
@@ -168,21 +202,22 @@ export function LinkPostPage() {
                 추가
               </button>
             </div>
-            {uploaders.map((id) => {
-              return (
-                <ProductUploader
-                  key={id}
-                  formData={productData}
-                  setFormData={setProductData}
-                />
-              );
-            })}
+            {/* 각 상품 렌더링 */}
+            {productDataList.map((product, index) => (
+              <ProductUploader
+                key={product.id}
+                productId={product.id}
+                productData={product}
+                onUpdate={updateProduct} // 업데이트 함수 전달
+              />
+            ))}
           </div>
           <div className={styles.container}>
             <div className={styles.head}>
               <h2 className={styles.title}>내 쇼핑몰</h2>
             </div>
-            <ShopManagement formData={shopData} setFormData={setShopData} />
+            {/* 샵 렌더링 */}
+            <ShopManagement shopData={shopData} onUpdate={setShopData} />
           </div>
           <Button
             type="submit"

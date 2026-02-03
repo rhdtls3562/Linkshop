@@ -1,38 +1,45 @@
 import { TextInput } from "./TextInput";
 import { FileInput } from "./FileInput";
 import styles from "./ProductUploader.module.css";
+import { useEffect } from "react";
 
-export function ProductUploader({ setFormData }) {
-  // 하위 인풋 컴포넌트에서 전달받은 name, value로 폼 상태 업데이트
-  const handleChange = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+export function ProductUploader({ productId, productData, onUpdate }) {
+  // 자식에서 폼 데이터 변경 시 부모에게 전달
+  const handleChange = (field, value) => {
+    const updatedData = {
+      [field]: value,
+    };
+    onUpdate(productId, updatedData); // 부모의 updateProduct 호출
   };
 
   return (
     <>
       <div className={styles.inputWrap}>
         <FileInput
-          id="productImg"
+          id={`productImg_${productId}`}
+          name="productImg"
           label="상품 대표 이미지"
           placeholder="상품 이미지를 첨부해 주세요."
           onChange={handleChange}
+          value={productData.productImg || ""}
         />
         <TextInput
-          id="productName"
+          id={`productName_${productId}`}
+          name="productName"
           type="text"
           label="상품 이름"
           placeholder="상품 이름을 입력해 주세요."
           onChange={handleChange}
+          value={productData.productName || ""}
         />
         <TextInput
-          id="productPrice"
+          id={`productPrice_${productId}`} // 라벨,인풋용
+          name="productPrice" // 필드용 네임
           type="text"
           label="상품 가격"
           placeholder="원화로 표기해 주세요."
           onChange={handleChange}
+          value={productData.productPrice || ""}
         />
       </div>
     </>
