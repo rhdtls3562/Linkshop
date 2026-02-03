@@ -12,12 +12,19 @@
   padding: 0;
   cursor: pointer;
   position: relative;
+  width: 24px;
+  height: 24px;
 }
 
-.heart {
+.likes img {
   position: absolute;
   left: 0;
   top: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.heart {
   display: none;
 }
 
@@ -41,4 +48,6 @@
 .count {
   font: var(--typo-pretendard-regular-16);
   color: var(--text-primary);
+  min-width: 10px;
+  text-align: left;
 }
