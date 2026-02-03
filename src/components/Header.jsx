@@ -1,3 +1,4 @@
+// Header.jsx
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
 import logo from "../assets/logo.svg";
@@ -9,12 +10,12 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <Link to="/">
+      <Link to="/list">
         <img src={logo} alt="링크샵 로고" />
       </Link>
 
       {isCreatePage ? (
-        <Button as={Link} to="/" className={styles.createBtn}>
+        <Button as={Link} to="/list" className={styles.createBtn}>
           돌아가기
         </Button>
       ) : (
