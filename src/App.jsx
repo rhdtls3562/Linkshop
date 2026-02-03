@@ -9,9 +9,9 @@ import SearchResultPage from "./pages/SearchResultPage";
 function App() {
   return (
     <>
-      <Header /> {/* 모든 페이지에 공통 Header */}
+      <Header />
       <Routes>
-        <Route path="/" element={<ShopListPage />} />
+        <Route path="/list" element={<ShopListPage />} />
         <Route path="/linkpost" element={<LinkPostPage />} />
         <Route path="/search" element={<SearchResultPage />} />
       </Routes>
