@@ -4,6 +4,9 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 22px 0px;
+  margin-bottom: 16px;
   border-radius: 25px;
+}
+.inputWrap:last-child {
+  margin-bottom: 40px;
 }

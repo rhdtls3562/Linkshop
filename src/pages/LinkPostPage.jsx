@@ -16,6 +16,14 @@ export function LinkPostPage() {
   const [productData, setProductData] = useState({});
   const [shopData, setShopData] = useState({});
 
+  // 모든 인풋에 값이 채워졌는지 확인
+  const isAllFilled =
+    Object.keys(productData).length >= 3 &&
+    Object.values(productData).every((val) => val !== "" && val !== null) &&
+    Object.keys(shopData).length >= 5 &&
+    Object.values(shopData).every((val) => val !== "" && val !== null);
+
+  // =============================
   // 이미지 업로드 함수
   const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
@@ -56,6 +64,7 @@ export function LinkPostPage() {
     }
   };
 
+  // =============================
   // 최종 제출 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,14 +90,12 @@ export function LinkPostPage() {
         shop: shopData,
       });
 
-      const PASSWORD = "test123";
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
-      // 3. 폼 데이트를 Request body 형식에 맞게 변환
+      // 3. 폼 데이터를 body 형식에 맞게 변환
       const requestBody = JSON.stringify({
-        // currentPassword: PASSWORD, // PUT, DELETE 바디 값
         shop: {
           imageUrl: shopImageUrl || "",
           urlName: shopData.shopName?.trim() || "",
@@ -124,25 +131,27 @@ export function LinkPostPage() {
       const result = await response.json();
       console.log("✅ 최종 제출 완료:", result);
 
-      // 성공 시 등록 완료 창 열기
+      // 호출 성공 시 등록 완료 창 열기
       setIsCreateCompleted(true);
     } catch (error) {
       console.error("handleSubmit API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
 
-      // 모달 오버레이 닫기
+      // 모달 오버레이 닫기(등록 완료 창 제외)
       setIsModalOpen(false);
     } finally {
       console.log("handleSubmit 함수 완료");
     }
   };
 
-  // 모든 인풋에 값이 채워졌는지 확인
-  const isAllFilled =
-    Object.keys(productData).length >= 3 &&
-    Object.values(productData).every((val) => val !== "" && val !== null) &&
-    Object.keys(shopData).length >= 5 &&
-    Object.values(shopData).every((val) => val !== "" && val !== null);
+  const [uploaders, setUploaders] = useState([0]);
+
+  // =============================
+  // 상품 인스턴스 추가 버튼 클릭 핸들러
+  const handleAddProductUploader = (e) => {
+    setUploaders([...uploaders, uploaders.length]);
+    console.log(uploaders);
+  };
 
   return (
     <>
@@ -151,14 +160,23 @@ export function LinkPostPage() {
           <div className={styles.container}>
             <div className={styles.head}>
               <h2 className={styles.title}>대표 상품</h2>
-              <button type="button" className={styles.btn}>
+              <button
+                type="button"
+                className={styles.btn}
+                onClick={handleAddProductUploader}
+              >
                 추가
               </button>
             </div>
-            <ProductUploader
-              formData={productData}
-              setFormData={setProductData}
-            />
+            {uploaders.map((id) => {
+              return (
+                <ProductUploader
+                  key={id}
+                  formData={productData}
+                  setFormData={setProductData}
+                />
+              );
+            })}
           </div>
           <div className={styles.container}>
             <div className={styles.head}>
