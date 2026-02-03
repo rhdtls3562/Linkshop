@@ -10,6 +10,7 @@ import styles from "./LinkPostPage.module.css";
 export function LinkPostPage() {
   // 모달 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
   // 두 컴포넌트의 데이터를 각각 관리
   const [productData, setProductData] = useState({});
@@ -63,6 +64,8 @@ export function LinkPostPage() {
       shop: shopData,
     });
 
+    // 모달 오버레이 오픈
+    setIsModalOpen(true);
     try {
       // 1. Shop 이미지 업로드
       let shopImageUrl = shopData.imageUrl;
@@ -76,7 +79,7 @@ export function LinkPostPage() {
         productImageUrl = await handleImageUpload(productData.productImg);
       }
 
-      const PASSWORD = "test1234";
+      const PASSWORD = "test123";
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -84,11 +87,11 @@ export function LinkPostPage() {
       // 3. 폼 데이트를 Request body 형식에 맞게 변환
       const requestBody = JSON.stringify({
         // currentPassword: PASSWORD, // PUT, DELETE 바디 값
-        shop: {
-          imageUrl: shopImageUrl || "",
-          urlName: shopData.shopName?.trim() || "",
-          shopUrl: shopData.shopUrl?.trim() || "",
-        },
+        // shop: {
+        //   imageUrl: shopImageUrl || "",
+        //   urlName: shopData.shopName?.trim() || "",
+        //   shopUrl: shopData.shopUrl?.trim() || "",
+        // },
         products: [
           {
             price: Number(productData.productPrice) || 0,
@@ -119,22 +122,23 @@ export function LinkPostPage() {
       const result = await response.json();
       console.log("✅ 최종 제출 완료:", result);
 
-      // 성공 시 모달 열기
-      setIsModalOpen(true);
+      // 성공 시 등록 완료 창 열기
+      setIsCreateCompleted(true);
     } catch (error) {
       console.error("handleSubmit API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      setIsModalOpen(false); // 모달 오버레이 닫기
     } finally {
       console.log("handleSubmit 함수 완료");
     }
   };
 
   // 모든 인풋 값이 채워졌는지 확인
-  const isAllFilled =
-    Object.keys(productData).length >= 3 &&
-    Object.values(productData).every((val) => val !== "" && val !== null) &&
-    Object.keys(shopData).length >= 5 &&
-    Object.values(shopData).every((val) => val !== "" && val !== null);
+  const isAllFilled = true;
+  // Object.keys(productData).length >= 3 &&
+  // Object.values(productData).every((val) => val !== "" && val !== null) &&
+  // Object.keys(shopData).length >= 5 &&
+  // Object.values(shopData).every((val) => val !== "" && val !== null);
 
   return (
     <>
@@ -157,6 +161,12 @@ export function LinkPostPage() {
               <h2 className={styles.title}>내 쇼핑몰</h2>
             </div>
             <ShopManagement formData={shopData} setFormData={setShopData} />
+            <button
+              type="button"
+              onClick={(e) => handleImageUpload(shopData.shopImg)}
+            >
+              업로드
+            </button>
           </div>
           <Button
             type="submit"
@@ -169,10 +179,11 @@ export function LinkPostPage() {
           >
             생성하기
           </Button>
-          <Toast isOpen={isModalOpen} message="등록 완료!" />
+          <Toast isOpen={isCreateCompleted} message="등록 완료!" />
           <ActionCompleteModal
             onClose={() => setIsModalOpen(false)}
-            isOpen={isModalOpen}
+            isOpen={isModalOpen} // 생성하기 버튼 클릭 시 오픈
+            isCreateCompleted={isCreateCompleted} // api 호출 완료 시 등록 완료 창 오픈
             message="등록이 완료되었습니다."
           />
         </form>

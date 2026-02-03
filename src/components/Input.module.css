@@ -51,12 +51,17 @@ p.input {
   cursor: pointer;
   border-radius: 8px;
 }
-.preview {
+.previewContainer {
   width: 95px;
   height: 95px;
   border-radius: 8px;
   overflow: hidden;
   background-color: #ececec;
+}
+.previewImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 /* =====================
