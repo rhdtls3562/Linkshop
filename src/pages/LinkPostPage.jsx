@@ -12,21 +12,12 @@ export function LinkPostPage() {
   const [productData, setProductData] = useState({});
   const [shopData, setShopData] = useState({});
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("제출할 데이터:", {
-      product: productData,
-      shop: shopData,
-    });
-
-    // ================================
-    // API 테스트 코드
-    // ================================
-
+  // 이미지 업로드 함수
+  const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
     const formData = new FormData();
 
-    formData.append("image", shopData.shopImg);
+    formData.append("image", imageFile);
 
     try {
       const response = await fetch(`${BASE_URL}/images/upload`, {
@@ -35,95 +26,118 @@ export function LinkPostPage() {
       });
 
       const responseText = await response.text();
-      console.log("응답 상태:", response.status);
-      console.log("응답 내용:", responseText);
+      // console.log("handleImageUpload 응답 상태:", response.status);
+      // console.log("handleImageUpload 응답 내용:", responseText);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = JSON.parse(responseText);
-      console.log("생성 완료:", data);
+      console.log("✅ 이미지 업로드 완료:", data);
 
-      // setIsModalOpen(true);
+      // URL 반환되는지 확인
+      if (!data.url) {
+        console.error("이미지 URL이 없습니다:", data);
+        throw new Error("이미지 URL을 받지 못했습니다.");
+      }
+
+      // 이미지 URL 반환
+      return data.url;
     } catch (error) {
-      console.error("API 호출 에러:", error);
+      console.error("handleImageUpload API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
-      console.log("Finally");
+      console.log("handleImageUpload 함수 완료");
     }
+  };
 
-    // const myHeaders = new Headers();
-    // myHeaders.append("Content-Type", "application/json");
+  // 최종 제출 함수
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("제출할 데이터:", {
+      product: productData,
+      shop: shopData,
+    });
 
-    // // 실제 폼 데이터를 API 형식에 맞게 변환
-    // const requestBody = JSON.stringify({
-    //   shop: {
-    //     imageUrl: shopData.shopImg || "",
-    //     urlName: shopData.shopName || "",
-    //     shopUrl: shopData.shopUrl || "",
-    //   },
-    //   products: [
-    //     {
-    //       price: Number(productData.productPrice) || 0,
-    //       imageUrl: productData.productImg || "",
-    //       name: productData.productName || "",
-    //     },
-    //   ],
-    //   password: shopData.userPw || "",
-    //   userId: shopData.userId,
-    // });
+    try {
+      // 1. Shop 이미지 업로드
+      let shopImageUrl = shopData.imageUrl;
+      if (shopData.shopImg instanceof File) {
+        shopImageUrl = await handleImageUpload(shopData.shopImg);
+      }
 
-    // console.log("requestBody:", requestBody);
+      // 2. Product 이미지 업로드
+      let productImageUrl = productData.imageUrl;
+      if (productData.productImg instanceof File) {
+        productImageUrl = await handleImageUpload(productData.productImg);
+      }
 
-    // try {
-    //   const response = await fetch(`${BASE_URL}/linkshops`, {
-    //     method: "POST",
-    //     headers: myHeaders,
-    //     body: requestBody,
-    //   });
+      const PASSWORD = "test1234";
+      const BASE_URL = "https://linkshop-api.vercel.app/22-3";
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! status: ${response.status} `);
-    //   }
+      // 3. 폼 데이트를 Request body 형식에 맞게 변환
+      const requestBody = JSON.stringify({
+        // currentPassword: PASSWORD, // PUT, DELETE 바디 값
+        shop: {
+          imageUrl: shopImageUrl || "",
+          urlName: shopData.shopName?.trim() || "",
+          shopUrl: shopData.shopUrl?.trim() || "",
+        },
+        products: [
+          {
+            price: Number(productData.productPrice) || 0,
+            imageUrl: productImageUrl?.trim() || "",
+            name: productData.productName?.trim() || "",
+          },
+        ],
+        password: shopData.userPw || "",
+        userId: shopData.userId,
+        name: shopData.shopName?.trim(),
+      });
 
-    //   const data = await response.json();
-    //   console.log("생성 완료:", data);
+      console.log("handleSubmit requestBody:", requestBody);
 
-    //   // 성공 시 모달 열기
-    //   setIsModalOpen(true);
+      // 4. API 호출
+      const response = await fetch(`${BASE_URL}/linkshops/`, {
+        method: "POST",
+        headers: myHeaders,
+        body: requestBody,
+      });
 
-    //   // 폼 초기화 (선택사항)
-    //   // setProductData({});
-    //   // setShopData({});
-    // } catch (error) {
-    //   console.error("API 호출 에러:", error);
-    //   alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-    // } finally {
-    //   setIsModalOpen(false);
-    // }
-    // ================================
-    // API 테스트 코드 끝
-    // ================================
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! status: ${response.status} ${response.message} `
+        );
+      }
+
+      const result = await response.json();
+      console.log("✅ 최종 제출 완료:", result);
+
+      // 성공 시 모달 열기
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("handleSubmit API 호출 에러:", error);
+      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      console.log("handleSubmit 함수 완료");
+    }
   };
 
   // 모든 인풋 값이 채워졌는지 확인
-  const isAllFilled = true;
-  // Object.keys(productData).length >= 3 &&
-  // Object.values(productData).every((val) => val !== "" && val !== null) &&
-  // Object.keys(shopData).length >= 5 &&
-  // Object.values(shopData).every((val) => val !== "" && val !== null);
+  const isAllFilled =
+    Object.keys(productData).length >= 3 &&
+    Object.values(productData).every((val) => val !== "" && val !== null) &&
+    Object.keys(shopData).length >= 5 &&
+    Object.values(shopData).every((val) => val !== "" && val !== null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <main className={styles.main}>
-        {/* 이미지 업로드 테스트 코드 */}
-        <img src="https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770037574264/dice-purple-1.svg" />
-        <img src="https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/LinkShop/products/1770036833681/Group%2011.png" />
-        {/* 이미지 업로드 테스트 코드 */}
-
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.container}>
             <div className={styles.head}>
@@ -151,7 +165,6 @@ export function LinkPostPage() {
                 : styles.createbtn
             }
             disabled={!isAllFilled}
-            // onClick={() => setIsModalOpen(isAllFilled)}
           >
             생성하기
           </Button>
