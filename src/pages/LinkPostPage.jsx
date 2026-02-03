@@ -30,8 +30,8 @@ export function LinkPostPage() {
       });
 
       const responseText = await response.text();
-      // console.log("handleImageUpload 응답 상태:", response.status);
-      // console.log("handleImageUpload 응답 내용:", responseText);
+      console.log("handleImageUpload 응답 상태:", response.status);
+      console.log("handleImageUpload 응답 내용:", responseText);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,13 +59,10 @@ export function LinkPostPage() {
   // 최종 제출 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("제출할 데이터:", {
-      product: productData,
-      shop: shopData,
-    });
 
     // 모달 오버레이 오픈
     setIsModalOpen(true);
+
     try {
       // 1. Shop 이미지 업로드
       let shopImageUrl = shopData.imageUrl;
@@ -79,6 +76,11 @@ export function LinkPostPage() {
         productImageUrl = await handleImageUpload(productData.productImg);
       }
 
+      console.log("제출할 데이터:", {
+        product: productData,
+        shop: shopData,
+      });
+
       const PASSWORD = "test123";
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
       const myHeaders = new Headers();
@@ -87,11 +89,11 @@ export function LinkPostPage() {
       // 3. 폼 데이트를 Request body 형식에 맞게 변환
       const requestBody = JSON.stringify({
         // currentPassword: PASSWORD, // PUT, DELETE 바디 값
-        // shop: {
-        //   imageUrl: shopImageUrl || "",
-        //   urlName: shopData.shopName?.trim() || "",
-        //   shopUrl: shopData.shopUrl?.trim() || "",
-        // },
+        shop: {
+          imageUrl: shopImageUrl || "",
+          urlName: shopData.shopName?.trim() || "",
+          shopUrl: shopData.shopUrl?.trim() || "",
+        },
         products: [
           {
             price: Number(productData.productPrice) || 0,
@@ -107,7 +109,7 @@ export function LinkPostPage() {
       console.log("handleSubmit requestBody:", requestBody);
 
       // 4. API 호출
-      const response = await fetch(`${BASE_URL}/linkshops/`, {
+      const response = await fetch(`${BASE_URL}/linkshops`, {
         method: "POST",
         headers: myHeaders,
         body: requestBody,
@@ -127,18 +129,20 @@ export function LinkPostPage() {
     } catch (error) {
       console.error("handleSubmit API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-      setIsModalOpen(false); // 모달 오버레이 닫기
+
+      // 모달 오버레이 닫기
+      setIsModalOpen(false);
     } finally {
       console.log("handleSubmit 함수 완료");
     }
   };
 
-  // 모든 인풋 값이 채워졌는지 확인
-  const isAllFilled = true;
-  // Object.keys(productData).length >= 3 &&
-  // Object.values(productData).every((val) => val !== "" && val !== null) &&
-  // Object.keys(shopData).length >= 5 &&
-  // Object.values(shopData).every((val) => val !== "" && val !== null);
+  // 모든 인풋에 값이 채워졌는지 확인
+  const isAllFilled =
+    Object.keys(productData).length >= 3 &&
+    Object.values(productData).every((val) => val !== "" && val !== null) &&
+    Object.keys(shopData).length >= 5 &&
+    Object.values(shopData).every((val) => val !== "" && val !== null);
 
   return (
     <>
@@ -161,12 +165,6 @@ export function LinkPostPage() {
               <h2 className={styles.title}>내 쇼핑몰</h2>
             </div>
             <ShopManagement formData={shopData} setFormData={setShopData} />
-            <button
-              type="button"
-              onClick={(e) => handleImageUpload(shopData.shopImg)}
-            >
-              업로드
-            </button>
           </div>
           <Button
             type="submit"
