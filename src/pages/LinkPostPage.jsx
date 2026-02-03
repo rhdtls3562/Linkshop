@@ -56,7 +56,6 @@ export function LinkPostPage() {
       }
 
       const data = JSON.parse(responseText);
-      // console.log("✅ 이미지 업로드 완료:", data);
 
       // URL 반환되는지 확인
       if (!data.url) {
@@ -79,10 +78,6 @@ export function LinkPostPage() {
   // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("제출할 데이터:", {
-    //   products: productDataList,
-    //   shop: shopData,
-    // });
 
     // 모달 오버레이 오픈
     setIsModalOpen(true);
@@ -128,8 +123,6 @@ export function LinkPostPage() {
         userId: shopData.userId,
         name: shopData.shopName?.trim(),
       });
-
-      // console.log("handleSubmit requestBody:", requestBody);
 
       // 4. API 호출
       const response = await fetch(`${BASE_URL}/linkshops`, {
