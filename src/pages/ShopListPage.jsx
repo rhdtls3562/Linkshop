@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import Filter from "../components/Filter";
 import ShopList from "../components/ShopList";
@@ -14,6 +15,9 @@ const ITEMS_PER_PAGE = 1; // 한 번에 가져올 상점 개수
  * 상점 목록을 무한 스크롤로 표시하고, 필터링 기능을 제공
  */
 function ShopListPage() {
+  // React Router의 navigate 함수
+  const navigate = useNavigate();
+
   // 상점 목록 데이터 저장
   const [shops, setShops] = useState([]);
 
@@ -76,6 +80,15 @@ function ShopListPage() {
   };
 
   /**
+   * 상점 클릭 핸들러
+   * @param {number} shopId - 클릭한 상점의 ID
+   */
+  const handleShopClick = (shopId) => {
+    // 상점 상세 페이지로 이동 (URL에 shopId 포함)
+    navigate(`/shop/${shopId}`);
+  };
+
+  /**
    * 상점 목록 데이터 가져오기
    * page나 orderBy가 변경될 때마다 실행
    */
@@ -113,8 +126,12 @@ function ShopListPage() {
       {/* 필터 컴포넌트: 필터 변경 시 handleFilterChange 호출 */}
       <Filter onFilterChange={handleFilterChange} />
 
-      {/* 상점 목록: 무한 스크롤을 위해 lastItemRef 전달 */}
-      <ShopList shops={shops} lastItemRef={lastItem} />
+      {/* 상점 목록: 무한 스크롤을 위해 lastItemRef 전달, 클릭 핸들러 추가 */}
+      <ShopList
+        shops={shops}
+        lastItemRef={lastItem}
+        onShopClick={handleShopClick}
+      />
 
       {/* 로딩 중 표시 */}
       {loading && <div>로딩 중...</div>}

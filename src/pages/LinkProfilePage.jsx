@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
 
 import Marquee from "../components/Marquee";
@@ -11,8 +12,38 @@ import meatball from "../assets/meatball.svg";
 
 import LikeButton from "../components/LikeButton";
 
+const BASE_URL = "https://linkshop-api.vercel.app";
+const TEAM_ID = "22-3";
+
 function LinkProfilePage() {
+  // URL 파라미터에서 shopId 가져오기
+  const { shopId } = useParams();
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [shopData, setShopData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 상점 정보 가져오기
+  useEffect(() => {
+    if (!shopId) return;
+
+    setLoading(true);
+    fetch(`${BASE_URL}/${TEAM_ID}/linkshops/${shopId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setShopData(data);
+      })
+      .catch((err) => console.error("상점 정보 로딩 실패:", err))
+      .finally(() => setLoading(false));
+  }, [shopId]);
+
+  if (loading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (!shopData) {
+    return <div>상점을 찾을 수 없습니다.</div>;
+  }
 
   return (
     <div>
@@ -53,11 +84,18 @@ function LinkProfilePage() {
 
         {/* 가운데 프로필 */}
         <div className={styles.shop}>
-          <img src={shop} alt="" />
+          <img
+            src={shopData.shop?.imageUrl || shop}
+            alt={shopData.name || "상점"}
+          />
         </div>
 
-        <div className={styles.nugnri}>너구리 직구상점</div>
-        <div className={styles.pumpkin}>@pumpkinraccoon</div>
+        <div className={styles.nugnri}>
+          {shopData.name || "너구리 직구상점"}
+        </div>
+        <div className={styles.pumpkin}>
+          @{shopData.userId || "pumpkinraccoon"}
+        </div>
       </div>
       <div className={styles.text}>대표상품</div>
     </div>
@@ -65,5 +103,3 @@ function LinkProfilePage() {
 }
 
 export default LinkProfilePage;
-
-

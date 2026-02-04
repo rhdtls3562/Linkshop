@@ -2,6 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import "./styles/global.css";
 import ShopListPage from "./pages/ShopListPage";
+import LinkProfilePage from "./pages/LinkProfilePage";
 import Header from "./components/Header";
 import { LinkPostPage } from "./pages/LinkPostPage";
 import SearchResultPage from "./pages/SearchResultPage";
@@ -14,6 +15,7 @@ function App() {
         <Route path="/list" element={<ShopListPage />} />
         <Route path="/linkpost" element={<LinkPostPage />} />
         <Route path="/search" element={<SearchResultPage />} />
+        <Route path="/shop/:shopId" element={<LinkProfilePage />} />
       </Routes>
     </>
   );
