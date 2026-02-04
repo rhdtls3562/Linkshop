@@ -22,7 +22,7 @@ function SearchBar({
 
   return (
     <div className={rootClassName}>
-      <img src={search} alt="검색" className={styles.searchIcon} />
+      <img src={search} alt="돋보기" className={styles.searchIcon} />
       <input
         type="text"
         placeholder={placeholder}
