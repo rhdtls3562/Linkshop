@@ -180,6 +180,17 @@ export function LinkPostPage() {
     );
   };
 
+  // =============================
+  // 상품 삭제 함수
+  // =============================
+  const removeProduct = (id) => {
+    if (productDataList.length === 1) {
+      alert("최소 1개의 상품이 필요합니다.");
+      return;
+    }
+    setProductDataList(productDataList.filter((product) => product.id !== id));
+  };
+
   return (
     <>
       <main className={styles.main}>
@@ -196,12 +207,13 @@ export function LinkPostPage() {
               </button>
             </div>
             {/* 각 상품 렌더링 */}
-            {productDataList.map((product, index) => (
+            {productDataList.map((product) => (
               <ProductUploader
                 key={product.id}
                 productId={product.id}
                 productData={product}
                 onUpdate={updateProduct} // 업데이트 함수 전달
+                removeProduct={removeProduct} // 상품 삭제 함수 전달
               />
             ))}
           </div>

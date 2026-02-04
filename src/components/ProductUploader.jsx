@@ -1,9 +1,14 @@
 import { TextInput } from "./TextInput";
 import { FileInput } from "./FileInput";
 import styles from "./ProductUploader.module.css";
-import { useEffect } from "react";
+import closeIcon from "../assets/close.svg";
 
-export function ProductUploader({ productId, productData, onUpdate }) {
+export function ProductUploader({
+  productId,
+  productData,
+  onUpdate,
+  removeProduct,
+}) {
   // 자식에서 폼 데이터 변경 시 부모에게 전달
   const handleChange = (field, value) => {
     const updatedData = {
@@ -15,6 +20,13 @@ export function ProductUploader({ productId, productData, onUpdate }) {
   return (
     <>
       <div className={styles.inputWrap}>
+        <button
+          className={styles.closeBtn}
+          type="button"
+          onClick={() => removeProduct(productId)}
+        >
+          <img src={closeIcon} alt="삭제 버튼" />
+        </button>
         <FileInput
           id={`productImg_${productId}`}
           name="productImg"

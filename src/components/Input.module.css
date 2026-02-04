@@ -10,9 +10,6 @@ Input 컴포넌트 공통 CSS
   border: 1px solid transparent;
   border-radius: 25px;
 }
-.wrapper:first-child {
-  padding-top: 26px;
-}
 .wrapper:last-child {
   padding-bottom: 20px;
 }
@@ -45,7 +42,7 @@ p.input {
 
 .uploadButton {
   position: absolute;
-  top: 32px;
+  top: 24px;
   right: 28px;
   width: fit-content;
   height: fit-content;
@@ -92,3 +89,8 @@ Password Input CSS
 .wrapper.errorInput {
   border: 1px solid var(--text-error);
 }
+
+/* @media (max-width: 375px) {
+  .wrapper {
+  }
+} */
