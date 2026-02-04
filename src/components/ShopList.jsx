@@ -2,7 +2,7 @@ import React from "react";
 import ShopCard from "./ShopCard";
 import styles from "./ShopList.module.css";
 
-function ShopList({ shops, lastItemRef }) {
+function ShopList({ shops, lastItemRef, onShopClick }) {
   return (
     <div className={styles.shopList}>
       {shops.map((shop, index) => {
@@ -10,7 +10,7 @@ function ShopList({ shops, lastItemRef }) {
 
         return (
           <div key={`${shop.id}-${index}`} ref={isLast ? lastItemRef : null}>
-            <ShopCard shop={shop} />
+            <ShopCard shop={shop} onShopClick={onShopClick} />
           </div>
         );
       })}
