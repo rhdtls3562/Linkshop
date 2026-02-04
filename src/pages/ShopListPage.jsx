@@ -48,6 +48,14 @@ function ShopListPage() {
     navigate(`/shop/${shopId}`);
   };
 
+  const handleSearchSubmit = (rawKeyword) => {
+    const keyword = (rawKeyword ?? "").trim();
+    const params = new URLSearchParams();
+    if (keyword) params.set("keyword", keyword);
+    params.set("orderBy", orderBy);
+    navigate(`/search?${params.toString()}`);
+  };
+
   // API 호출: 상점 목록 가져오기
   useEffect(() => {
     setLoading(true);
@@ -67,7 +75,7 @@ function ShopListPage() {
 
   return (
     <div className={styles.container}>
-      <SearchBar />
+      <SearchBar onSubmit={handleSearchSubmit} />
       <Filter onFilterChange={handleFilterChange} />
       <ShopList
         shops={shops}
