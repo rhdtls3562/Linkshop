@@ -6,6 +6,7 @@ import styles from "./Input.module.css";
 export function TextInput({
   updateField = "",
   id,
+  name,
   label,
   type = "text",
   className = "",
@@ -16,7 +17,7 @@ export function TextInput({
 
   const wrappedChange = (e) => {
     handleChange(e); // 인풋 값 에러 확인 함수
-    onChange([e.target.id], e.target.value); // ProductUploader, ShopManagement 컴포넌트에 보내줄 값
+    onChange(name, e.target.value); // 부모한테 보내줄 값
   };
 
   const classNames = `${styles.input} ${className}`;
@@ -28,6 +29,7 @@ export function TextInput({
         <input
           {...props}
           id={id}
+          name={name}
           className={classNames}
           value={value}
           onChange={wrappedChange}

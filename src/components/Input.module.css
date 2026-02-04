@@ -2,13 +2,19 @@
 Input 컴포넌트 공통 CSS
 ===================== */
 .wrapper {
-  padding: 10px 28px;
+  padding: 14px 28px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   position: relative;
   border: 1px solid transparent;
   border-radius: 25px;
+}
+.wrapper:first-child {
+  padding-top: 26px;
+}
+.wrapper:last-child {
+  padding-bottom: 20px;
 }
 .wrapper:focus-within {
   border: 1px solid var(--color-blue);
@@ -39,7 +45,7 @@ p.input {
 
 .uploadButton {
   position: absolute;
-  top: 22px;
+  top: 32px;
   right: 28px;
   width: fit-content;
   height: fit-content;
@@ -51,12 +57,17 @@ p.input {
   cursor: pointer;
   border-radius: 8px;
 }
-.preview {
+.previewContainer {
   width: 95px;
   height: 95px;
   border-radius: 8px;
   overflow: hidden;
   background-color: #ececec;
+}
+.previewImage {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 /* =====================
