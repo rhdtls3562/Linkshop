@@ -168,7 +168,7 @@ export function LinkPostPage() {
   };
 
   // =============================
-  // 상품 데이터 업데이트 함수 (자식에서 받은 데이터로 특정 객체 업데이트)
+  // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
   // =============================
   const updateProduct = (id, updatedData) => {
     setProductDataList(
