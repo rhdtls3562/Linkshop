@@ -11,6 +11,7 @@ export function TextInput({
   type = "text",
   className = "",
   onChange,
+  dataList,
   ...props
 }) {
   const { value, error, handleChange, validate } = useInputValidation();
@@ -31,9 +32,10 @@ export function TextInput({
           id={id}
           name={name}
           className={classNames}
-          value={value}
+          // value={value}
           onChange={wrappedChange}
           onBlur={validate} // 포커스가 사라질 때 검사
+          value={dataList ?? ""}
         />
         {/* 에러 메시지가 있을 때만 노출 */}
         {error && <ErrorMessage message={error} />}

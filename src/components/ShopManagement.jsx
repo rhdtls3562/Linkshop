@@ -11,6 +11,7 @@ export function ShopManagement({ onUpdate, shopData }) {
       [name]: value,
     }));
   };
+
   return (
     <>
       <div className={styles.inputWrap}>
@@ -21,6 +22,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="쇼핑몰 이미지를 첨부해 주세요."
           onChange={handleChange}
           value={shopData.shopImg || ""}
+          initialPreview={shopData?.shop?.imageUrl}
         />
         <TextInput
           id="shopName"
@@ -29,6 +31,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="표시하고 싶은 이름을 적어주세요."
           onChange={handleChange}
           value={shopData.shopName || ""}
+          dataList={shopData?.name}
         />
         <TextInput
           id="shopUrl"
@@ -37,6 +40,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="Url을 입력해 주세요."
           onChange={handleChange}
           value={shopData.shopUrl || ""}
+          dataList={shopData?.shop?.shopUrl}
         />
         <TextInput
           id="userId"
@@ -46,6 +50,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="유저 ID를 입력해 주세요."
           onChange={handleChange}
           value={shopData.userId || ""}
+          dataList={shopData?.userId}
         />
         <PasswordInput
           id="userPw"

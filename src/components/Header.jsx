@@ -6,7 +6,8 @@ import { Button } from "./Button";
 
 export default function Header() {
   const location = useLocation();
-  const isCreatePage = location.pathname === "/linkpost";
+  const isCreatePage =
+    location.pathname === "/linkpost" || location.pathname.includes("/edit");
 
   return (
     <header className={styles.header}>
