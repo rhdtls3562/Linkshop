@@ -44,12 +44,13 @@ function ShopListPage() {
     setHasMore(true);
   };
 
-  // 상점 클릭: 상세 페이지로 이동
+  // ✅ 상점 클릭: 상세 페이지로 이동 + 지금 페이지에서 받은 shop 데이터도 같이 전달
   const handleShopClick = (shopId) => {
-    navigate(`/shop/${shopId}`);
+    const selectedShop = shops.find((s) => String(s.id) === String(shopId));
+    navigate(`/shop/${shopId}`, { state: { shop: selectedShop } });
   };
 
-  //박수정: 추가한 부분
+  // 검색
   const handleSearchSubmit = (rawKeyword) => {
     const keyword = (rawKeyword ?? "").trim();
     const params = new URLSearchParams();
