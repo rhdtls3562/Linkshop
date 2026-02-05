@@ -1,3 +1,5 @@
+/* LinkProfilePage.module.css */
+
 /* 프로필 영역 */
 .no {
   width: 100%;
@@ -114,7 +116,6 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-
   box-sizing: border-box;
 }
 
@@ -149,8 +150,7 @@
 }
 
 /* =========================
-   비밀번호 모달 (Filter 모달 스타일과 동일)
-   - 클래스만 pw 전용으로 분리
+   비밀번호 모달
 ========================= */
 
 /* 모달 배경 */
@@ -184,7 +184,6 @@
 }
 
 .pwTitle {
-  /* Filter 모달의 h3와 동일하게 */
   font: var(--typo-pretendard-semibold-16);
   margin: 0;
 }
@@ -205,7 +204,7 @@
 
 /* 본문 */
 .pwBody {
-  margin-top: 45px; /* 헤더 아래 여백(필터랑 자연스럽게) */
+  margin-top: 45px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -220,6 +219,25 @@
   border: 1px solid #ddd;
   box-sizing: border-box;
 }
+
+/* ✅ 비밀번호 보기/숨기기 (전역) */
+.pwInputWrap {
+  position: relative;
+  width: 100%;
+}
+
+.pwEyeBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+}
+
 
 /* 에러 */
 .pwError {
@@ -247,7 +265,7 @@
   cursor: not-allowed;
 }
 
-/* ✅ 반응형: Filter 모달과 동일 (모바일 바텀시트 + slideUp) */
+/* ✅ 모바일 바텀시트 */
 @media (max-width: 480px) {
   .pwOverlay {
     align-items: flex-end;
