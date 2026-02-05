@@ -42,7 +42,7 @@ function LinkProfilePage() {
 
   const handleEdit = () => {
     setMenuOpen(false);
-    navigate("/profile/edit");
+    navigate(`/link/${shopId}/edit`);
   };
 
   const handleDelete = () => {
