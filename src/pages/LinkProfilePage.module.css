@@ -1,15 +1,84 @@
+/* LinkProfilePage.module.css */
+
+/* ✅ 프로필 영역 (보라색 박스) */
 .no {
-  width: 1200px;
-  height: 266px;
-  position: relative; /* 이게 핵심 */
+  width: 100%;
+  max-width: 1200px;        /* 피그마 기준 */
+  height: 266px;            /* 데스크탑 기준 */
+  margin: 0 auto;
+  padding: 24px 16px;       /* 좌우 여백 */
+  box-sizing: border-box;
+
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+
   background-color: #fafafb;
 }
 
-/* 상점 아이콘 */
+/* 왼쪽 위 LikeButton 위치 */
+.like {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+}
+
+/* 오른쪽 위 공유 + 메뉴(점3개) */
+.menuWrapper {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 아이콘 버튼 공통 */
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+}
+
+.iconButton img {
+  width: 23px;
+  height: 23px;
+  display: block;
+}
+
+/* 드롭다운 메뉴 박스 */
+.menuBox {
+  position: absolute;
+  top: 34px;
+  right: 0;
+
+  width: 120px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* 메뉴 아이템(버튼) */
+.menuItem {
+  width: 100%;
+  padding: 10px 12px;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: #f2f2f2;
+}
+
+/* 가운데 프로필 아이콘 */
 .shop {
   width: 84px;
   height: 84px;
@@ -19,6 +88,12 @@
   background-color: #222222;
   border-radius: 50%;
   margin-top: 24px;
+}
+
+.shop img {
+  width: 40px;
+  height: 40px;
+  display: block;
 }
 
 /* 상점 이름 */
@@ -37,71 +112,57 @@
   margin-top: 8px;
 }
 
-/* 왼쪽 위 LikeButton 위치 */
-.like {
-  position: absolute;
-  top: 20px;
-  left: 24px;
-}
-
-/* 오른쪽 위 메뉴 영역 */
-.menuWrapper {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* 아이콘 버튼 */
-.iconButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  line-height: 1;
-}
-
-.iconButton img {
-  width: 23px;
-  height: 23px;
-  display: block;
-}
-
-/* 드롭다운 메뉴 */
-.menuBox {
-  position: absolute;
-  top: 34px;
-  right: 0;
-  width: 120px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* 메뉴 아이템을 버튼으로 */
-.menuItem {
+/* ✅ 대표상품 영역 래퍼(프로필 영역과 같은 폭/여백) */
+.featureSection {
   width: 100%;
-  padding: 10px 12px;
-  text-align: center;
-  background: none;
-  border: none;
-  cursor: pointer;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
-.menuItem:hover {
-  background-color: #f2f2f2;
-}
-
+/* 대표상품 텍스트 */
 .text {
   font-size: 16px;
   font-weight: 600;
   color: #14151a;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
 
-  width: 60px;
-  height: 19px;
-  margin-top: 23px;
+/* (선택) 마퀴/뒤로가기 컴포넌트에 className 전달했다면 */
+.marquee {
+  width: 100%;
+}
 
+.back {
+  /* 필요하면 Back 컴포넌트 위치를 여기서 조정 */
+}
+
+/* ✅ 반응형 */
+@media (max-width: 768px) {
+  .no {
+    height: auto;         /* 작은 화면에서 자연스럽게 */
+    padding: 20px 16px;
+  }
+
+  .nugnri {
+    font-size: 24px;
+  }
+
+  .shop {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .like {
+    top: 16px;
+    left: 16px;
+  }
+
+  .menuWrapper {
+    top: 10px;
+    right: 10px;
+  }
 }
