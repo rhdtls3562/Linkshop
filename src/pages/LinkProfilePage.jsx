@@ -30,6 +30,9 @@ function LinkProfilePage() {
   const [password, setPassword] = useState("");
   const [pwError, setPwError] = useState("");
 
+  // ✅ 비밀번호 보기/숨기기
+  const [showPw, setShowPw] = useState(false);
+
   const isPwValid = password === CORRECT_PASSWORD;
 
   useEffect(() => {
@@ -53,6 +56,7 @@ function LinkProfilePage() {
     setMenuOpen(false);
     setPassword("");
     setPwError("");
+    setShowPw(false);
     setIsPwOpen(true);
   };
 
@@ -189,7 +193,6 @@ function LinkProfilePage() {
         <FeaturedProduct items={featuredProducts} />
       </div>
 
-      {/* ✅ 비밀번호 입력 모달 (Filter 모달과 완전 분리) */}
       {isPwOpen && (
         <div
           className={styles.pwOverlay}
@@ -207,30 +210,33 @@ function LinkProfilePage() {
               <h3 id="pw-title" className={styles.pwTitle}>
                 비밀번호 입력
               </h3>
- <button
-  className={styles.closeBtn}
-  onClick={() => setIsPwOpen(false)}
-  type="button"
->
-  <img src={close} alt="닫기" />
-</button>
-
+              <button
+                className={styles.closeBtn}
+                onClick={() => setIsPwOpen(false)}
+                type="button"
+              >
+                <img src={close} alt="닫기" />
+              </button>
             </div>
 
             <div className={styles.pwBody}>
-              <input
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setPwError("");
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handlePwConfirm();
-                }}
-                className={styles.pwInput}
-              />
+              <div className={styles.pwInputWrap}>
+                <input
+                  type={showPw ? "text" : "password"}
+                  placeholder="비밀번호를 입력하세요"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPwError("");
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handlePwConfirm();
+                  }}
+                  className={styles.pwInput}
+                />
+
+              
+              </div>
 
               {pwError && <div className={styles.pwError}>{pwError}</div>}
 
