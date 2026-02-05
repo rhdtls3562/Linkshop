@@ -16,17 +16,10 @@ export function TextInput({
   ...props
 }) {
   const { value, error, handleChange, validate } = useInputValidation();
-  const [price, setPrice] = useState(0);
 
   const wrappedChange = (e) => {
     handleChange(e); // 인풋 값 에러 확인 함수
     onChange(name, e.target.value); // 부모한테 보내줄 값
-
-    // if (name === "productPrice") {
-    //   const onlyNumber = e.target.value.replace(/[^\d]/g, "");
-    //   // setPrice(Number(onlyNumber));
-    //   return (value = onlyNumber);
-    // }
   };
 
   // 숫자일 때 원화 표시

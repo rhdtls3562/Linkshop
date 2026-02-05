@@ -33,6 +33,7 @@ export function LinkPostEditPage() {
     Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
+  console.log(productDataList, shopData);
   // =============================
   // 이미지 업로드 함수
   // =============================
@@ -83,85 +84,89 @@ export function LinkPostEditPage() {
     // 모달 오버레이 오픈
     setIsModalOpen(true);
 
-    // try {
-    //   // 1. Shop 이미지 업로드
-    //   let shopImageUrl = shopData.imageUrl;
-    //   if (shopData.shopImg instanceof File) {
-    //     shopImageUrl = await handleImageUpload(shopData.shopImg);
-    //   }
+    try {
+      // 1. Shop 이미지 업로드
+      let shopImageUrl = shopData.imageUrl;
+      if (shopData.shopImg instanceof File) {
+        shopImageUrl = await handleImageUpload(shopData.shopImg);
+      }
 
-    //   // 2. Product 이미지 업로드
-    //   const uploadedProducts = await Promise.all(
-    //     productDataList.map(async (product) => {
-    //       let productImageUrl = product.productImg;
+      // 2. Product 이미지 업로드
+      const uploadedProducts = await Promise.all(
+        productDataList.map(async (product) => {
+          let productImageUrl = product.productImg;
 
-    //       // 이미지 파일 업로드
-    //       if (product.productImg instanceof File) {
-    //         productImageUrl = await handleImageUpload(product.productImg);
-    //       }
+          // 이미지 파일 업로드
+          if (product.productImg instanceof File) {
+            productImageUrl = await handleImageUpload(product.productImg);
+          }
 
-    //       return {
-    //         price: Number(productDataList.productPrice) || 0,
-    //         imageUrl: productImageUrl?.trim() || "",
-    //         name: productDataList.productName?.trim() || "",
-    //       };
-    //     })
-    //   );
+          return {
+            price: Number(productDataList.productPrice) || 0,
+            imageUrl: productImageUrl?.trim() || "",
+            name: productDataList.productName?.trim() || "",
+          };
+        })
+      );
 
-    //   const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-    //   const SHOP_ID = 1072;
-    //   const myHeaders = new Headers();
-    //   myHeaders.append("Content-Type", "application/json");
+      const BASE_URL = "https://linkshop-api.vercel.app/22-3";
+      const SHOP_ID = 1072;
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-    //   // 3. 폼 데이터를 body 형식에 맞게 변환
-    //   const requestBody = JSON.stringify({
-    //     shop: {
-    //       imageUrl: shopImageUrl || "",
-    //       urlName: shopData.shopName?.trim() || "",
-    //       shopUrl: shopData.shopUrl?.trim() || "",
-    //     },
-    //     products: uploadedProducts,
-    //     password: shopData.userPw || "",
-    //     userId: shopData.userId,
-    //     name: shopData.shopName?.trim(),
-    //   });
+      // 3. 폼 데이터를 body 형식에 맞게 변환
+      const requestBody = JSON.stringify({
+        shop: {
+          imageUrl: shopImageUrl || "",
+          urlName: shopData.shopName?.trim() || "",
+          shopUrl: shopData.shopUrl?.trim() || "",
+        },
+        products: uploadedProducts,
+        password: shopData.userPw || "",
+        userId: shopData.userId,
+        name: shopData.shopName?.trim(),
+      });
 
-    //   // 4. API 호출
-    //   const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
-    //     method: "PUT",
-    //     headers: myHeaders,
-    //     body: requestBody,
-    //   });
+      // 4. API 호출
+      const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
+        method: "PUT",
+        headers: myHeaders,
+        body: requestBody,
+      });
 
-    //   if (!response.ok) {
-    //     throw new Error(
-    //       `HTTP error! status: ${response.status} ${response.message} `
-    //     );
-    //   }
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! status: ${response.status} ${response.message} `
+        );
+      }
 
-    //   const result = await response.json();
-    //   console.log("✅ 최종 제출 완료:", result);
+      const result = await response.json();
+      console.log("✅ 최종 제출 완료:", result);
 
-    //   // 호출 성공 시 수정 완료 창 열기
-    //   setIsCreateCompleted(true);
-    // } catch (error) {
-    //   console.error("handleSubmit API 호출 에러:", error);
-    //   alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      // 호출 성공 시 수정 완료 창 열기
+      setIsCreateCompleted(true);
+    } catch (error) {
+      console.error("handleSubmit API 호출 에러:", error);
+      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
 
-    //   // 모달 오버레이 닫기(수정 완료 창 제외)
-    //   setIsModalOpen(false);
-    // } finally {
-    //   console.log("📍 handleSubmit 함수 완료");
-    // }
+      // 모달 오버레이 닫기(수정 완료 창 제외)
+      setIsModalOpen(false);
+    } finally {
+      console.log("📍 handleSubmit 함수 완료");
+    }
   };
 
   // =============================
   // 샵 데이터 가져오는 함수
   // =============================
   const getShopData = async (e) => {
+    // 샵 아이디 수집
+    const href = window.location.pathname;
+    const id = href.split("/")[2];
+
     try {
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = 1059;
+      const SHOP_ID = id;
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -182,7 +187,7 @@ export function LinkPostEditPage() {
 
       setShopData(result);
       setProductDataList(result?.products);
-      // setIsModalOpen(false);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("getShopData API 호출 에러:", error);
       alert("샵 데이터를 불러올 수 없습니다.");
@@ -222,7 +227,7 @@ export function LinkPostEditPage() {
   };
 
   // =============================
-  // 상품 삭제 함수(작업중)
+  // 상품 삭제 함수
   // =============================
   const removeProduct = (id) => {
     if (productDataList.length === 1) {
