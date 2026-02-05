@@ -1,18 +1,10 @@
 /* pages/Layout.module.css */
 .layoutWrapper {
-  max-width: 1248px;
-  margin: 0 auto;
-  padding: 40px 24px 65px;
+  padding-top: 40px;
+  padding-bottom: 65px;
   box-sizing: border-box;
 }
 
 .layoutContent {
   box-sizing: border-box;
-}
-
-@media (max-width: 798px) {
-  .layoutWrapper {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
 }
