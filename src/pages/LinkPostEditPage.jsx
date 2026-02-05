@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
@@ -154,31 +155,20 @@ export function LinkPostEditPage() {
     // }
   };
 
+  // =============================
+  // 샵 데이터 가져오는 함수
+  // =============================
   const getShopData = async (e) => {
     try {
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = 1072;
+      const SHOP_ID = 1058;
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
-      // 3. 폼 데이터를 body 형식에 맞게 변환
-      // const requestBody = JSON.stringify({
-      //   shop: {
-      //     imageUrl: shopImageUrl || "",
-      //     urlName: shopData.shopName?.trim() || "",
-      //     shopUrl: shopData.shopUrl?.trim() || "",
-      //   },
-      //   products: uploadedProducts,
-      //   password: shopData.userPw || "",
-      //   userId: shopData.userId,
-      //   name: shopData.shopName?.trim(),
-      // });
-
-      // 4. API 호출
+      // API 호출
       const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
         method: "GET",
         headers: myHeaders,
-        // body: requestBody,
       });
 
       if (!response.ok) {
@@ -191,17 +181,15 @@ export function LinkPostEditPage() {
       console.log("✅ 샵 데이터 호출 완료 :", result);
 
       setShopData(result);
-
-      // 호출 성공 시 수정 완료 창 열기
-      setIsCreateCompleted(true);
+      setProductDataList(result?.products);
     } catch (error) {
-      console.error("handleSubmit API 호출 에러:", error);
+      console.error("getShopData API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
 
       // 모달 오버레이 닫기(수정 완료 창 제외)
       setIsModalOpen(false);
     } finally {
-      console.log("📍 handleSubmit 함수 완료");
+      console.log("📍 getShopData 함수 완료");
     }
   };
 
@@ -243,12 +231,13 @@ export function LinkPostEditPage() {
     setProductDataList(productDataList.filter((product) => product.id !== id));
   };
 
+  useEffect(() => {
+    getShopData();
+  }, []);
+
   return (
     <>
       <main className={styles.main}>
-        <button onClick={getShopData} type="button">
-          데이터 불러오기
-        </button>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.container}>
             <div className={styles.head}>

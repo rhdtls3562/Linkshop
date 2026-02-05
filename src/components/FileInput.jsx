@@ -11,6 +11,7 @@ export function FileInput({
 }) {
   const [preview, setPreview] = useState(initialPreview);
   const objectUrlRef = useRef(null);
+  console.log(initialPreview);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];

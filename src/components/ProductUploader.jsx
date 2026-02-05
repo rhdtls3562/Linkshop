@@ -27,6 +27,7 @@ export function ProductUploader({
           placeholder="상품 이미지를 첨부해 주세요."
           onChange={handleChange}
           value={productData.productImg || ""}
+          initialPreview={productData?.imageUrl}
         />
         <TextInput
           id={`productName_${productId}`}
@@ -36,6 +37,7 @@ export function ProductUploader({
           placeholder="상품 이름을 입력해 주세요."
           onChange={handleChange}
           value={productData.productName || ""}
+          dataList={productData?.name}
         />
         <TextInput
           id={`productPrice_${productId}`} // 라벨,인풋용
@@ -45,7 +47,15 @@ export function ProductUploader({
           placeholder="원화로 표기해 주세요."
           onChange={handleChange}
           value={productData.productPrice || ""}
+          dataList={productData?.price}
         />
+        <button
+          className={styles.closeBtn}
+          type="button"
+          onClick={() => removeProduct(productId)}
+        >
+          <img src={closeIcon} alt="삭제 버튼" />
+        </button>
       </div>
     </>
   );
