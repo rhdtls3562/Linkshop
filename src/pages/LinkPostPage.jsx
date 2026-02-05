@@ -1,4 +1,6 @@
+// LinkPostPage.jsx (authorized 없으면 프로필로 되돌리기 + 기존 버그 수정 포함)
 import { useState } from "react";
+import { useLocation, Navigate, useParams } from "react-router-dom";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -7,38 +9,52 @@ import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
 export function LinkPostPage() {
+  const location = useLocation();
+  const { id } = useParams();
+
+  // ✅ 비번 인증 없이 /post/:id/edit 직접 접근하면 막기
+  // - /linkpost(생성페이지) 같은 곳에서는 params.id가 없고 state도 없을 수 있음
+  // - "edit 경로일 때만" 막고 싶으면 아래 조건 그대로 두면 됨(대부분 edit에서만 id가 존재)
+  const isEditRoute = Boolean(id);
+  const isAuthorized = location.state?.authorized === true;
+
+  if (isEditRoute && !isAuthorized) {
+    return <Navigate to={`/profile/${id}`} replace />;
+  }
+
   // 모달 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
-  // 두 컴포넌트의 데이터를 각각 관리
+  // 상품 데이터
   const [productDataList, setProductDataList] = useState([
     {
-      id: self.crypto.randomUUID().slice(0, 4), // 초기 상품 1개
+      id: self.crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
     },
   ]);
+
   const [shopData, setShopData] = useState({});
 
-  // 상품 업로더 개수 관리
-  const [uploaders, setUploaders] = useState([0]);
-
-  // 모든 인풋에 값이 채워졌는지 확인
+  // ✅ 전체 입력 체크(배열/객체 기준으로 수정)
   const isAllFilled =
-    Object.keys(productDataList).length >= 3 &&
-    Object.values(productDataList).every((val) => val !== "" && val !== null) &&
-    Object.keys(shopData).length >= 5 &&
+    productDataList.length >= 1 &&
+    productDataList.every(
+      (p) =>
+        p.productName?.trim() &&
+        String(p.productPrice).trim() &&
+        p.productImg !== "" &&
+        p.productImg !== null
+    ) &&
+    Object.keys(shopData).length >= 1 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
-  // =============================
-  // 이미지 업로드 함수
-  // =============================
+  // 이미지 업로드
   const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
     const formData = new FormData();
-
     formData.append("image", imageFile);
 
     try {
@@ -48,8 +64,6 @@ export function LinkPostPage() {
       });
 
       const responseText = await response.text();
-      // console.log("handleImageUpload 응답 상태:", response.status);
-      // console.log("handleImageUpload 응답 내용:", responseText);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -57,52 +71,46 @@ export function LinkPostPage() {
 
       const data = JSON.parse(responseText);
 
-      // URL 반환되는지 확인
       if (!data.url) {
         console.error("이미지 URL이 없습니다:", data);
         throw new Error("이미지 URL을 받지 못했습니다.");
       }
 
-      // 이미지 URL 반환
       return data.url;
     } catch (error) {
       console.error("handleImageUpload API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      return "";
     } finally {
       console.log("📍handleImageUpload 함수 완료");
     }
   };
 
-  // =============================
-  // 최종 제출 함수
-  // =============================
+  // 최종 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 모달 오버레이 오픈
     setIsModalOpen(true);
 
     try {
-      // 1. Shop 이미지 업로드
+      // 1) shop 이미지
       let shopImageUrl = shopData.imageUrl;
       if (shopData.shopImg instanceof File) {
         shopImageUrl = await handleImageUpload(shopData.shopImg);
       }
 
-      // 2. Product 이미지 업로드
+      // 2) product 이미지 + 매핑(기존 버그 수정: productDataList.xxx → product.xxx)
       const uploadedProducts = await Promise.all(
         productDataList.map(async (product) => {
           let productImageUrl = product.productImg;
 
-          // 이미지 파일 업로드
           if (product.productImg instanceof File) {
             productImageUrl = await handleImageUpload(product.productImg);
           }
 
           return {
-            price: Number(productDataList.productPrice) || 0,
+            price: Number(product.productPrice) || 0,
             imageUrl: productImageUrl?.trim() || "",
-            name: productDataList.productName?.trim() || "",
+            name: product.productName?.trim() || "",
           };
         })
       );
@@ -111,7 +119,6 @@ export function LinkPostPage() {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
-      // 3. 폼 데이터를 body 형식에 맞게 변환
       const requestBody = JSON.stringify({
         shop: {
           imageUrl: shopImageUrl || "",
@@ -124,7 +131,6 @@ export function LinkPostPage() {
         name: shopData.shopName?.trim(),
       });
 
-      // 4. API 호출
       const response = await fetch(`${BASE_URL}/linkshops`, {
         method: "POST",
         headers: myHeaders,
@@ -132,118 +138,106 @@ export function LinkPostPage() {
       });
 
       if (!response.ok) {
-        throw new Error(
-          `HTTP error! status: ${response.status} ${response.message} `
-        );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
       console.log("✅ 최종 제출 완료:", result);
 
-      // 호출 성공 시 등록 완료 창 열기
       setIsCreateCompleted(true);
     } catch (error) {
       console.error("handleSubmit API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-
-      // 모달 오버레이 닫기(등록 완료 창 제외)
       setIsModalOpen(false);
     } finally {
       console.log("📍 handleSubmit 함수 완료");
     }
   };
 
-  // =============================
-  // 상품 인스턴스 추가 버튼 클릭 핸들러
-  // =============================
-  const handleAddProductUploader = (e) => {
+  // 상품 추가
+  const handleAddProductUploader = () => {
     const newProduct = {
       id: self.crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
     };
-    setProductDataList([...productDataList, newProduct]); // 기존 상품 리스트에 새 상품 추가
-    setUploaders([...uploaders, uploaders.length]); // 상품 업로더 추가
+    setProductDataList((prev) => [...prev, newProduct]);
   };
 
-  // =============================
-  // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
-  // =============================
+  // 상품 업데이트
   const updateProduct = (id, updatedData) => {
-    setProductDataList(
-      productDataList.map((product) =>
-        product.id === id
-          ? { ...product, ...updatedData } // 기존 데이터에 새 데이터 병합
-          : product
+    setProductDataList((prev) =>
+      prev.map((product) =>
+        product.id === id ? { ...product, ...updatedData } : product
       )
     );
   };
 
-  // =============================
-  // 상품 삭제 함수(작업중)
-  // =============================
+  // 상품 삭제
   const removeProduct = (id) => {
     if (productDataList.length === 1) {
       alert("최소 1개의 상품이 필요합니다.");
       return;
     }
-    setProductDataList(productDataList.filter((product) => product.id !== id));
+    setProductDataList((prev) => prev.filter((product) => product.id !== id));
   };
 
   return (
-    <>
-      <main className={styles.main}>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.container}>
-            <div className={styles.head}>
-              <h2 className={styles.title}>대표 상품</h2>
-              <button
-                type="button"
-                className={styles.btn}
-                onClick={handleAddProductUploader}
-              >
-                추가
-              </button>
-            </div>
-            {/* 각 상품 렌더링 */}
-            {productDataList.map((product) => (
-              <ProductUploader
-                key={product.id}
-                productId={product.id}
-                productData={product}
-                onUpdate={updateProduct} // 업데이트 함수 전달
-                removeProduct={removeProduct} // 상품 삭제 함수 전달
-              />
-            ))}
+    <main className={styles.main}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.container}>
+          <div className={styles.head}>
+            <h2 className={styles.title}>대표 상품</h2>
+            <button
+              type="button"
+              className={styles.btn}
+              onClick={handleAddProductUploader}
+            >
+              추가
+            </button>
           </div>
-          <div className={styles.container}>
-            <div className={styles.head}>
-              <h2 className={styles.title}>내 쇼핑몰</h2>
-            </div>
-            {/* 샵 렌더링 */}
-            <ShopManagement shopData={shopData} onUpdate={setShopData} />
+
+          {productDataList.map((product) => (
+            <ProductUploader
+              key={product.id}
+              productId={product.id}
+              productData={product}
+              onUpdate={updateProduct}
+              removeProduct={removeProduct}
+            />
+          ))}
+        </div>
+
+        <div className={styles.container}>
+          <div className={styles.head}>
+            <h2 className={styles.title}>내 쇼핑몰</h2>
           </div>
-          <Button
-            type="submit"
-            className={
-              isAllFilled
-                ? `${styles.createbtn} ${styles.active}`
-                : styles.createbtn
-            }
-            disabled={!isAllFilled}
-          >
-            생성하기
-          </Button>
-          <Toast isOpen={isCreateCompleted} message="등록 완료!" />
-          <ActionCompleteModal
-            onClose={() => setIsModalOpen(false)}
-            isOpen={isModalOpen} // 생성하기 버튼 클릭 시 오픈
-            isCreateCompleted={isCreateCompleted} // api 호출 완료 시 등록 완료 창 오픈
-            message="등록이 완료되었습니다."
-          />
-        </form>
-      </main>
-    </>
+
+          <ShopManagement shopData={shopData} onUpdate={setShopData} />
+        </div>
+
+        <Button
+          type="submit"
+          className={
+            isAllFilled
+              ? `${styles.createbtn} ${styles.active}`
+              : styles.createbtn
+          }
+          disabled={!isAllFilled}
+        >
+          생성하기
+        </Button>
+
+        <Toast isOpen={isCreateCompleted} message="등록 완료!" />
+
+        <ActionCompleteModal
+          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalOpen}
+          isCreateCompleted={isCreateCompleted}
+          message="등록이 완료되었습니다."
+        />
+      </form>
+    </main>
   );
 }

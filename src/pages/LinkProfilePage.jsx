@@ -1,3 +1,4 @@
+// LinkProfilePage.jsx
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
@@ -10,29 +11,37 @@ import FeaturedProduct from "../components/FeaturedProduct";
 import shop from "../assets/shop.svg";
 import share from "../assets/share.svg";
 import meatball from "../assets/meatball.svg";
+import close from "../assets/close.svg";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
 const TEAM_ID = "22-3";
+const CORRECT_PASSWORD = "test123";
 
 function LinkProfilePage() {
-  const { shopId } = useParams();
+  const { id, shopId } = useParams();
+  const targetId = id || shopId;
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [shopData, setShopData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 상점 정보 가져오기
+  const [isPwOpen, setIsPwOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [pwError, setPwError] = useState("");
+
+  const isPwValid = password === CORRECT_PASSWORD;
+
   useEffect(() => {
-    if (!shopId) return;
+    if (!targetId) return;
 
     setLoading(true);
-    fetch(`${BASE_URL}/${TEAM_ID}/linkshops/${shopId}`)
+    fetch(`${BASE_URL}/${TEAM_ID}/linkshops/${targetId}`)
       .then((res) => res.json())
       .then((data) => setShopData(data))
       .catch((err) => console.error("상점 정보 로딩 실패:", err))
       .finally(() => setLoading(false));
-  }, [shopId]);
+  }, [targetId]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -42,7 +51,9 @@ function LinkProfilePage() {
 
   const handleEdit = () => {
     setMenuOpen(false);
-    navigate(`/link/${shopId}/edit`);
+    setPassword("");
+    setPwError("");
+    setIsPwOpen(true);
   };
 
   const handleDelete = () => {
@@ -51,6 +62,20 @@ function LinkProfilePage() {
     if (!ok) return;
     alert("삭제되었습니다.");
     navigate("/");
+  };
+
+  const handlePwConfirm = () => {
+    if (!isPwValid) {
+      setPwError("비밀번호가 올바르지 않습니다.");
+      return;
+    }
+
+    setIsPwOpen(false);
+    setPwError("");
+
+    navigate(`/post/${targetId}/edit`, {
+      state: { authorized: true },
+    });
   };
 
   const featuredProducts = [
@@ -107,12 +132,10 @@ function LinkProfilePage() {
       <Back className={styles.Back} />
 
       <div className={styles.no}>
-        {/* 왼쪽 위 하트 */}
         <div className={styles.like}>
           <LikeButton />
         </div>
 
-        {/* 오른쪽 위 공유 + 점3개 */}
         <div className={styles.menuWrapper}>
           <button
             type="button"
@@ -150,7 +173,6 @@ function LinkProfilePage() {
           )}
         </div>
 
-        {/* 가운데 프로필 */}
         <div className={styles.shop}>
           <img
             src={shopData.shop?.imageUrl || shop}
@@ -162,11 +184,70 @@ function LinkProfilePage() {
         <div className={styles.pumpkin}>@pumpkinraccoon</div>
       </div>
 
-      {/* 대표상품 */}
       <div className={styles.featureSection}>
         <div className={styles.text}>대표상품</div>
         <FeaturedProduct items={featuredProducts} />
       </div>
+
+      {/* ✅ 비밀번호 입력 모달 (Filter 모달과 완전 분리) */}
+      {isPwOpen && (
+        <div
+          className={styles.pwOverlay}
+          onClick={() => setIsPwOpen(false)}
+          role="presentation"
+        >
+          <div
+            className={styles.pwModal}
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pw-title"
+          >
+            <div className={styles.pwHeader}>
+              <h3 id="pw-title" className={styles.pwTitle}>
+                비밀번호 입력
+              </h3>
+ <button
+  className={styles.closeBtn}
+  onClick={() => setIsPwOpen(false)}
+  type="button"
+>
+  <img src={close} alt="닫기" />
+</button>
+
+            </div>
+
+            <div className={styles.pwBody}>
+              <input
+                type="password"
+                placeholder="비밀번호를 입력하세요"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPwError("");
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handlePwConfirm();
+                }}
+                className={styles.pwInput}
+              />
+
+              {pwError && <div className={styles.pwError}>{pwError}</div>}
+
+              <button
+                type="button"
+                onClick={handlePwConfirm}
+                className={`${styles.pwButton} ${
+                  isPwValid ? styles.pwButtonActive : styles.pwButtonDisabled
+                }`}
+                disabled={!isPwValid}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
