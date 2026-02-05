@@ -50,7 +50,7 @@ export function ProductUploader({
           dataList={productData?.name}
         />
         <TextInput
-          id={`productPrice_${productId}`} // 라벨,인풋용
+          id={`productPrice_${productId}`} // 라벨, 인풋용
           name="productPrice" // 필드용 네임
           type="text"
           label="상품 가격"

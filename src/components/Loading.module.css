@@ -10,6 +10,9 @@
   font-weight: normal; /* 픽셀폰트라 작게 */
   color: #222222;
 }
+.white {
+  color: #fff;
+}
 
 .letterHolder {
   display: flex;

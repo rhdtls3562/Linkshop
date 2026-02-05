@@ -1,5 +1,6 @@
 import { createPortal } from "react-dom";
 import styles from "./ActionCompleteModal.module.css";
+import Loading from "./Loading";
 export function ActionCompleteModal({
   isOpen,
   onClose,
@@ -20,7 +21,7 @@ export function ActionCompleteModal({
             </button>
           </div>
         ) : (
-          <div className={styles.loading}></div>
+          <Loading fontColor="white" />
         )}
       </div>
     </>,
