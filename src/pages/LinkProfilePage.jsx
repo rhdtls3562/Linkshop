@@ -7,6 +7,7 @@ import Marquee from "../components/Marquee";
 import Back from "../components/Back";
 import LikeButton from "../components/LikeButton";
 import FeaturedProduct from "../components/FeaturedProduct";
+import Loading from "../components/Loading";
 
 import shop from "../assets/shop.svg";
 import share from "../assets/share.svg";
@@ -123,7 +124,7 @@ function LinkProfilePage() {
     },
   ];
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <Loading />;
   if (!shopData) return <div>상점을 찾을 수 없습니다.</div>;
 
   return (
