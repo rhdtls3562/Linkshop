@@ -63,16 +63,16 @@
   --typo-pretendard-medium-14: 500 14px Pretendard;
 }
 
+/* src/styles/global.css */
 #root {
-  max-width: 1200px;
+  max-width: 1248px;
   margin: 0 auto;
-  margin-bottom: 65px;
   padding-left: 24px;
   padding-right: 24px;
   box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 798px) {
   #root {
     padding-left: 15px;
     padding-right: 15px;
