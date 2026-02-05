@@ -1,5 +1,6 @@
 .marquee {
-  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /* 이 줄 추가 */
   overflow: hidden;
   background: linear-gradient(to right, #222222, #999999);
   height: 40px;
