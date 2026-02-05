@@ -1,9 +1,9 @@
 import styles from "./Loading.module.css";
 
-function Loading() {
+function Loading({ fontColor = "" }) {
   return (
     <div className={styles.loadWrapp}>
-      <div className={styles.load6}>
+      <div className={`${styles.load6} ${styles[fontColor]}`}>
         <div className={styles.letterHolder}>
           <span className={`${styles.letter} ${styles.l1}`}>L</span>
           <span className={`${styles.letter} ${styles.l2}`}>o</span>

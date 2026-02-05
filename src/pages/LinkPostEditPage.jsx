@@ -9,7 +9,7 @@ import styles from "./LinkPostPage.module.css";
 
 export function LinkPostEditPage() {
   // 모달 관리
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
   // 두 컴포넌트의 데이터를 각각 관리
@@ -161,7 +161,7 @@ export function LinkPostEditPage() {
   const getShopData = async (e) => {
     try {
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = 1072;
+      const SHOP_ID = 1059;
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -182,9 +182,10 @@ export function LinkPostEditPage() {
 
       setShopData(result);
       setProductDataList(result?.products);
+      // setIsModalOpen(false);
     } catch (error) {
       console.error("getShopData API 호출 에러:", error);
-      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+      alert("샵 데이터를 불러올 수 없습니다.");
 
       // 모달 오버레이 닫기(수정 완료 창 제외)
       setIsModalOpen(false);
