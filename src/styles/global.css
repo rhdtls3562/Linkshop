@@ -67,10 +67,17 @@
      확인 필요!
      ===================== */
 #root {
-  max-width: 1200px;
+  max-width: 1248px;
   margin: 0 auto;
-  padding: 40px 0px 65px;
+  padding: 40px 24px 65px;
   box-sizing: border-box;
+}
+
+@media (max-width: 798px) {
+  #root {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 /* =====================

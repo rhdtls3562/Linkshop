@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar";
 import Filter from "../components/Filter";
 import ShopList from "../components/ShopList";
 import styles from "./ShopListPage.module.css";
+import Loading from "../components/Loading";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
 const TEAM_ID = "22-3";
@@ -32,7 +33,7 @@ function ShopListPage() {
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore],
+    [loading, hasMore]
   );
 
   // 필터 변경: 목록 초기화 후 새로 로드
@@ -62,7 +63,7 @@ function ShopListPage() {
     setLoading(true);
 
     fetch(
-      `${BASE_URL}/${TEAM_ID}/linkshops?orderBy=${orderBy}&page=${page}&limit=${ITEMS_PER_PAGE}`,
+      `${BASE_URL}/${TEAM_ID}/linkshops?orderBy=${orderBy}&page=${page}&limit=${ITEMS_PER_PAGE}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -84,7 +85,7 @@ function ShopListPage() {
         onShopClick={handleShopClick}
       />
 
-      {loading && <div>로딩 중...</div>}
+      {loading && <Loading />}
       {!hasMore && <div>모든 상점을 불러왔습니다 ✨</div>}
     </div>
   );
