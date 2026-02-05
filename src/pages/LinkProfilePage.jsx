@@ -102,7 +102,7 @@ function LinkProfilePage() {
   if (!shopData) return <div>상점을 찾을 수 없습니다.</div>;
 
   return (
-    <div>
+    <div className={styles.marquee_top}>
       <Marquee className={styles.marquee} />
       <Back className={styles.Back} />
 
@@ -114,7 +114,11 @@ function LinkProfilePage() {
 
         {/* 오른쪽 위 공유 + 점3개 */}
         <div className={styles.menuWrapper}>
-          <button type="button" className={styles.iconButton} onClick={handleShare}>
+          <button
+            type="button"
+            className={styles.iconButton}
+            onClick={handleShare}
+          >
             <img src={share} alt="공유" />
           </button>
 
@@ -128,10 +132,18 @@ function LinkProfilePage() {
 
           {menuOpen && (
             <div className={styles.menuBox}>
-              <button type="button" className={styles.menuItem} onClick={handleEdit}>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={handleEdit}
+              >
                 수정하기
               </button>
-              <button type="button" className={styles.menuItem} onClick={handleDelete}>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={handleDelete}
+              >
                 삭제하기
               </button>
             </div>

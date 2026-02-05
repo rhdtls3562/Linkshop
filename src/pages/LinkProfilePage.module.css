@@ -13,8 +13,12 @@
   align-items: center;
   text-align: center;
 
-  background-color: #Fafafb;
+  background-color: #fafafb;
   border-radius: 12px;
+}
+
+.marquee_top {
+  padding-top: 20px;
 }
 
 /* Like 버튼 - 컨테이너 기준선(패딩 16px)과 동일하게 */
@@ -83,7 +87,6 @@
 
   background-color: #222;
   border-radius: 50%;
-
 }
 
 .shop img {

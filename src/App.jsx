@@ -1,5 +1,4 @@
-// App.jsx
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./styles/global.css";
 import ShopListPage from "./pages/ShopListPage";
 import LinkProfilePage from "./pages/LinkProfilePage";
@@ -9,9 +8,15 @@ import SearchResultPage from "./pages/SearchResultPage";
 import { LinkPostEditPage } from "./pages/LinkPostEditPage";
 
 function App() {
+  const location = useLocation();
+
+  // 🔹 /shop/:shopId 에서는 Header 숨김
+  const hideHeader = location.pathname.startsWith("/shop/");
+
   return (
     <>
-      <Header />
+      {!hideHeader && <Header />}
+
       <Routes>
         <Route path="/list" element={<ShopListPage />} />
         <Route path="/linkpost" element={<LinkPostPage />} />
