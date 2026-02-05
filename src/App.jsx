@@ -15,9 +15,10 @@ function App() {
         <Route path="/" element={<ShopListPage />} />
         <Route path="/list" element={<ShopListPage />} />
         <Route path="/search" element={<SearchResultPage />} />
+        <Route path="/linkpost" element={<LinkPostPage />} />
       </Route>
       <Route path="/shop/:shopId" element={<LinkProfilePage />} />
-      <Route path="/linkpost" element={<LinkPostPage />} />
+
       <Route path="/profile/:id" element={<LinkProfilePage />} />
       <Route path="/post/:id" element={<LinkPostPage />} />
       <Route path="/post/:id/edit" element={<LinkPostEditPage />} />
