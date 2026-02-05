@@ -3,10 +3,17 @@
 /* 프로필 영역 */
 .no {
   width: 100%;
+<<<<<<< HEAD
   max-width: 1200px;
   height: 266px;
   margin: 0 auto;
   padding: 24px 16px;
+=======
+  max-width: 1200px; /* 피그마 기준 */
+  height: 266px; /* 데스크탑 기준 */
+  margin: 0 auto;
+  padding: 24px 16px; /* 좌우 여백 */
+>>>>>>> edefc8229e2b88125e568d88aeb189fd008591e2
   box-sizing: border-box;
 
   position: relative;
@@ -125,7 +132,11 @@
 /* 반응형 */
 @media (max-width: 768px) {
   .no {
+<<<<<<< HEAD
     height: auto;
+=======
+    height: auto; /* 작은 화면에서 자연스럽게 */
+>>>>>>> edefc8229e2b88125e568d88aeb189fd008591e2
     padding: 20px 16px;
   }
 
