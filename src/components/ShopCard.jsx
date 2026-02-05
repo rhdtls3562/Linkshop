@@ -3,7 +3,13 @@ import styles from "./ShopCard.module.css";
 import shopIcon from "../assets/shop.svg";
 import LikeButton from "../components/LikeButton";
 
-function ShopCard({ shop }) {
+function ShopCard({ shop, onShopClick }) {
+  const handleNameClick = () => {
+    if (onShopClick) {
+      onShopClick(shop.id);
+    }
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
@@ -12,7 +18,9 @@ function ShopCard({ shop }) {
         </div>
 
         <div className={styles.info}>
-          <h2>{shop.name}</h2>
+          <h2 onClick={handleNameClick} style={{ cursor: "pointer" }}>
+            {shop.name}
+          </h2>
           <p>@{shop.userId}</p>
         </div>
 
