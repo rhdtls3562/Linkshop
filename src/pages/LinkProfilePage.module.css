@@ -147,3 +147,129 @@
     right: 16px;
   }
 }
+
+/* =========================
+   비밀번호 모달 (Filter 모달 스타일과 동일)
+   - 클래스만 pw 전용으로 분리
+========================= */
+
+/* 모달 배경 */
+.pwOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+/* 모달 박스 */
+.pwModal {
+  width: 375px;
+  height: 300px;
+  background: white;
+  border-radius: 24px;
+  padding: 40px 24px 60px;
+  box-sizing: border-box;
+}
+
+/* 헤더 */
+.pwHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pwTitle {
+  /* Filter 모달의 h3와 동일하게 */
+  font: var(--typo-pretendard-semibold-16);
+  margin: 0;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.closeBtn img {
+  width: 20px;
+  height: 20px;
+}
+
+/* 본문 */
+.pwBody {
+  margin-top: 45px; /* 헤더 아래 여백(필터랑 자연스럽게) */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 인풋 */
+.pwInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+/* 에러 */
+.pwError {
+  color: #e54848;
+  font-size: 13px;
+}
+
+/* 버튼 */
+.pwButton {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pwButtonActive {
+  background-color: #14151a;
+  cursor: pointer;
+}
+
+.pwButtonDisabled {
+  background-color: #c9c9c9;
+  cursor: not-allowed;
+}
+
+/* ✅ 반응형: Filter 모달과 동일 (모바일 바텀시트 + slideUp) */
+@media (max-width: 480px) {
+  .pwOverlay {
+    align-items: flex-end;
+  }
+
+  .pwModal {
+    width: 100%;
+    max-width: none;
+    height: 411px;
+
+    border-radius: 24px 24px 0 0;
+    padding: 40px 24px;
+
+    animation: pwSlideUp 0.25s ease-out;
+  }
+
+  @keyframes pwSlideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
