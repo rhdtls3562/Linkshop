@@ -1,12 +1,12 @@
 /* LinkProfilePage.module.css */
 
-/* ✅ 프로필 영역 (보라색 박스) */
+/* 프로필 영역 */
 .no {
   width: 100%;
-  max-width: 1200px;        /* 피그마 기준 */
-  height: 266px;            /* 데스크탑 기준 */
+  max-width: 1200px;
+  height: 266px;
   margin: 0 auto;
-  padding: 24px 16px;       /* 좌우 여백 */
+  padding: 24px 16px;
   box-sizing: border-box;
 
   position: relative;
@@ -18,45 +18,41 @@
   background-color: #fafafb;
 }
 
-/* 왼쪽 위 LikeButton 위치 */
+/* Like 버튼 */
 .like {
   position: absolute;
   top: 20px;
   left: 24px;
 }
 
-/* 오른쪽 위 공유 + 메뉴(점3개) */
+/* 공유 + 메뉴 */
 .menuWrapper {
   position: absolute;
   top: 12px;
   right: 12px;
   display: flex;
   gap: 8px;
-  align-items: center;
 }
 
-/* 아이콘 버튼 공통 */
 .iconButton {
   background: none;
   border: none;
-  cursor: pointer;
   padding: 4px;
-  line-height: 1;
+  cursor: pointer;
 }
 
 .iconButton img {
   width: 23px;
   height: 23px;
-  display: block;
 }
 
-/* 드롭다운 메뉴 박스 */
+/* 메뉴 드롭다운 */
 .menuBox {
   position: absolute;
   top: 34px;
   right: 0;
-
   width: 120px;
+
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -64,13 +60,11 @@
   z-index: 10;
 }
 
-/* 메뉴 아이템(버튼) */
 .menuItem {
   width: 100%;
   padding: 10px 12px;
-  text-align: center;
-  background: none;
   border: none;
+  background: none;
   cursor: pointer;
 }
 
@@ -78,41 +72,41 @@
   background-color: #f2f2f2;
 }
 
-/* 가운데 프로필 아이콘 */
+/* 프로필 이미지 */
 .shop {
   width: 84px;
   height: 84px;
+  margin-top: 24px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #222222;
+
+  background-color: #222;
   border-radius: 50%;
-  margin-top: 24px;
 }
 
 .shop img {
   width: 40px;
   height: 40px;
-  display: block;
 }
 
 /* 상점 이름 */
 .nugnri {
+  margin-top: 16px;
   font-size: 32px;
   font-weight: 800;
   color: #14151a;
-  margin-top: 16px;
 }
 
 /* 아이디 */
 .pumpkin {
-  font-size: 16px;
-  font-weight: 400;
-  color: #888790;
   margin-top: 8px;
+  font-size: 16px;
+  color: #888790;
 }
 
-/* ✅ 대표상품 영역 래퍼(프로필 영역과 같은 폭/여백) */
+/* 대표상품 영역 (프로필과 너비 완전 동일) */
 .featureSection {
   width: 100%;
   max-width: 1200px;
@@ -121,37 +115,22 @@
   box-sizing: border-box;
 }
 
-/* 대표상품 텍스트 */
 .text {
+  margin: 24px 0 16px;
   font-size: 16px;
   font-weight: 600;
   color: #14151a;
-  margin-top: 24px;
-  margin-bottom: 16px;
 }
 
-/* (선택) 마퀴/뒤로가기 컴포넌트에 className 전달했다면 */
-.marquee {
-  width: 100%;
-}
-
-.back {
-  /* 필요하면 Back 컴포넌트 위치를 여기서 조정 */
-}
-
-/* ✅ 반응형 */
+/* 반응형 */
 @media (max-width: 768px) {
   .no {
-    height: auto;         /* 작은 화면에서 자연스럽게 */
+    height: auto;
     padding: 20px 16px;
   }
 
   .nugnri {
     font-size: 24px;
-  }
-
-  .shop {
-    margin-top: 20px;
   }
 }
 
