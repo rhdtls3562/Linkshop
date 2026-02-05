@@ -21,6 +21,7 @@
 
 .marquee_top {
   padding-top: 20px;
+  padding-bottom: 65px;
 }
 
 /* Like 버튼 - 컨테이너 기준선(패딩 16px)과 동일하게 */
@@ -237,7 +238,6 @@
   cursor: pointer;
   line-height: 1;
 }
-
 
 /* 에러 */
 .pwError {
