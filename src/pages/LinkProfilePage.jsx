@@ -1,6 +1,10 @@
 // LinkProfilePage.jsx
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import {
+  useNavigate,
+  useParams,
+  useLocation, // ✅ 추가
+} from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
 
 import Marquee from "../components/Marquee";
@@ -23,27 +27,36 @@ function LinkProfilePage() {
   const targetId = id || shopId;
   const navigate = useNavigate();
 
+  // ✅ ShopListPage에서 전달된 state 받기
+  const location = useLocation();
+  const preloadedShop = location.state?.shop || null;
+
   const [menuOpen, setMenuOpen] = useState(false);
-  const [shopData, setShopData] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  // ✅ preloadedShop이 있으면 그걸로 먼저 렌더
+  const [shopData, setShopData] = useState(preloadedShop);
+  const [loading, setLoading] = useState(!preloadedShop);
 
   const [isPwOpen, setIsPwOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [pwError, setPwError] = useState("");
-
-  // ✅ 비밀번호 보기/숨기기
-  const [showPw, setShowPw] = useState(false);
 
   const isPwValid = password === CORRECT_PASSWORD;
 
   useEffect(() => {
     if (!targetId) return;
 
-    setLoading(true);
+    // ✅ 이미 받은 데이터가 있으면 로딩 최소화
+    setLoading(!preloadedShop);
+
     fetch(`${BASE_URL}/${TEAM_ID}/linkshops/${targetId}`)
       .then((res) => res.json())
       .then((data) => setShopData(data))
-      .catch((err) => console.error("상점 정보 로딩 실패:", err))
+      .catch((err) => {
+        console.error("상점 정보 로딩 실패:", err);
+        // ❗ 실패 시 preloadedShop 유지
+        if (!preloadedShop) setShopData(null);
+      })
       .finally(() => setLoading(false));
   }, [targetId]);
 
@@ -57,7 +70,6 @@ function LinkProfilePage() {
     setMenuOpen(false);
     setPassword("");
     setPwError("");
-    setShowPw(false);
     setIsPwOpen(true);
   };
 
@@ -83,50 +95,22 @@ function LinkProfilePage() {
     });
   };
 
-  const featuredProducts = [
-    {
-      id: 1,
-      imageUrl:
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300",
-      name: "아디다스 가젤 HP5379",
-      price: 134000,
-    },
-    {
-      id: 2,
-      imageUrl:
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300",
-      name: "아디다스 가젤 HP5379",
-      price: 104000,
-    },
-    {
-      id: 3,
-      imageUrl:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300",
-      name: "나이키 집업",
-      price: 154000,
-    },
-    {
-      id: 4,
-      imageUrl:
-        "https://images.unsplash.com/photo-1528701800489-20be3c4eaad6?w=300",
-      name: "나이키 신발",
-      price: 124000,
-    },
-    {
-      id: 5,
-      imageUrl:
-        "https://images.unsplash.com/photo-1528701800489-20be3c4eaad6?w=300",
-      name: "나이키 신발",
-      price: 124000,
-    },
-    {
-      id: 6,
-      imageUrl:
-        "https://images.unsplash.com/photo-1528701800489-20be3c4eaad6?w=300",
-      name: "나이키 신발",
-      price: 124000,
-    },
-  ];
+  // ✅ 대표상품: 상세 API 기준 (없으면 빈 배열)
+  const featuredProducts = useMemo(() => {
+    const products = Array.isArray(shopData?.products)
+      ? shopData.products
+      : [];
+
+    return products
+      .filter((p) => p?.imageUrl)
+      .slice(0, 6)
+      .map((p) => ({
+        id: p.id,
+        imageUrl: p.imageUrl,
+        name: p.name || "상품명 없음",
+        price: p.price ?? 0,
+      }));
+  }, [shopData]);
 
   if (loading) return <Loading />;
   if (!shopData) return <div>상점을 찾을 수 없습니다.</div>;
@@ -137,9 +121,13 @@ function LinkProfilePage() {
       <Back className={styles.Back} />
 
       <div className={styles.no}>
-        <div className={styles.like}>
-          <LikeButton />
-        </div>
+      <div className={styles.like}>
+  <LikeButton
+    count={shopData.likes}
+    linkShopId={shopData.id}
+  />
+</div>
+
 
         <div className={styles.menuWrapper}>
           <button
@@ -178,15 +166,12 @@ function LinkProfilePage() {
           )}
         </div>
 
-        <div className={styles.shop}>
-          <img
-            src={shopData.shop?.imageUrl || shop}
-            alt={shopData.name || "상점"}
-          />
-        </div>
+      <div className={styles.shop}>
+  <img src={shop} alt="상점" />
+</div>
 
-        <div className={styles.nugnri}>너구리 직구상점</div>
-        <div className={styles.pumpkin}>@pumpkinraccoon</div>
+<div className={styles.nugnri}>{shopData.name}</div>
+<div className={styles.pumpkin}>@{shopData.userId}</div>
       </div>
 
       <div className={styles.featureSection}>
@@ -223,7 +208,7 @@ function LinkProfilePage() {
             <div className={styles.pwBody}>
               <div className={styles.pwInputWrap}>
                 <input
-                  type={showPw ? "text" : "password"}
+                  type="password"
                   placeholder="비밀번호를 입력하세요"
                   value={password}
                   onChange={(e) => {
@@ -235,8 +220,6 @@ function LinkProfilePage() {
                   }}
                   className={styles.pwInput}
                 />
-
-              
               </div>
 
               {pwError && <div className={styles.pwError}>{pwError}</div>}
