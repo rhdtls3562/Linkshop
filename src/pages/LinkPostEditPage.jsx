@@ -161,7 +161,7 @@ export function LinkPostEditPage() {
   const getShopData = async (e) => {
     try {
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = 1058;
+      const SHOP_ID = 1072;
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 

@@ -20,6 +20,16 @@ export function ProductUploader({
   return (
     <>
       <div className={styles.inputWrap}>
+        <div className={styles.btnWrap}>
+          <button
+            className={styles.deleteBtn}
+            type="button"
+            onClick={() => removeProduct(productId)}
+          >
+            <img src={closeIcon} alt="삭제 버튼" />
+          </button>
+          <div className={styles.bar}></div>
+        </div>
         <FileInput
           id={`productImg_${productId}`}
           name="productImg"
@@ -49,13 +59,6 @@ export function ProductUploader({
           value={productData.productPrice || ""}
           dataList={productData?.price}
         />
-        <button
-          className={styles.closeBtn}
-          type="button"
-          onClick={() => removeProduct(productId)}
-        >
-          <img src={closeIcon} alt="삭제 버튼" />
-        </button>
       </div>
     </>
   );
