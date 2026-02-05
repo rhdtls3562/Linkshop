@@ -6,7 +6,7 @@ import { ShopManagement } from "../components/ShopManagement";
 import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
-export function LinkPostPage() {
+export function LinkPostEditPage() {
   // 모달 관리
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
@@ -82,53 +82,103 @@ export function LinkPostPage() {
     // 모달 오버레이 오픈
     setIsModalOpen(true);
 
+    // try {
+    //   // 1. Shop 이미지 업로드
+    //   let shopImageUrl = shopData.imageUrl;
+    //   if (shopData.shopImg instanceof File) {
+    //     shopImageUrl = await handleImageUpload(shopData.shopImg);
+    //   }
+
+    //   // 2. Product 이미지 업로드
+    //   const uploadedProducts = await Promise.all(
+    //     productDataList.map(async (product) => {
+    //       let productImageUrl = product.productImg;
+
+    //       // 이미지 파일 업로드
+    //       if (product.productImg instanceof File) {
+    //         productImageUrl = await handleImageUpload(product.productImg);
+    //       }
+
+    //       return {
+    //         price: Number(productDataList.productPrice) || 0,
+    //         imageUrl: productImageUrl?.trim() || "",
+    //         name: productDataList.productName?.trim() || "",
+    //       };
+    //     })
+    //   );
+
+    //   const BASE_URL = "https://linkshop-api.vercel.app/22-3";
+    //   const SHOP_ID = 1072;
+    //   const myHeaders = new Headers();
+    //   myHeaders.append("Content-Type", "application/json");
+
+    //   // 3. 폼 데이터를 body 형식에 맞게 변환
+    //   const requestBody = JSON.stringify({
+    //     shop: {
+    //       imageUrl: shopImageUrl || "",
+    //       urlName: shopData.shopName?.trim() || "",
+    //       shopUrl: shopData.shopUrl?.trim() || "",
+    //     },
+    //     products: uploadedProducts,
+    //     password: shopData.userPw || "",
+    //     userId: shopData.userId,
+    //     name: shopData.shopName?.trim(),
+    //   });
+
+    //   // 4. API 호출
+    //   const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
+    //     method: "PUT",
+    //     headers: myHeaders,
+    //     body: requestBody,
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error(
+    //       `HTTP error! status: ${response.status} ${response.message} `
+    //     );
+    //   }
+
+    //   const result = await response.json();
+    //   console.log("✅ 최종 제출 완료:", result);
+
+    //   // 호출 성공 시 수정 완료 창 열기
+    //   setIsCreateCompleted(true);
+    // } catch (error) {
+    //   console.error("handleSubmit API 호출 에러:", error);
+    //   alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+
+    //   // 모달 오버레이 닫기(수정 완료 창 제외)
+    //   setIsModalOpen(false);
+    // } finally {
+    //   console.log("📍 handleSubmit 함수 완료");
+    // }
+  };
+
+  const getShopData = async (e) => {
     try {
-      // 1. Shop 이미지 업로드
-      let shopImageUrl = shopData.imageUrl;
-      if (shopData.shopImg instanceof File) {
-        shopImageUrl = await handleImageUpload(shopData.shopImg);
-      }
-
-      // 2. Product 이미지 업로드
-      const uploadedProducts = await Promise.all(
-        productDataList.map(async (product) => {
-          let productImageUrl = product.productImg;
-
-          // 이미지 파일 업로드
-          if (product.productImg instanceof File) {
-            productImageUrl = await handleImageUpload(product.productImg);
-          }
-
-          return {
-            price: Number(productDataList.productPrice) || 0,
-            imageUrl: productImageUrl?.trim() || "",
-            name: productDataList.productName?.trim() || "",
-          };
-        })
-      );
-
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
+      const SHOP_ID = 1072;
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
       // 3. 폼 데이터를 body 형식에 맞게 변환
-      const requestBody = JSON.stringify({
-        shop: {
-          imageUrl: shopImageUrl || "",
-          urlName: shopData.shopName?.trim() || "",
-          shopUrl: shopData.shopUrl?.trim() || "",
-        },
-        products: uploadedProducts,
-        password: shopData.userPw || "",
-        userId: shopData.userId,
-        name: shopData.shopName?.trim(),
-      });
+      // const requestBody = JSON.stringify({
+      //   shop: {
+      //     imageUrl: shopImageUrl || "",
+      //     urlName: shopData.shopName?.trim() || "",
+      //     shopUrl: shopData.shopUrl?.trim() || "",
+      //   },
+      //   products: uploadedProducts,
+      //   password: shopData.userPw || "",
+      //   userId: shopData.userId,
+      //   name: shopData.shopName?.trim(),
+      // });
 
       // 4. API 호출
-      const response = await fetch(`${BASE_URL}/linkshops`, {
-        method: "POST",
+      const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
+        method: "GET",
         headers: myHeaders,
-        body: requestBody,
+        // body: requestBody,
       });
 
       if (!response.ok) {
@@ -138,15 +188,17 @@ export function LinkPostPage() {
       }
 
       const result = await response.json();
-      console.log("✅ 최종 제출 완료:", result);
+      console.log("✅ 샵 데이터 호출 완료 :", result);
 
-      // 호출 성공 시 등록 완료 창 열기
+      setShopData(result);
+
+      // 호출 성공 시 수정 완료 창 열기
       setIsCreateCompleted(true);
     } catch (error) {
       console.error("handleSubmit API 호출 에러:", error);
       alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
 
-      // 모달 오버레이 닫기(등록 완료 창 제외)
+      // 모달 오버레이 닫기(수정 완료 창 제외)
       setIsModalOpen(false);
     } finally {
       console.log("📍 handleSubmit 함수 완료");
@@ -194,6 +246,9 @@ export function LinkPostPage() {
   return (
     <>
       <main className={styles.main}>
+        <button onClick={getShopData} type="button">
+          데이터 불러오기
+        </button>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.container}>
             <div className={styles.head}>
@@ -233,14 +288,14 @@ export function LinkPostPage() {
             }
             disabled={!isAllFilled}
           >
-            생성하기
+            수정하기
           </Button>
-          <Toast isOpen={isCreateCompleted} message="등록 완료!" />
+          <Toast isOpen={isCreateCompleted} message="수정 완료!" />
           <ActionCompleteModal
             onClose={() => setIsModalOpen(false)}
-            isOpen={isModalOpen} // 생성하기 버튼 클릭 시 오픈
-            isCreateCompleted={isCreateCompleted} // api 호출 완료 시 등록 완료 창 오픈
-            message="등록이 완료되었습니다."
+            isOpen={isModalOpen} // 수정하기 버튼 클릭 시 오픈
+            isCreateCompleted={isCreateCompleted} // api 호출 완료 시 수정 완료 창 오픈
+            message="수정이 완료되었습니다."
           />
         </form>
       </main>

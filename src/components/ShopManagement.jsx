@@ -11,6 +11,8 @@ export function ShopManagement({ onUpdate, shopData }) {
       [name]: value,
     }));
   };
+
+  console.log(shopData);
   return (
     <>
       <div className={styles.inputWrap}>
@@ -29,6 +31,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="표시하고 싶은 이름을 적어주세요."
           onChange={handleChange}
           value={shopData.shopName || ""}
+          dataList={shopData.name}
         />
         <TextInput
           id="shopUrl"

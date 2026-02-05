@@ -20,13 +20,6 @@ export function ProductUploader({
   return (
     <>
       <div className={styles.inputWrap}>
-        <button
-          className={styles.closeBtn}
-          type="button"
-          onClick={() => removeProduct(productId)}
-        >
-          <img src={closeIcon} alt="삭제 버튼" />
-        </button>
         <FileInput
           id={`productImg_${productId}`}
           name="productImg"
