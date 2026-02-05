@@ -32,7 +32,7 @@ function ShopListPage() {
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore]
+    [loading, hasMore],
   );
 
   // 필터 변경: 목록 초기화 후 새로 로드
@@ -48,12 +48,21 @@ function ShopListPage() {
     navigate(`/shop/${shopId}`);
   };
 
+  //박수정: 추가한 부분
+  const handleSearchSubmit = (rawKeyword) => {
+    const keyword = (rawKeyword ?? "").trim();
+    const params = new URLSearchParams();
+    if (keyword) params.set("keyword", keyword);
+    params.set("orderBy", orderBy);
+    navigate(`/search?${params.toString()}`);
+  };
+
   // API 호출: 상점 목록 가져오기
   useEffect(() => {
     setLoading(true);
 
     fetch(
-      `${BASE_URL}/${TEAM_ID}/linkshops?orderBy=${orderBy}&page=${page}&limit=${ITEMS_PER_PAGE}`
+      `${BASE_URL}/${TEAM_ID}/linkshops?orderBy=${orderBy}&page=${page}&limit=${ITEMS_PER_PAGE}`,
     )
       .then((res) => res.json())
       .then((data) => {
@@ -67,7 +76,7 @@ function ShopListPage() {
 
   return (
     <div className={styles.container}>
-      <SearchBar />
+      <SearchBar onSubmit={handleSearchSubmit} />
       <Filter onFilterChange={handleFilterChange} />
       <ShopList
         shops={shops}

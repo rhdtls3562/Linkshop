@@ -7,18 +7,18 @@ import styles from "./Filter.module.css";
 const FILTER_OPTIONS = [
   { label: "최신순", value: "recent" },
   { label: "좋아요순", value: "likes" },
-  { label: "등록된 상품순", value: "productsCount" },
+  { label: "등록된 상품수", value: "productsCount" },
 ];
 
 function Filter({ onFilterChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("상세필터");
+  const [selected, setSelected] = useState("정렬");
 
   // 필터 선택: 텍스트 업데이트 + 모달 닫기 + 부모에 값 전달
   const handleSelect = (option) => {
     setSelected(option.label);
     setIsOpen(false);
-    onFilterChange(option.value);
+    onFilterChange?.(option.value);
   };
 
   return (
