@@ -146,8 +146,8 @@ function LinkProfilePage() {
           />
         </div>
 
-        <div className={styles.nugnri}>{shopData.name || "너구리 직구상점"}</div>
-        <div className={styles.pumpkin}>@{shopData.userId || "pumpkinraccoon"}</div>
+        <div className={styles.nugnri}>너구리 직구상점</div>
+        <div className={styles.pumpkin}>@pumpkinraccoon</div>
       </div>
 
       {/* 대표상품 */}
