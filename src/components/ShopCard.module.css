@@ -14,17 +14,43 @@
   margin-bottom: 8px;
 }
 
+/* =========================
+   Avatar (공통)
+   ========================= */
 .avatar {
-  font-size: 40px;
   width: 60px;
   height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #222222;
-  border-radius: 50%;
 }
 
+/* API 이미지 / 기본 SVG 공통 */
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================
+   기본 SVG 상태
+   ========================= */
+.defaultAvatar {
+  background-color: #222222;
+}
+
+.defaultAvatar img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================
+   Info
+   ========================= */
 .info {
   flex: 1;
 }
@@ -41,6 +67,9 @@
   margin: 2px 0;
 }
 
+/* =========================
+   Products
+   ========================= */
 .productTitle {
   margin-bottom: 8px;
 }
@@ -66,6 +95,9 @@
   transform: translate(-8%, -8%);
 }
 
+/* =========================
+   Mobile
+   ========================= */
 @media (max-width: 420px) {
   .productImages {
     grid-template-columns: repeat(3, minmax(0, 1fr));
