@@ -10,6 +10,11 @@ import { ShopManagement } from "../components/ShopManagement";
 import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
+const BASE_URL = "https://linkshop-api.vercel.app";
+// 샵 아이디 수집
+const href = window.location.pathname;
+const SHOP_ID = href.split("/")[2];
+
 export function LinkPostEditPage() {
   const location = useLocation();
   const { id } = useParams();
@@ -17,40 +22,46 @@ export function LinkPostEditPage() {
   // ✅ 비번 인증 없이 /post/:id/edit 직접 접근하면 막기
   // - /linkpost(생성페이지) 같은 곳에서는 params.id가 없고 state도 없을 수 있음
   // - "edit 경로일 때만" 막고 싶으면 아래 조건 그대로 두면 됨(대부분 edit에서만 id가 존재)
-  const isEditRoute = Boolean(id);
-  const isAuthorized = location.state?.authorized === true;
+  // const isEditRoute = Boolean(id);
+  // const isAuthorized = location.state?.authorized === true;
 
-  if (isEditRoute && !isAuthorized) {
-    return <Navigate to={`/profile/${id}`} replace />;
-  }
+  // if (isEditRoute && !isAuthorized) {
+  //   return <Navigate to={`/profile/${id}`} replace />;
+  // }
+
+  // =============================
   // 모달 관리
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  // =============================
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
-  // 두 컴포넌트의 데이터를 각각 관리
+  // =============================
+  // 상품 / 샵 데이터
+  // =============================
   const [productDataList, setProductDataList] = useState([
     {
-      id: self.crypto.randomUUID().slice(0, 4), // 초기 상품 1개
+      id: self.crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
     },
   ]);
+
   const [shopData, setShopData] = useState({});
 
-  // 상품 업로더 개수 관리
-  const [uploaders, setUploaders] = useState([0]);
-
-  // 모든 인풋에 값이 채워졌는지 확인
+  // =============================
+  // 입력값 체크
+  // =============================
   const isAllFilled =
-    Object.keys(productDataList).length >= 3 &&
-    Object.values(productDataList).every((val) => val !== "" && val !== null) &&
+    productDataList.every(
+      (product) =>
+        product.productName && product.productPrice && product.productImg
+    ) &&
     Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
-  console.log(productDataList, shopData);
   // =============================
-  // 이미지 업로드 함수
+  // 이미지 업로드
   // =============================
   const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
@@ -65,8 +76,6 @@ export function LinkPostEditPage() {
       });
 
       const responseText = await response.text();
-      // console.log("handleImageUpload 응답 상태:", response.status);
-      // console.log("handleImageUpload 응답 내용:", responseText);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -74,66 +83,52 @@ export function LinkPostEditPage() {
 
       const data = JSON.parse(responseText);
 
-      // URL 반환되는지 확인
       if (!data.url) {
-        console.error("이미지 URL이 없습니다:", data);
-        throw new Error("이미지 URL을 받지 못했습니다.");
+        throw new Error("이미지 URL이 없습니다.");
       }
 
-      // 이미지 URL 반환
-      return data.url;
+      return data.url; // 이미지 URL 반환
     } catch (error) {
-      console.error("handleImageUpload API 호출 에러:", error);
-      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-    } finally {
-      console.log("📍handleImageUpload 함수 완료");
+      console.error("handleImageUpload 에러:", error);
+      alert("등록 중 오류가 발생했습니다.");
     }
   };
 
   // =============================
-  // 최종 제출 함수
+  // 최종 제출
   // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 모달 오버레이 오픈
-    setIsModalOpen(true);
+    setIsModalOpen(true); // 모달 오버레이 오픈
 
     try {
-      // 1. Shop 이미지 업로드
+      // Shop 이미지
       let shopImageUrl = shopData.imageUrl;
       if (shopData.shopImg instanceof File) {
         shopImageUrl = await handleImageUpload(shopData.shopImg);
       }
 
-      // 2. Product 이미지 업로드
+      // Product 이미지
       const uploadedProducts = await Promise.all(
         productDataList.map(async (product) => {
           let productImageUrl = product.productImg;
 
-          // 이미지 파일 업로드
           if (product.productImg instanceof File) {
             productImageUrl = await handleImageUpload(product.productImg);
           }
 
           return {
-            price: Number(productDataList.productPrice) || 0,
-            imageUrl: productImageUrl?.trim() || "",
-            name: productDataList.productName?.trim() || "",
+            name: product.productName?.trim() || "",
+            price: Number(product.productPrice) || 0,
+            imageUrl: productImageUrl || "",
           };
         })
       );
 
-      const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = 1072;
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      // 3. 폼 데이터를 body 형식에 맞게 변환
       const requestBody = JSON.stringify({
         shop: {
+          urlName: shopData.shopName?.trim(),
           imageUrl: shopImageUrl || "",
-          urlName: shopData.shopName?.trim() || "",
           shopUrl: shopData.shopUrl?.trim() || "",
         },
         products: uploadedProducts,
@@ -143,31 +138,23 @@ export function LinkPostEditPage() {
       });
 
       // 4. API 호출
-      const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops/${SHOP_ID}`, {
         method: "PUT",
-        headers: myHeaders,
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: requestBody,
       });
 
       if (!response.ok) {
-        throw new Error(
-          `HTTP error! status: ${response.status} ${response.message} `
-        );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-
-      const result = await response.json();
-      console.log("✅ 최종 제출 완료:", result);
-
-      // 호출 성공 시 수정 완료 창 열기
-      setIsCreateCompleted(true);
+      await response.json();
+      setIsCreateCompleted(true); // 호출 성공 시 수정 완료 창 열기
     } catch (error) {
-      console.error("handleSubmit API 호출 에러:", error);
-      alert("등록 중 오류가 발생했습니다. 다시 시도해주세요.");
-
-      // 모달 오버레이 닫기(수정 완료 창 제외)
-      setIsModalOpen(false);
-    } finally {
-      console.log("📍 handleSubmit 함수 완료");
+      console.error("handleSubmit 에러:", error);
+      alert("등록 중 오류가 발생했습니다.");
+      setIsModalOpen(false); // 모달 오버레이 닫기(수정 완료 창 제외)
     }
   };
 
@@ -175,10 +162,6 @@ export function LinkPostEditPage() {
   // 샵 데이터 가져오는 함수
   // =============================
   const getShopData = async (e) => {
-    // 샵 아이디 수집
-    const href = window.location.pathname;
-    const id = href.split("/")[2];
-
     try {
       const BASE_URL = "https://linkshop-api.vercel.app/22-3";
       const SHOP_ID = id;
@@ -217,15 +200,14 @@ export function LinkPostEditPage() {
   // =============================
   // 상품 인스턴스 추가 버튼 클릭 핸들러
   // =============================
-  const handleAddProductUploader = (e) => {
+  const handleAddProductUploader = () => {
     const newProduct = {
       id: self.crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
     };
-    setProductDataList([...productDataList, newProduct]); // 기존 상품 리스트에 새 상품 추가
-    setUploaders([...uploaders, uploaders.length]); // 상품 업로더 추가
+    setProductDataList([...productDataList, newProduct]);
   };
 
   // =============================
@@ -234,9 +216,7 @@ export function LinkPostEditPage() {
   const updateProduct = (id, updatedData) => {
     setProductDataList(
       productDataList.map((product) =>
-        product.id === id
-          ? { ...product, ...updatedData } // 기존 데이터에 새 데이터 병합
-          : product
+        product.id === id ? { ...product, ...updatedData } : product
       )
     );
   };

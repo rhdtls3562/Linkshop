@@ -29,10 +29,9 @@ export function LinkPostPage() {
   ]);
 
   const [shopData, setShopData] = useState({});
-  const [uploaders, setUploaders] = useState([0]);
 
   // =============================
-  // 입력값 체크 (배열/객체 오류 수정)
+  // 입력값 체크
   // =============================
   const isAllFilled =
     productDataList.every(
@@ -79,7 +78,7 @@ export function LinkPostPage() {
   // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsModalOpen(true);
+    setIsModalOpen(true); // 모달 오버레이 오픈
 
     try {
       // Shop 이미지
@@ -124,22 +123,21 @@ export function LinkPostPage() {
         },
         body: requestBody,
       });
-      console.log("5️⃣");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       await response.json();
-      setIsCreateCompleted(true);
+      setIsCreateCompleted(true); // 호출 성공 시 수정 완료 창 열기
     } catch (error) {
       console.error("handleSubmit 에러:", error);
       alert("등록 중 오류가 발생했습니다.");
-      setIsModalOpen(false);
+      setIsModalOpen(false); // 모달 오버레이 닫기(수정 완료 창 제외)
     }
   };
 
   // =============================
-  // 상품 추가
+  // 상품 인스턴스 추가 버튼 클릭 핸들러
   // =============================
   const handleAddProductUploader = () => {
     const newProduct = {
@@ -150,11 +148,10 @@ export function LinkPostPage() {
     };
 
     setProductDataList([...productDataList, newProduct]);
-    setUploaders([...uploaders, uploaders.length]);
   };
 
   // =============================
-  // 상품 업데이트
+  // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
   // =============================
   const updateProduct = (id, updatedData) => {
     setProductDataList(
@@ -165,14 +162,14 @@ export function LinkPostPage() {
   };
 
   // =============================
-  // 상품 삭제
+  // 상품 삭제 함수
   // =============================
   const removeProduct = (id) => {
     if (productDataList.length === 1) {
       alert("최소 1개의 상품이 필요합니다.");
       return;
     }
-    setProductDataList(productDataList.filter((p) => p.id !== id));
+    setProductDataList(productDataList.filter((product) => product.id !== id));
   };
 
   return (
@@ -195,8 +192,8 @@ export function LinkPostPage() {
               key={product.id}
               productId={product.id}
               productData={product}
-              onUpdate={updateProduct}
-              removeProduct={removeProduct}
+              onUpdate={updateProduct} // 업데이트 함수 전달
+              removeProduct={removeProduct} // 상품 삭제 함수 전달
             />
           ))}
         </div>
@@ -224,8 +221,8 @@ export function LinkPostPage() {
 
         <ActionCompleteModal
           onClose={() => setIsModalOpen(false)}
-          isOpen={isModalOpen}
-          isCreateCompleted={isCreateCompleted}
+          isOpen={isModalOpen} // 생성하기 버튼 클릭 시 오픈
+          isCreateCompleted={isCreateCompleted} // api 호출 완료 시 생성 완료 창 오픈
           message="등록이 완료되었습니다."
         />
       </form>
