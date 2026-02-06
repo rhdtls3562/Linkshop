@@ -149,6 +149,7 @@ function LinkProfilePage() {
               >
                 수정하기
               </button>
+
               <button
                 type="button"
                 className={styles.menuItem}

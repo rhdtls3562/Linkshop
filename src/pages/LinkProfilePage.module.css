@@ -6,7 +6,7 @@
   max-width: 1200px;
   height: 266px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 20px 24px;
   box-sizing: border-box;
 
   position: relative;
@@ -16,7 +16,7 @@
   text-align: center;
 
   background-color: #fafafb;
-  border-radius: 12px;
+  border-radius: 24px;
 }
 
 .marquee_top {
@@ -57,21 +57,28 @@
   position: absolute;
   top: 34px;
   right: 0;
-  width: 120px;
-
+  width: 160px;
+  height: 114px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
   z-index: 10;
+  box-shadow: 0 0 12px rgba(131, 131, 131, 0.15);
 }
 
 .menuItem {
+  font-size: 18px;
   width: 100%;
-  padding: 10px 12px;
+  height: 58px;
+  padding: 18px 0px;
   border: none;
   background: none;
   cursor: pointer;
+}
+
+.menuItem:not(:last-child) {
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .menuItem:hover {
@@ -82,7 +89,6 @@
   width: 84px;
   height: 84px;
   margin-top: 24px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +128,7 @@
 }
 
 .text {
-  margin: 24px 0 16px;
+  margin: 23px 0 16px;
   font-size: 16px;
   font-weight: 600;
   color: #14151a;
