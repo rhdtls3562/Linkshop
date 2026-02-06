@@ -6,7 +6,6 @@
   font-size: 17px;
   line-height: 100%;
   letter-spacing: 0%;
-  text-align: center;
 }
 
 .no {
@@ -25,6 +24,6 @@
   font-family: "Pretendard", "Sans-serif";
 }
 
-img {
+.noImg {
   padding: 0;
 }

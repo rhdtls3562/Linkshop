@@ -101,7 +101,7 @@ function SearchResultPage() {
 function NoResult() {
   return (
     <div className={styles.no}>
-      <img src={noResult} alt="검색 결과 없음" />
+      <img className={styles.noImg} src={noResult} alt="검색 결과 없음" />
       <div className={styles.font}>
         <p>검색 결과가 없어요.</p>
         <p>지금 프로필을 만들고 상품을 소개해 보세요.</p>
