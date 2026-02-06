@@ -1,10 +1,6 @@
 // LinkProfilePage.jsx
 import { useState, useEffect, useMemo } from "react";
-import {
-  useNavigate,
-  useParams,
-  useLocation, // ✅ 추가
-} from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
 
 import Marquee from "../components/Marquee";
@@ -13,7 +9,7 @@ import LikeButton from "../components/LikeButton";
 import FeaturedProduct from "../components/FeaturedProduct";
 import Loading from "../components/Loading";
 
-import shop from "../assets/shop.svg";
+import shopIcon from "../assets/shop.svg";
 import share from "../assets/share.svg";
 import meatball from "../assets/meatball.svg";
 import close from "../assets/close.svg";
@@ -46,7 +42,6 @@ function LinkProfilePage() {
   useEffect(() => {
     if (!targetId) return;
 
-    // ✅ 이미 받은 데이터가 있으면 로딩 최소화
     setLoading(!preloadedShop);
 
     fetch(`${BASE_URL}/${TEAM_ID}/linkshops/${targetId}`)
@@ -54,7 +49,6 @@ function LinkProfilePage() {
       .then((data) => setShopData(data))
       .catch((err) => {
         console.error("상점 정보 로딩 실패:", err);
-        // ❗ 실패 시 preloadedShop 유지
         if (!preloadedShop) setShopData(null);
       })
       .finally(() => setLoading(false));
@@ -95,11 +89,9 @@ function LinkProfilePage() {
     });
   };
 
-  // ✅ 대표상품: 상세 API 기준 (없으면 빈 배열)
+  // ✅ 대표상품
   const featuredProducts = useMemo(() => {
-    const products = Array.isArray(shopData?.products)
-      ? shopData.products
-      : [];
+    const products = Array.isArray(shopData?.products) ? shopData.products : [];
 
     return products
       .filter((p) => p?.imageUrl)
@@ -115,19 +107,21 @@ function LinkProfilePage() {
   if (loading) return <Loading />;
   if (!shopData) return <div>상점을 찾을 수 없습니다.</div>;
 
+  /* =========================
+     ✅ 샵 이미지 처리 (핵심)
+     ========================= */
+  const shopImageUrl = shopData.shop?.imageUrl;
+  const isDefaultImage = !shopImageUrl;
+
   return (
     <div className={styles.marquee_top}>
       <Marquee className={styles.marquee} />
       <Back className={styles.Back} />
 
       <div className={styles.no}>
-      <div className={styles.like}>
-  <LikeButton
-    count={shopData.likes}
-    linkShopId={shopData.id}
-  />
-</div>
-
+        <div className={styles.like}>
+          <LikeButton count={shopData.likes} linkShopId={shopData.id} />
+        </div>
 
         <div className={styles.menuWrapper}>
           <button
@@ -166,12 +160,17 @@ function LinkProfilePage() {
           )}
         </div>
 
-      <div className={styles.shop}>
-  <img src={shop} alt="상점" />
-</div>
+        {/* ✅ 샵 이미지 (API + fallback) */}
+        <div
+          className={`${styles.shop} ${
+            isDefaultImage ? styles.defaultShop : ""
+          }`}
+        >
+          <img src={shopImageUrl || shopIcon} alt="상점 이미지" />
+        </div>
 
-<div className={styles.nugnri}>{shopData.name}</div>
-<div className={styles.pumpkin}>@{shopData.userId}</div>
+        <div className={styles.nugnri}>{shopData.name}</div>
+        <div className={styles.pumpkin}>@{shopData.userId}</div>
       </div>
 
       <div className={styles.featureSection}>
