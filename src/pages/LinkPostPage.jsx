@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -10,18 +9,12 @@ import styles from "./LinkPostPage.module.css";
 const BASE_URL = "https://linkshop-api.vercel.app";
 
 export function LinkPostPage() {
-  // =============================
-  // 모달 관리
-  // =============================
+  // State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
-
-  // =============================
-  // 상품 / 샵 데이터
-  // =============================
   const [productDataList, setProductDataList] = useState([
     {
-      id: self.crypto.randomUUID().slice(0, 4),
+      id: crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
@@ -29,9 +22,7 @@ export function LinkPostPage() {
   ]);
   const [shopData, setShopData] = useState({});
 
-  // =============================
   // 입력값 체크
-  // =============================
   const isAllFilled =
     productDataList.every(
       (product) =>
@@ -40,9 +31,7 @@ export function LinkPostPage() {
     Object.keys(shopData).length >= 5 &&
     Object.values(shopData).every((val) => val !== "" && val !== null);
 
-  // =============================
   // 이미지 업로드
-  // =============================
   const handleImageUpload = async (imageFile) => {
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -72,9 +61,7 @@ export function LinkPostPage() {
     }
   };
 
-  // =============================
   // 최종 제출
-  // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
@@ -138,9 +125,7 @@ export function LinkPostPage() {
     }
   };
 
-  // =============================
   // 상품 인스턴스 추가 버튼 클릭 핸들러
-  // =============================
   const handleAddProductUploader = () => {
     const newProduct = {
       id: self.crypto.randomUUID().slice(0, 4),
@@ -152,9 +137,7 @@ export function LinkPostPage() {
     setProductDataList([...productDataList, newProduct]);
   };
 
-  // =============================
   // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
-  // =============================
   const updateProduct = (id, updatedData) => {
     setProductDataList(
       productDataList.map((product) =>
@@ -163,9 +146,7 @@ export function LinkPostPage() {
     );
   };
 
-  // =============================
   // 상품 삭제 함수
-  // =============================
   const removeProduct = (id) => {
     if (productDataList.length === 1) {
       alert("최소 1개의 상품이 필요합니다.");
