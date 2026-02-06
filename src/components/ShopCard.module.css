@@ -79,7 +79,7 @@
 
 .productImages {
   display: grid;
-  grid-template-columns: repeat(3, 95px);
+  grid-template-columns: repeat(5, 95px);
   gap: 12px;
 }
 
