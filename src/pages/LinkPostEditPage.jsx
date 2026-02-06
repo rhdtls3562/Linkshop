@@ -139,6 +139,7 @@ export function LinkPostEditPage() {
       if (finalShopData.shopImg instanceof File) {
         shopImageUrl = await handleImageUpload(finalShopData.shopImg);
       }
+      console.log(shopImageUrl);
 
       // 상품 데이터 비교 후 최종 데이터 추출
       const changedProductsFields = getChangedProductsFields(
@@ -179,7 +180,7 @@ export function LinkPostEditPage() {
       console.log("📌 requestBody : ", requestBody);
 
       // API 호출
-      const response = await fetch(`${BASE_URL}/22-3/linkshops/${SHOP_ID}`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops/1081`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

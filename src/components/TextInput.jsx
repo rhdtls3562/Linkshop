@@ -45,7 +45,6 @@ export function TextInput({
           className={`${styles.input} ${className}`}
           onChange={wrappedChange}
           onBlur={validate} // 포커스가 사라질 때 검사
-          // value={inputValue}
           value={value}
         />
         {/* 에러 메시지가 있을 때만 노출 */}
