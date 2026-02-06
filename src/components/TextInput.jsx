@@ -42,6 +42,7 @@ export function TextInput({
           {...props}
           id={id}
           name={name}
+          type={type}
           className={`${styles.input} ${className}`}
           onChange={wrappedChange}
           onBlur={validate} // 포커스가 사라질 때 검사

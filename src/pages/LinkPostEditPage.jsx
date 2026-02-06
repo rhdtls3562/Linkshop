@@ -180,7 +180,7 @@ export function LinkPostEditPage() {
       console.log("📌 requestBody : ", requestBody);
 
       // API 호출
-      const response = await fetch(`${BASE_URL}/22-3/linkshops/1081`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops/${SHOP_ID}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
