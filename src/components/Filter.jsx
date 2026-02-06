@@ -12,25 +12,39 @@ const FILTER_OPTIONS = [
 
 function Filter({ onFilterChange }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("정렬");
+  const [selected, setSelected] = useState(null);
 
-  // 필터 선택: 텍스트 업데이트 + 모달 닫기 + 부모에 값 전달
   const handleSelect = (option) => {
-    setSelected(option.label);
+    setSelected(option);
     setIsOpen(false);
     onFilterChange?.(option.value);
   };
 
   return (
     <>
-      {/* 필터 버튼 */}
-      <div className={styles.filter}>
-        <button className={styles.textBtn} onClick={() => setIsOpen(true)}>
-          {selected}
-        </button>
-        <button className={styles.arrowBtn} onClick={() => setIsOpen(true)}>
-          <img src={arrow} alt="화살표" />
-        </button>
+      {/* 필터 버튼들 */}
+      <div className={styles.filterButtons}>
+        {/* 선택된 필터 버튼 (왼쪽) */}
+        {selected && (
+          <div className={styles.filter}>
+            <button className={styles.textBtn} onClick={() => setIsOpen(true)}>
+              {selected.label}
+            </button>
+            <button className={styles.arrowBtn} onClick={() => setIsOpen(true)}>
+              <img src={arrow} alt="arrow" />
+            </button>
+          </div>
+        )}
+
+        {/* 상세필터 버튼 (오른쪽) */}
+        <div className={styles.filter}>
+          <button className={styles.textBtn} onClick={() => setIsOpen(true)}>
+            상세필터
+          </button>
+          <button className={styles.arrowBtn} onClick={() => setIsOpen(true)}>
+            <img src={arrow} alt="arrow" />
+          </button>
+        </div>
       </div>
 
       {/* 모달 */}
@@ -44,7 +58,7 @@ function Filter({ onFilterChange }) {
                 className={styles.closeBtn}
                 onClick={() => setIsOpen(false)}
               >
-                <img src={close} alt="닫기" />
+                <img src={close} alt="close" />
               </button>
             </div>
 
@@ -53,14 +67,14 @@ function Filter({ onFilterChange }) {
               {FILTER_OPTIONS.map((option) => (
                 <li
                   key={option.value}
-                  className={selected === option.label ? styles.active : ""}
+                  className={
+                    selected?.value === option.value ? styles.active : ""
+                  }
                   onClick={() => handleSelect(option)}
                 >
                   {option.label}
-                  {selected === option.label && (
-                    <span>
-                      <img src={check} alt="체크" />
-                    </span>
+                  {selected?.value === option.value && (
+                    <img src={check} alt="check" />
                   )}
                 </li>
               ))}
