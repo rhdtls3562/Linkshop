@@ -17,7 +17,7 @@ export function ActionCompleteModal({
 
   const handleChange = () => {
     onClose();
-    navigate("/");
+    // navigate("/");
   };
 
   return createPortal(
