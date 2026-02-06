@@ -80,13 +80,13 @@
 
 .productImages {
   display: grid;
-  grid-template-columns: repeat(5, 95px);
+  grid-template-columns: repeat(5, minmax(0, 1fr)); /* 유연하게 변경 */
   gap: 12px;
 }
 
 .productImages > div {
-  width: 95px;
-  height: 95px;
+  width: 100%; /* 95px 제거 */
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
   border-radius: 8px;
   overflow: hidden;
   background-color: #ececec;
@@ -99,9 +99,7 @@
   transform: translate(-8%, -8%);
 }
 
-/* =========================
-   Mobile
-   ========================= */
+/* Mobile */
 @media (max-width: 420px) {
   .productImages {
     grid-template-columns: repeat(3, minmax(0, 1fr));
