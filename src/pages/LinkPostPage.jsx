@@ -67,7 +67,7 @@ export function LinkPostPage() {
         throw new Error("이미지 URL이 없습니다.");
       }
 
-      return data.url;
+      return data.url; // 이미지 URL 반환
     } catch (error) {
       console.error("handleImageUpload 에러:", error);
       alert("등록 중 오류가 발생했습니다.");
@@ -107,24 +107,28 @@ export function LinkPostPage() {
 
       const requestBody = JSON.stringify({
         shop: {
-          name: shopData.shopName?.trim(),
+          urlName: shopData.shopName?.trim(),
           imageUrl: shopImageUrl || "",
+          shopUrl: shopData.shopUrl?.trim() || "",
         },
         products: uploadedProducts,
+        password: shopData.userPw || "",
+        userId: shopData.userId,
+        name: shopData.shopName?.trim(),
       });
 
-      const response = await fetch(`${BASE_URL}/linkshops`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: requestBody,
       });
+      console.log("5️⃣");
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-
       await response.json();
       setIsCreateCompleted(true);
     } catch (error) {

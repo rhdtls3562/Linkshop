@@ -2,6 +2,8 @@ import { TextInput } from "./TextInput";
 import { FileInput } from "./FileInput";
 import { PasswordInput } from "./PasswordInput";
 import styles from "./ProductUploader.module.css";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export function ShopManagement({ onUpdate, shopData }) {
   // 자식에서 폼 데이터 변경 시 부모에게 전달
@@ -22,7 +24,7 @@ export function ShopManagement({ onUpdate, shopData }) {
           placeholder="쇼핑몰 이미지를 첨부해 주세요."
           onChange={handleChange}
           value={shopData.shopImg || ""}
-          initialPreview={shopData?.shop?.imageUrl}
+          initialPreview={shopData?.shop?.imageUrl || ""}
         />
         <TextInput
           id="shopName"

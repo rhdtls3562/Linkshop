@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -8,6 +11,18 @@ import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
 export function LinkPostEditPage() {
+  const location = useLocation();
+  const { id } = useParams();
+
+  // ✅ 비번 인증 없이 /post/:id/edit 직접 접근하면 막기
+  // - /linkpost(생성페이지) 같은 곳에서는 params.id가 없고 state도 없을 수 있음
+  // - "edit 경로일 때만" 막고 싶으면 아래 조건 그대로 두면 됨(대부분 edit에서만 id가 존재)
+  const isEditRoute = Boolean(id);
+  const isAuthorized = location.state?.authorized === true;
+
+  if (isEditRoute && !isAuthorized) {
+    return <Navigate to={`/profile/${id}`} replace />;
+  }
   // 모달 관리
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);

@@ -6,17 +6,15 @@ export function FileInput({
   name,
   label,
   placeholder,
-  initialPreview = "",
+  initialPreview,
   onChange,
 }) {
-  const [preview, setPreview] = useState(initialPreview);
+  const [preview, setPreview] = useState("");
   const objectUrlRef = useRef(null);
 
   const handleChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    // console.log("FileInput 컴포넌트의 file :", file);
 
     // 이전 blob URL 정리
     if (objectUrlRef.current) {
@@ -57,9 +55,21 @@ export function FileInput({
         accept="image/*"
       />
 
+      {/* 생성하기 페이지 용 */}
       {preview && (
         <div className={styles.previewContainer}>
           <img src={preview} alt="미리보기" className={styles.previewImage} />
+        </div>
+      )}
+
+      {/* 수정하기 페이지 용 */}
+      {initialPreview && (
+        <div className={styles.previewContainer}>
+          <img
+            src={initialPreview}
+            alt="미리보기"
+            className={styles.previewImage}
+          />
         </div>
       )}
     </div>
