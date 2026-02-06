@@ -9,27 +9,63 @@ export function FileInput({
   initialPreview,
   onChange,
 }) {
-  const [preview, setPreview] = useState("");
+  const [file, setFile] = useState();
+  const [preview, setPreview] = useState(initialPreview);
   const objectUrlRef = useRef(null);
+  const inputRef = useRef();
 
   const handleChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const nextFile = e.target.files?.[0];
+    if (!nextFile) return;
 
-    // 이전 blob URL 정리
+    try {
+      // 이전 blob URL 정리
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+
+      // 새 이미지 미리보기
+      const objectUrl = URL.createObjectURL(nextFile);
+      objectUrlRef.current = objectUrl;
+      setPreview(objectUrl);
+
+      // 부모에게 파일 전달
+      onChange(name, nextFile);
+    } catch (error) {
+      console.error("파일 미리보기 생성 실패:", error);
+      alert("이미지 파일을 선택해주세요.");
+    }
+  };
+
+  const handleClear = () => {
+    // blob URL 정리
     if (objectUrlRef.current) {
       URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
     }
 
-    const objectUrl = URL.createObjectURL(file);
-    objectUrlRef.current = objectUrl;
-    setPreview(objectUrl);
+    // 상태 초기화
+    setPreview(null);
 
-    onChange(name, e.target.files[0]); // 부모한테 보내줄 값
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
+    // 부모에게 null 전달
+    onChange(name, null);
   };
+
+  // initialPreview 변경 감지
+  useEffect(() => {
+    setPreview(initialPreview);
+  }, [initialPreview]);
 
   // 언마운트 시 blob URL 정리
   useEffect(() => {
+    if (!preview) {
+      setPreview(initialPreview);
+      return;
+    }
     return () => {
       if (objectUrlRef.current) {
         URL.revokeObjectURL(objectUrlRef.current);
@@ -42,7 +78,7 @@ export function FileInput({
       <label htmlFor={id}>{label}</label>
       <p className={styles.input}>{placeholder}</p>
 
-      <label htmlFor={id} className={styles.uploadButton}>
+      <label htmlFor={id} className={styles.uploadButton} onClick={handleClear}>
         파일 첨부
       </label>
 
@@ -53,23 +89,13 @@ export function FileInput({
         className={styles.fileInput}
         onChange={handleChange}
         accept="image/*"
+        ref={inputRef}
       />
 
-      {/* 생성하기 페이지 용 */}
+      {/* 수정하기 페이지 용 */}
       {preview && (
         <div className={styles.previewContainer}>
           <img src={preview} alt="미리보기" className={styles.previewImage} />
-        </div>
-      )}
-
-      {/* 수정하기 페이지 용 */}
-      {initialPreview && (
-        <div className={styles.previewContainer}>
-          <img
-            src={initialPreview}
-            alt="미리보기"
-            className={styles.previewImage}
-          />
         </div>
       )}
     </div>
