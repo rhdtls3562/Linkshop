@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -10,11 +11,14 @@ const BASE_URL = "https://linkshop-api.vercel.app";
 
 export function LinkPostPage() {
   // =============================
-  // 상태 관리
+  // 모달 관리
   // =============================
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
 
+  // =============================
+  // 상품 / 샵 데이터
+  // =============================
   const [productDataList, setProductDataList] = useState([
     {
       id: self.crypto.randomUUID().slice(0, 4),
@@ -28,7 +32,7 @@ export function LinkPostPage() {
   const [uploaders, setUploaders] = useState([0]);
 
   // =============================
-  // 모든 값 입력 여부 체크
+  // 입력값 체크 (배열/객체 오류 수정)
   // =============================
   const isAllFilled =
     productDataList.every(
@@ -66,7 +70,7 @@ export function LinkPostPage() {
       return data.url;
     } catch (error) {
       console.error("handleImageUpload 에러:", error);
-      alert("이미지 업로드 중 오류가 발생했습니다.");
+      alert("등록 중 오류가 발생했습니다.");
     }
   };
 
@@ -78,13 +82,13 @@ export function LinkPostPage() {
     setIsModalOpen(true);
 
     try {
-      // Shop 이미지 업로드
+      // Shop 이미지
       let shopImageUrl = shopData.imageUrl;
       if (shopData.shopImg instanceof File) {
         shopImageUrl = await handleImageUpload(shopData.shopImg);
       }
 
-      // Product 이미지 업로드
+      // Product 이미지
       const uploadedProducts = await Promise.all(
         productDataList.map(async (product) => {
           let productImageUrl = product.productImg;
@@ -94,7 +98,7 @@ export function LinkPostPage() {
           }
 
           return {
-            name: product.productName.trim(),
+            name: product.productName?.trim() || "",
             price: Number(product.productPrice) || 0,
             imageUrl: productImageUrl || "",
           };
@@ -121,9 +125,7 @@ export function LinkPostPage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log("등록 완료:", result);
-
+      await response.json();
       setIsCreateCompleted(true);
     } catch (error) {
       console.error("handleSubmit 에러:", error);
