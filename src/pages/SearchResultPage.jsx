@@ -29,9 +29,14 @@ function SearchResultPage() {
   const handleKeywordChange = (nextKeyword) => {
     setKeywordInput(nextKeyword);
 
+    const trimmed = nextKeyword.trim();
+    if (!trimmed) {
+      navigate("/list", { replace: true });
+      return;
+    }
+
     const nextParams = new URLSearchParams(searchParams);
-    if (nextKeyword.trim()) nextParams.set("keyword", nextKeyword);
-    else nextParams.delete("keyword");
+    nextParams.set("keyword", nextKeyword);
     nextParams.set("orderBy", orderBy);
     setSearchParams(nextParams, { replace: true });
   };
