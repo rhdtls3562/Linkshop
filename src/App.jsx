@@ -20,7 +20,7 @@ function App() {
         <Route path="/linkpost" element={<LinkPostPage />} />
 
         {/* ✅ 비번 맞으면 들어갈 “수정 페이지” 경로(레이아웃 안에 두고 싶으면 여기) */}
-        <Route path="/post/:id/edit" element={<LinkPostPage />} />
+        <Route path="/post/:id/edit" element={<LinkPostEditPage />} />
       </Route>
 
       {/* ✅ 프로필(기존 유지) */}
