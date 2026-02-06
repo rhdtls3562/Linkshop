@@ -127,7 +127,7 @@ export function LinkPostPage() {
   // 상품 인스턴스 추가 버튼 클릭 핸들러
   const handleAddProductUploader = () => {
     const newProduct = {
-      id: self.crypto.randomUUID().slice(0, 4),
+      id: crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",

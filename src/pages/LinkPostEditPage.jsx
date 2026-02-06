@@ -16,7 +16,6 @@ const SHOP_ID = href.split("/")[2];
 export function LinkPostEditPage() {
   const location = useLocation();
   const { id } = useParams();
-  const inputRefs = useRef([]);
 
   // ✅ 비번 인증 없이 /post/:id/edit 직접 접근하면 막기
   // - /linkpost(생성페이지) 같은 곳에서는 params.id가 없고 state도 없을 수 있음
@@ -80,11 +79,10 @@ export function LinkPostEditPage() {
   };
 
   // 샵 데이터 변경사항 추출
-  const getChangedShopFields = (original, current) => {
+  const getChangedShopFields = async (original, current) => {
     const fieldMapping = {
       shopName: original?.shop?.urlName,
       shopUrl: original?.shop?.shopUrl,
-      shopImageUrl: original?.shop?.imageUrl,
       userId: original?.userId,
     };
 
@@ -100,6 +98,26 @@ export function LinkPostEditPage() {
       }
     });
 
+    // 이미지 필드 따로 처리
+    const currentImage = current.shopImageUrl || current.shopImg;
+    const originalImage = original?.shop?.imageUrl;
+
+    if (currentImage instanceof File) {
+      // 새로 업로드한 파일
+      console.log("✅ 새 이미지 파일 업로드");
+      let shopImageUrl = await handleImageUpload(currentImage);
+      changes.shopImg = shopImageUrl;
+
+      if (changes.shopImg === originalImage) {
+        changes.shopImg = originalImage;
+      }
+    } else if (!currentImage) {
+      changes.shopImg = originalImage;
+    } else {
+      // 변경 없음
+      console.log("⚪ 이미지 변경 없음");
+      changes.shopImg = originalImage;
+    }
     return changes;
   };
 
@@ -122,27 +140,12 @@ export function LinkPostEditPage() {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
 
-    const isValid = Object.values(inputRefs.current).every(
-      (input) => input.value.trim() !== ""
-    );
-    console.log(isValid);
-
-    if (!isValid) {
-      alert("모든 값을 입력해주세요");
-      return;
-    }
-
     try {
       // 샵 데이터 비교 후 최종 데이터 추출
-      const finalShopData = getChangedShopFields(originalShopData, shopData);
-      console.log(finalShopData);
-
-      // 샵 이미지
-      let shopImageUrl = finalShopData.shopImageUrl;
-      if (finalShopData.shopImg instanceof File) {
-        shopImageUrl = await handleImageUpload(finalShopData.shopImg);
-      }
-      console.log(shopImageUrl);
+      const finalShopData = await getChangedShopFields(
+        originalShopData,
+        shopData
+      );
 
       // 상품 데이터 비교 후 최종 데이터 추출
       const changedProductsFields = getChangedProductsFields(
@@ -171,7 +174,7 @@ export function LinkPostEditPage() {
       const requestBody = JSON.stringify({
         currentPassword: PASSWORD,
         shop: {
-          imageUrl: shopImageUrl || "",
+          imageUrl: finalShopData.shopImg || "",
           urlName: finalShopData.shopName?.trim(),
           shopUrl: finalShopData.shopUrl?.trim() || "",
         },
@@ -234,7 +237,7 @@ export function LinkPostEditPage() {
   // 상품 인스턴스 추가 버튼 클릭 핸들러
   const handleAddProductUploader = () => {
     const newProduct = {
-      id: self.crypto.randomUUID().slice(0, 4),
+      id: crypto.randomUUID().slice(0, 4),
       productName: "",
       productPrice: "",
       productImg: "",
