@@ -2,8 +2,6 @@ import { TextInput } from "./TextInput";
 import { FileInput } from "./FileInput";
 import { PasswordInput } from "./PasswordInput";
 import styles from "./ProductUploader.module.css";
-import { useState } from "react";
-import { useEffect } from "react";
 
 export function ShopManagement({ onUpdate, shopData }) {
   // 자식에서 폼 데이터 변경 시 부모에게 전달

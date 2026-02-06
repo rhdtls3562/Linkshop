@@ -27,7 +27,6 @@ export function LinkPostPage() {
       productImg: "",
     },
   ]);
-
   const [shopData, setShopData] = useState({});
 
   // =============================
@@ -80,6 +79,7 @@ export function LinkPostPage() {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
 
+    console.log("shopData", shopData);
     try {
       // Shop 이미지
       let shopImageUrl = shopData.imageUrl;
@@ -104,10 +104,11 @@ export function LinkPostPage() {
         })
       );
 
+      // body 값
       const requestBody = JSON.stringify({
         shop: {
-          urlName: shopData.shopName?.trim(),
           imageUrl: shopImageUrl || "",
+          urlName: shopData.shopName?.trim(),
           shopUrl: shopData.shopUrl?.trim() || "",
         },
         products: uploadedProducts,
@@ -116,6 +117,7 @@ export function LinkPostPage() {
         name: shopData.shopName?.trim(),
       });
 
+      // API 호출
       const response = await fetch(`${BASE_URL}/22-3/linkshops`, {
         method: "POST",
         headers: {

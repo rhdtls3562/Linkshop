@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -29,40 +30,31 @@ export function LinkPostEditPage() {
   //   return <Navigate to={`/profile/${id}`} replace />;
   // }
 
-  // =============================
-  // 모달 관리
-  // =============================
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // State
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
-
-  // =============================
-  // 상품 / 샵 데이터
-  // =============================
   const [productDataList, setProductDataList] = useState([
     {
-      id: self.crypto.randomUUID().slice(0, 4),
-      productName: "",
-      productPrice: "",
-      productImg: "",
+      id: crypto.randomUUID().slice(0, 4),
     },
   ]);
+  const [originalShopData, setOriginalShopData] = useState({}); // 기존 샵 데이터
+  const [shopData, setShopData] = useState({}); // '수정하기' 버튼 클릭 시 수집된 데이터
 
-  const [shopData, setShopData] = useState({});
-
-  // =============================
   // 입력값 체크
-  // =============================
-  const isAllFilled =
-    productDataList.every(
-      (product) =>
-        product.productName && product.productPrice && product.productImg
-    ) &&
-    Object.keys(shopData).length >= 5 &&
-    Object.values(shopData).every((val) => val !== "" && val !== null);
+  // const [isAllFilled, setIsAllFilled] = useState(true);
+  const isAllFilled = useMemo(() => {
+    return (
+      productDataList.length > 0 &&
+      productDataList.every(
+        (p) => p.productName && p.productPrice && p.productImg
+      ) &&
+      shopData.shopName &&
+      shopData.shopUrl
+    );
+  }, [productDataList, shopData]);
 
-  // =============================
   // 이미지 업로드
-  // =============================
   const handleImageUpload = async (imageFile) => {
     const BASE_URL = "https://linkshop-api.vercel.app";
     const formData = new FormData();
@@ -94,23 +86,69 @@ export function LinkPostEditPage() {
     }
   };
 
-  // =============================
+  // 샵 데이터 변경사항 추출
+  const getChangedShopFields = (original, current) => {
+    const fieldMapping = {
+      shopName: original?.shop?.urlName,
+      shopUrl: original?.shop?.shopUrl,
+      shopImageUrl: original?.shop?.imageUrl,
+      userId: original?.userId,
+    };
+
+    const changes = {};
+
+    Object.entries(fieldMapping).forEach(([field, originalValue]) => {
+      if (field in current) {
+        if (originalValue !== current[field]) {
+          changes[field] = current[field];
+        }
+      } else {
+        changes[field] = originalValue;
+      }
+    });
+
+    return changes;
+  };
+
+  // 상품 데이터 변경사항 추출
+  const getChangedProductsFields = (originalArray, currentArray) => {
+    return currentArray.map((current) => {
+      const original = originalArray.find((o) => o.id === current.id) || {};
+
+      return {
+        id: current.id,
+        productName: current.productName || original.name,
+        productPrice: current.productPrice || original.price,
+        productImg: current.productImg || original.imageUrl,
+      };
+    });
+  };
+
   // 최종 제출
-  // =============================
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
 
     try {
-      // Shop 이미지
-      let shopImageUrl = shopData.imageUrl;
-      if (shopData.shopImg instanceof File) {
-        shopImageUrl = await handleImageUpload(shopData.shopImg);
+      // 샵 데이터 비교 후 최종 데이터 추출
+      const finalShopData = getChangedShopFields(originalShopData, shopData);
+      console.log(finalShopData);
+
+      // 샵 이미지
+      let shopImageUrl = finalShopData.shopImageUrl;
+      if (finalShopData.shopImg instanceof File) {
+        shopImageUrl = await handleImageUpload(finalShopData.shopImg);
       }
+
+      // 상품 데이터 비교 후 최종 데이터 추출
+      const changedProductsFields = getChangedProductsFields(
+        originalShopData.products,
+        productDataList
+      );
 
       // Product 이미지
       const uploadedProducts = await Promise.all(
-        productDataList.map(async (product) => {
+        changedProductsFields.map(async (product) => {
           let productImageUrl = product.productImg;
 
           if (product.productImg instanceof File) {
@@ -125,19 +163,22 @@ export function LinkPostEditPage() {
         })
       );
 
+      // body 값
       const requestBody = JSON.stringify({
+        currentPassword: "test123",
         shop: {
-          urlName: shopData.shopName?.trim(),
           imageUrl: shopImageUrl || "",
-          shopUrl: shopData.shopUrl?.trim() || "",
+          urlName: finalShopData.shopName?.trim(),
+          shopUrl: finalShopData.shopUrl?.trim() || "",
         },
         products: uploadedProducts,
-        password: shopData.userPw || "",
-        userId: shopData.userId,
-        name: shopData.shopName?.trim(),
+        userId: finalShopData.userId,
+        name: finalShopData.shopName?.trim(),
       });
 
-      // 4. API 호출
+      console.log("📌 requestBody : ", requestBody);
+
+      // API 호출
       const response = await fetch(`${BASE_URL}/22-3/linkshops/${SHOP_ID}`, {
         method: "PUT",
         headers: {
@@ -158,48 +199,35 @@ export function LinkPostEditPage() {
     }
   };
 
-  // =============================
-  // 샵 데이터 가져오는 함수
-  // =============================
+  // 샵 데이터 호출
   const getShopData = async (e) => {
     try {
-      const BASE_URL = "https://linkshop-api.vercel.app/22-3";
-      const SHOP_ID = id;
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
       // API 호출
-      const response = await fetch(`${BASE_URL}/linkshops/${SHOP_ID}`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops/${id}`, {
         method: "GET",
-        headers: myHeaders,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
-        throw new Error(
-          `HTTP error! status: ${response.status} ${response.message} `
-        );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
       console.log("✅ 샵 데이터 호출 완료 :", result);
 
-      setShopData(result);
-      setProductDataList(result?.products);
-      setIsModalOpen(false);
+      setOriginalShopData(result); // 샵 데이터 저장
+      setProductDataList(result?.products); // 상품 데이터 저장
+      setIsModalOpen(false); // 모달 오버레이 닫기(수정 완료 창 제외)
     } catch (error) {
       console.error("getShopData API 호출 에러:", error);
       alert("샵 데이터를 불러올 수 없습니다.");
-
-      // 모달 오버레이 닫기(수정 완료 창 제외)
-      setIsModalOpen(false);
-    } finally {
-      console.log("📍 getShopData 함수 완료");
+      setIsModalOpen(false); // 모달 오버레이 닫기(수정 완료 창 제외)
     }
   };
 
-  // =============================
   // 상품 인스턴스 추가 버튼 클릭 핸들러
-  // =============================
   const handleAddProductUploader = () => {
     const newProduct = {
       id: self.crypto.randomUUID().slice(0, 4),
@@ -210,9 +238,7 @@ export function LinkPostEditPage() {
     setProductDataList([...productDataList, newProduct]);
   };
 
-  // =============================
   // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
-  // =============================
   const updateProduct = (id, updatedData) => {
     setProductDataList(
       productDataList.map((product) =>
@@ -221,9 +247,7 @@ export function LinkPostEditPage() {
     );
   };
 
-  // =============================
   // 상품 삭제 함수
-  // =============================
   const removeProduct = (id) => {
     if (productDataList.length === 1) {
       alert("최소 1개의 상품이 필요합니다.");
@@ -267,7 +291,10 @@ export function LinkPostEditPage() {
               <h2 className={styles.title}>내 쇼핑몰</h2>
             </div>
             {/* 샵 렌더링 */}
-            <ShopManagement shopData={shopData} onUpdate={setShopData} />
+            <ShopManagement
+              shopData={originalShopData}
+              onUpdate={setShopData}
+            />
           </div>
           <Button
             type="submit"
