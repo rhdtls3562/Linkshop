@@ -1,4 +1,3 @@
-// LinkProfilePage.jsx
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
@@ -14,6 +13,10 @@ import share from "../assets/share.svg";
 import meatball from "../assets/meatball.svg";
 import close from "../assets/close.svg";
 
+// 눈 아이콘 (파일명 정확히)
+import visibilityOff from "../assets/btn_visibility_off.svg";
+import visibilityOn from "../assets/btn_visibility_on.svg";
+
 const BASE_URL = "https://linkshop-api.vercel.app";
 const TEAM_ID = "22-3";
 const CORRECT_PASSWORD = "test123";
@@ -23,19 +26,17 @@ function LinkProfilePage() {
   const targetId = id || shopId;
   const navigate = useNavigate();
 
-  // ✅ ShopListPage에서 전달된 state 받기
   const location = useLocation();
   const preloadedShop = location.state?.shop || null;
 
   const [menuOpen, setMenuOpen] = useState(false);
-
-  // ✅ preloadedShop이 있으면 그걸로 먼저 렌더
   const [shopData, setShopData] = useState(preloadedShop);
   const [loading, setLoading] = useState(!preloadedShop);
 
   const [isPwOpen, setIsPwOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [pwError, setPwError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const isPwValid = password === CORRECT_PASSWORD;
 
@@ -52,7 +53,7 @@ function LinkProfilePage() {
         if (!preloadedShop) setShopData(null);
       })
       .finally(() => setLoading(false));
-  }, [targetId]);
+  }, [targetId]); // 의도적으로 preloadedShop 제외(현재 코드 유지)
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -60,10 +61,15 @@ function LinkProfilePage() {
     alert("URL이 복사되었습니다!");
   };
 
-  const handleEdit = () => {
-    setMenuOpen(false);
+  const resetPwState = () => {
     setPassword("");
     setPwError("");
+    setShowPassword(false);
+  };
+
+  const handleEdit = () => {
+    setMenuOpen(false);
+    resetPwState();
     setIsPwOpen(true);
   };
 
@@ -89,7 +95,6 @@ function LinkProfilePage() {
     });
   };
 
-  // ✅ 대표상품
   const featuredProducts = useMemo(() => {
     const products = Array.isArray(shopData?.products) ? shopData.products : [];
 
@@ -107,16 +112,13 @@ function LinkProfilePage() {
   if (loading) return <Loading />;
   if (!shopData) return <div>상점을 찾을 수 없습니다.</div>;
 
-  /* =========================
-     ✅ 샵 이미지 처리 (핵심)
-     ========================= */
   const shopImageUrl = shopData.shop?.imageUrl;
   const isDefaultImage = !shopImageUrl;
 
   return (
     <div className={styles.marquee_top}>
-      <Marquee className={styles.marquee} />
-      <Back className={styles.Back} />
+      <Marquee />
+      <Back />
 
       <div className={styles.no}>
         <div className={styles.like}>
@@ -124,11 +126,7 @@ function LinkProfilePage() {
         </div>
 
         <div className={styles.menuWrapper}>
-          <button
-            type="button"
-            className={styles.iconButton}
-            onClick={handleShare}
-          >
+          <button type="button" className={styles.iconButton} onClick={handleShare}>
             <img src={share} alt="공유" />
           </button>
 
@@ -142,31 +140,17 @@ function LinkProfilePage() {
 
           {menuOpen && (
             <div className={styles.menuBox}>
-              <button
-                type="button"
-                className={styles.menuItem}
-                onClick={handleEdit}
-              >
+              <button type="button" className={styles.menuItem} onClick={handleEdit}>
                 수정하기
               </button>
-
-              <button
-                type="button"
-                className={styles.menuItem}
-                onClick={handleDelete}
-              >
+              <button type="button" className={styles.menuItem} onClick={handleDelete}>
                 삭제하기
               </button>
             </div>
           )}
         </div>
 
-        {/* ✅ 샵 이미지 (API + fallback) */}
-        <div
-          className={`${styles.shop} ${
-            isDefaultImage ? styles.defaultShop : ""
-          }`}
-        >
+        <div className={`${styles.shop} ${isDefaultImage ? styles.defaultShop : ""}`}>
           <img src={shopImageUrl || shopIcon} alt="상점 이미지" />
         </div>
 
@@ -182,7 +166,10 @@ function LinkProfilePage() {
       {isPwOpen && (
         <div
           className={styles.pwOverlay}
-          onClick={() => setIsPwOpen(false)}
+          onClick={() => {
+            setIsPwOpen(false);
+            resetPwState();
+          }}
           role="presentation"
         >
           <div
@@ -190,16 +177,16 @@ function LinkProfilePage() {
             onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="pw-title"
           >
             <div className={styles.pwHeader}>
-              <h3 id="pw-title" className={styles.pwTitle}>
-                비밀번호 입력
-              </h3>
+              <h3 className={styles.pwTitle}>비밀번호 입력</h3>
               <button
-                className={styles.closeBtn}
-                onClick={() => setIsPwOpen(false)}
                 type="button"
+                className={styles.closeBtn}
+                onClick={() => {
+                  setIsPwOpen(false);
+                  resetPwState();
+                }}
               >
                 <img src={close} alt="닫기" />
               </button>
@@ -208,7 +195,7 @@ function LinkProfilePage() {
             <div className={styles.pwBody}>
               <div className={styles.pwInputWrap}>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="비밀번호를 입력하세요"
                   value={password}
                   onChange={(e) => {
@@ -220,6 +207,18 @@ function LinkProfilePage() {
                   }}
                   className={styles.pwInput}
                 />
+
+                <button
+                  type="button"
+                  className={styles.pwEyeBtn}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
+                >
+                  <img
+                    src={showPassword ? visibilityOn : visibilityOff}
+                    alt=""
+                  />
+                </button>
               </div>
 
               {pwError && <div className={styles.pwError}>{pwError}</div>}
