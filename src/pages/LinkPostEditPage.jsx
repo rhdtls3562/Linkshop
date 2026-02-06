@@ -40,12 +40,12 @@ export function LinkPostEditPage() {
   const [shopData, setShopData] = useState({}); // '수정하기' 버튼 클릭 시 수집된 데이터
 
   // 입력값 체크
-  const isAllFilled =
-    productDataList.every(
-      (product) => product.name && product.price && product.imageUrl
-    ) &&
-    Object.keys(originalShopData).length >= 5 &&
-    Object.values(originalShopData).every((val) => val !== "" && val !== null);
+  const isAllFilled = true;
+  // productDataList.every(
+  //   (product) => product.name && product.price && product.imageUrl
+  // ) &&
+  // Object.keys(originalShopData).length >= 5 &&
+  // Object.values(originalShopData).every((val) => val !== "" && val !== null);
 
   // 이미지 업로드
   const handleImageUpload = async (imageFile) => {
