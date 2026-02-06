@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -23,13 +24,13 @@ export function LinkPostPage() {
   const [shopData, setShopData] = useState({});
 
   // 입력값 체크
-  const isAllFilled =
-    productDataList.every(
-      (product) =>
-        product.productName && product.productPrice && product.productImg
-    ) &&
-    Object.keys(shopData).length >= 5 &&
-    Object.values(shopData).every((val) => val !== "" && val !== null);
+  const isAllFilled = true;
+  // productDataList.every(
+  //   (product) =>
+  //     product.productName && product.productPrice && product.productImg
+  // ) &&
+  // Object.keys(shopData).length >= 5 &&
+  // Object.values(shopData).every((val) => val !== "" && val !== null);
 
   // 이미지 업로드
   const handleImageUpload = async (imageFile) => {
@@ -66,7 +67,6 @@ export function LinkPostPage() {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
 
-    console.log("shopData", shopData);
     try {
       // Shop 이미지
       let shopImageUrl = shopData.imageUrl;
