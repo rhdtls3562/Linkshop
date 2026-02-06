@@ -6,7 +6,9 @@ export function useInputValidation(initialValue = "") {
   const [error, setError] = useState("");
 
   const validate = () => {
-    if (value.trim() === "") {
+    const stringValue = String(value || "").trim();
+
+    if (stringValue === "") {
       // 인풋 값 여부 확인
       setError("값을 입력해주세요.");
       return false;

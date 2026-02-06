@@ -42,17 +42,17 @@ export function LinkPostEditPage() {
   const [shopData, setShopData] = useState({}); // '수정하기' 버튼 클릭 시 수집된 데이터
 
   // 입력값 체크
-  // const [isAllFilled, setIsAllFilled] = useState(true);
-  const isAllFilled = useMemo(() => {
-    return (
-      productDataList.length > 0 &&
-      productDataList.every(
-        (p) => p.productName && p.productPrice && p.productImg
-      ) &&
-      shopData.shopName &&
-      shopData.shopUrl
-    );
-  }, [productDataList, shopData]);
+  const [isAllFilled, setIsAllFilled] = useState(true);
+  // const isAllFilled = useMemo(() => {
+  //   return (
+  //     productDataList.length > 0 &&
+  //     productDataList.every(
+  //       (p) => p.productName && p.productPrice && p.productImg
+  //     ) &&
+  //     shopData.shopName &&
+  //     shopData.shopUrl
+  //   );
+  // }, [productDataList, shopData]);
 
   // 이미지 업로드
   const handleImageUpload = async (imageFile) => {

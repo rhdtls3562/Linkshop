@@ -20,8 +20,6 @@ export function PasswordInput({
     onChange(name, e.target.value); // 부모한테 보내줄 값
   };
 
-  const classNames = `${styles.input} ${className}`;
-
   // 비밀번호 보기 버튼
   const [inputType, setInputType] = useState("password");
 
@@ -41,7 +39,7 @@ export function PasswordInput({
             value={value}
             onChange={wrappedChange}
             type={inputType}
-            className={classNames}
+            className={`${styles.input} ${className}`}
             onBlur={validate} // 포커스가 사라질 때 검사
           />
           <button
