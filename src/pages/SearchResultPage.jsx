@@ -5,6 +5,7 @@ import noResult from "../assets/Img_search_null.svg";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ShopList from "../components/ShopList";
+import Loading from "../components/Loading";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
 const TEAM_ID = "22-3";
@@ -29,9 +30,14 @@ function SearchResultPage() {
   const handleKeywordChange = (nextKeyword) => {
     setKeywordInput(nextKeyword);
 
+    const trimmed = nextKeyword.trim();
+    if (!trimmed) {
+      navigate("/list", { replace: true });
+      return;
+    }
+
     const nextParams = new URLSearchParams(searchParams);
-    if (nextKeyword.trim()) nextParams.set("keyword", nextKeyword);
-    else nextParams.delete("keyword");
+    nextParams.set("keyword", nextKeyword);
     nextParams.set("orderBy", orderBy);
     setSearchParams(nextParams, { replace: true });
   };
@@ -75,20 +81,24 @@ function SearchResultPage() {
     if (nextOrderBy !== orderBy) setOrderBy(nextOrderBy);
   }, [searchParams]);
 
+  let content;
+
+  if (loading) {
+    content = <Loading />;
+  } else if (hasResult) {
+    content = <ShopList shops={results} onShopClick={handleShopClick} />;
+  } else if (queryKeyword) {
+    content = <NoResult />;
+  } else {
+    content = <NoResult />;
+  }
+
   return (
     <div className={styles.container}>
       <SearchBar value={keywordInput} onSearch={handleKeywordChange} />
-      <Filter onFilterChange={handleFilterChange} />
+      <Filter onFilterChange={handleFilterChange} className={styles.filter} />
 
-      {loading ? (
-        <div>로딩 중...</div>
-      ) : hasResult ? (
-        <ShopList shops={results} onShopClick={handleShopClick} />
-      ) : queryKeyword ? (
-        <NoResult />
-      ) : (
-        <NoResult />
-      )}
+      {content}
     </div>
   );
 }
@@ -96,7 +106,11 @@ function SearchResultPage() {
 function NoResult() {
   return (
     <div className={styles.no}>
-      <img src={noResult} alt="검색 결과 없음" />
+      {/*이미지 전용 래퍼 */}
+      <div className={styles.imageRow}>
+        <img className={styles.noImg} src={noResult} alt="검색 결과 없음" />
+      </div>
+
       <div className={styles.font}>
         <p>검색 결과가 없어요.</p>
         <p>지금 프로필을 만들고 상품을 소개해 보세요.</p>

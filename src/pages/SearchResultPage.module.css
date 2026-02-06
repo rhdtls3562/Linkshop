@@ -6,7 +6,6 @@
   font-size: 17px;
   line-height: 100%;
   letter-spacing: 0%;
-  text-align: center;
 }
 
 .no {
@@ -17,14 +16,27 @@
   text-align: center;
 }
 
-.no p {
-  margin: 0;
+.imageRow {
+  width: calc(100% + 48px);
+  margin-left: -24px;
+  margin-right: -24px;
+}
+
+@media (max-width: 798px) {
+  .imageRow {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+}
+
+.noImg {
+  display: block;
+  width: 100%;
+  margin-bottom: 32px;
+  max-width: none;
 }
 
 .font {
   font-family: "Pretendard", "Sans-serif";
-}
-
-img {
-  padding: 0;
 }
