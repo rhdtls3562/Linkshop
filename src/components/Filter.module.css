@@ -1,8 +1,15 @@
 .filter {
   display: flex;
   align-items: center;
-  gap: 5px; /* 이게 가장 간단! */
+  gap: 5px;
   margin-bottom: 32px;
+}
+
+/* 필터 버튼들을 감싸는 컨테이너 */
+.filterButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .arrowBtn {
@@ -17,21 +24,11 @@
   border: none;
   padding: 0;
   cursor: pointer;
-}
-
-.textBtn {
-  background: none;
-  border: none;
   font-size: 14px;
 }
 
 h3 {
   font: var(--typo-pretendard-semibold-16);
-}
-
-.arrowBtn {
-  background: none;
-  border: none;
 }
 
 /* 모달 배경 */
@@ -76,12 +73,10 @@ h3 {
 }
 
 /* 리스트 */
-
 .list li {
-  display: flex; /* ⭐ 핵심 */
+  display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 25px 0 15px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
@@ -94,17 +89,15 @@ h3 {
 
 @media (max-width: 480px) {
   .overlay {
-    align-items: flex-end; /* 아래로 */
+    align-items: flex-end;
   }
 
   .modal {
     width: 100%;
     max-width: none;
     height: 411px;
-
-    border-radius: 24px 24px 0 0; /* 위만 둥글게 */
+    border-radius: 24px 24px 0 0;
     padding: 40px 24px;
-
     animation: slideUp 0.25s ease-out;
   }
 
