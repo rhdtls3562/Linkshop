@@ -1,9 +1,5 @@
-import { useMemo } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { Navigate, useParams, useLocation } from "react-router-dom";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
 import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
@@ -12,6 +8,7 @@ import { Toast } from "../components/Toast";
 import styles from "./LinkPostPage.module.css";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
+const PASSWORD = "test123";
 // 샵 아이디 수집
 const href = window.location.pathname;
 const SHOP_ID = href.split("/")[2];
@@ -19,16 +16,17 @@ const SHOP_ID = href.split("/")[2];
 export function LinkPostEditPage() {
   const location = useLocation();
   const { id } = useParams();
+  const inputRefs = useRef([]);
 
   // ✅ 비번 인증 없이 /post/:id/edit 직접 접근하면 막기
   // - /linkpost(생성페이지) 같은 곳에서는 params.id가 없고 state도 없을 수 있음
   // - "edit 경로일 때만" 막고 싶으면 아래 조건 그대로 두면 됨(대부분 edit에서만 id가 존재)
-  // const isEditRoute = Boolean(id);
-  // const isAuthorized = location.state?.authorized === true;
+  const isEditRoute = Boolean(id);
+  const isAuthorized = location.state?.authorized === true;
 
-  // if (isEditRoute && !isAuthorized) {
-  //   return <Navigate to={`/profile/${id}`} replace />;
-  // }
+  if (isEditRoute && !isAuthorized) {
+    return <Navigate to={`/profile/${id}`} replace />;
+  }
 
   // State
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -42,17 +40,12 @@ export function LinkPostEditPage() {
   const [shopData, setShopData] = useState({}); // '수정하기' 버튼 클릭 시 수집된 데이터
 
   // 입력값 체크
-  const [isAllFilled, setIsAllFilled] = useState(true);
-  // const isAllFilled = useMemo(() => {
-  //   return (
-  //     productDataList.length > 0 &&
-  //     productDataList.every(
-  //       (p) => p.productName && p.productPrice && p.productImg
-  //     ) &&
-  //     shopData.shopName &&
-  //     shopData.shopUrl
-  //   );
-  // }, [productDataList, shopData]);
+  const isAllFilled = true;
+  // productDataList.every(
+  //   (product) => product.name && product.price && product.imageUrl
+  // ) &&
+  // Object.keys(originalShopData).length >= 5 &&
+  // Object.values(originalShopData).every((val) => val !== "" && val !== null);
 
   // 이미지 업로드
   const handleImageUpload = async (imageFile) => {
@@ -129,6 +122,16 @@ export function LinkPostEditPage() {
     e.preventDefault();
     setIsModalOpen(true); // 모달 오버레이 오픈
 
+    const isValid = Object.values(inputRefs.current).every(
+      (input) => input.value.trim() !== ""
+    );
+    console.log(isValid);
+
+    if (!isValid) {
+      alert("모든 값을 입력해주세요");
+      return;
+    }
+
     try {
       // 샵 데이터 비교 후 최종 데이터 추출
       const finalShopData = getChangedShopFields(originalShopData, shopData);
@@ -166,7 +169,7 @@ export function LinkPostEditPage() {
 
       // body 값
       const requestBody = JSON.stringify({
-        currentPassword: "test123",
+        currentPassword: PASSWORD,
         shop: {
           imageUrl: shopImageUrl || "",
           urlName: finalShopData.shopName?.trim(),
@@ -180,7 +183,7 @@ export function LinkPostEditPage() {
       console.log("📌 requestBody : ", requestBody);
 
       // API 호출
-      const response = await fetch(`${BASE_URL}/22-3/linkshops/1081`, {
+      const response = await fetch(`${BASE_URL}/22-3/linkshops/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -236,7 +239,7 @@ export function LinkPostEditPage() {
       productPrice: "",
       productImg: "",
     };
-    setProductDataList([...productDataList, newProduct]);
+    setProductDataList([newProduct, ...productDataList]);
   };
 
   // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)

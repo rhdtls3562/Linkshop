@@ -45,7 +45,7 @@ export function ShopManagement({ onUpdate, shopData }) {
         <TextInput
           id="userId"
           name="userId"
-          type="email"
+          type="text"
           label="유저 ID"
           placeholder="유저 ID를 입력해 주세요."
           onChange={handleChange}
