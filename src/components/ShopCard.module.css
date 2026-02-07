@@ -1,0 +1,114 @@
+.card {
+  background: #fafafb;
+  border-radius: 24px;
+  padding: 20px;
+  max-width: 720px;
+  width: 100%;
+  height: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   Avatar (공통)
+   ========================= */
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #222222;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* API 이미지 / 기본 SVG 공통 */
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================
+   기본 SVG 상태
+   ========================= */
+.defaultAvatar {
+  background-color: #222222;
+}
+
+.defaultAvatar img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* =========================
+   Info
+   ========================= */
+.info {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-right: auto;
+}
+
+.info h2 {
+  font: var(--typo-pretendard-medium-18);
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.info p {
+  font: var(--typo-pretendard-regular-16);
+  color: var(--color-gray);
+  margin: 2px 0;
+}
+
+/* =========================
+   Products
+   ========================= */
+.productTitle {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.productImages {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.productImages > div {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productImages img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mobile */
+@media (max-width: 420px) {
+  .productImages {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .productImages > div {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+}

@@ -1,0 +1,10 @@
+/* pages/Layout.module.css */
+.layoutWrapper {
+  padding-top: 40px;
+  padding-bottom: 65px;
+  box-sizing: border-box;
+}
+
+.layoutContent {
+  box-sizing: border-box;
+}

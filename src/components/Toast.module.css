@@ -1,0 +1,49 @@
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 5px;
+  background-color: var(--color-dk-gray);
+  color: var(--color-white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  /* 나타나는 애니메이션 */
+  animation: slideUpDown 2.5s ease-in-out forwards;
+}
+.message {
+  font: var(--typo-pretendard-medium-14);
+}
+
+.success {
+  background-color: #2ecc71;
+}
+.error {
+  background-color: #e74c3c;
+}
+
+@keyframes slideUpDown {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+}

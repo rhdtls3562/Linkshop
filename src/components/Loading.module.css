@@ -1,0 +1,77 @@
+.loadWrapp {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.load6 {
+  font-size: 17px;
+  font-weight: normal; /* 픽셀폰트라 작게 */
+  color: #222222;
+}
+.white {
+  color: #fff;
+}
+
+.letterHolder {
+  display: flex;
+  gap: 2px;
+}
+
+/* 공통 글자 */
+.letter {
+  animation: loadingText 1.5s infinite;
+  opacity: 0;
+}
+
+/* 딜레이 */
+.l1 {
+  animation-delay: 0s;
+}
+.l2 {
+  animation-delay: 0.1s;
+}
+.l3 {
+  animation-delay: 0.2s;
+}
+.l4 {
+  animation-delay: 0.3s;
+}
+.l5 {
+  animation-delay: 0.4s;
+}
+.l6 {
+  animation-delay: 0.5s;
+}
+.l7 {
+  animation-delay: 0.6s;
+}
+.l8 {
+  animation-delay: 0.7s;
+}
+.l9 {
+  animation-delay: 0.8s;
+}
+.l10 {
+  animation-delay: 0.9s;
+}
+
+/* 애니메이션 */
+@keyframes loadingText {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+  40% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+  }
+}

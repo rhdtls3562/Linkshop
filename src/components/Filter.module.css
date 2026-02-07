@@ -1,0 +1,112 @@
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 32px;
+}
+
+/* 필터 버튼들을 감싸는 컨테이너 */
+.filterButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.arrowBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.textBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+h3 {
+  font: var(--typo-pretendard-semibold-16);
+}
+
+/* 모달 배경 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 모달 박스 */
+.modal {
+  width: 375px;
+  height: 300px;
+  background: white;
+  border-radius: 24px;
+  padding: 40px 24px 60px;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.closeBtn img {
+  width: 20px;
+  height: 20px;
+}
+
+/* 리스트 */
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.active {
+  color: red;
+  font: var(--typo-pretendard-bold-16);
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    align-items: flex-end;
+  }
+
+  .modal {
+    width: 100%;
+    max-width: none;
+    height: 411px;
+    border-radius: 24px 24px 0 0;
+    padding: 40px 24px;
+    animation: slideUp 0.25s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
