@@ -103,7 +103,12 @@ Password Input CSS
   .passwordContainer {
     gap: 0;
   }
+  .passwordContainer .input {
+    flex-grow: initial;
+    max-width: 250px;
+  }
+  /* 파일 첨부 인풋 */
   p.input {
-    width: 55%;
+    width: 65%;
   }
 }
