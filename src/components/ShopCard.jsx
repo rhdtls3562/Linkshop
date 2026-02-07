@@ -43,7 +43,7 @@ function ShopCard({ shop, onShopClick }) {
       </p>
 
       <div className={styles.productImages}>
-        {shop.products?.slice(0, 5).map((product) => (
+        {shop.products?.slice(0, 3).map((product) => (
           <div key={product.id} className={styles.productImageWrapper}>
             <img src={product.imageUrl} alt={product.name} />
           </div>
