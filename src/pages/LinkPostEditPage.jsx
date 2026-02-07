@@ -183,7 +183,7 @@ export function LinkPostEditPage() {
         name: finalShopData.shopName?.trim(),
       });
 
-      console.log("📌 requestBody : ", requestBody);
+      console.log("📌 requestBody : ", JSON.parse(requestBody));
 
       // API 호출
       const response = await fetch(`${BASE_URL}/22-3/linkshops/${id}`, {
@@ -236,6 +236,11 @@ export function LinkPostEditPage() {
 
   // 상품 인스턴스 추가 버튼 클릭 핸들러
   const handleAddProductUploader = () => {
+    // 상품 등록 개수 제어
+    if (productDataList.length > 2) {
+      alert("최대 3개까지 등록 가능합니다.");
+      return;
+    }
     const newProduct = {
       id: crypto.randomUUID().slice(0, 4),
       productName: "",
