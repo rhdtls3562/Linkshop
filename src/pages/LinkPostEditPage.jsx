@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useEffect, useState, useRef } from "react";
 import { Navigate, useParams, useLocation } from "react-router-dom";
 import { ActionCompleteModal } from "../components/ActionCompleteModal";
@@ -5,13 +6,12 @@ import { Button } from "../components/Button";
 import { ProductUploader } from "../components/ProductUploader";
 import { ShopManagement } from "../components/ShopManagement";
 import { Toast } from "../components/Toast";
+import { useImageUpload } from "../hooks/useImageUpload";
+import { useProducts } from "../hooks/useProducts";
 import styles from "./LinkPostPage.module.css";
 
 const BASE_URL = "https://linkshop-api.vercel.app";
 const PASSWORD = "test123";
-// 샵 아이디 수집
-const href = window.location.pathname;
-const SHOP_ID = href.split("/")[2];
 
 export function LinkPostEditPage() {
   const location = useLocation();
@@ -27,57 +27,33 @@ export function LinkPostEditPage() {
     return <Navigate to={`/profile/${id}`} replace />;
   }
 
-  // State
+  const {
+    productDataList,
+    setProductDataList,
+    addProduct,
+    updateProduct,
+    removeProduct,
+  } = useProducts([]);
+  const { uploadImage } = useImageUpload();
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
-  const [productDataList, setProductDataList] = useState([
-    {
-      id: crypto.randomUUID().slice(0, 4),
-    },
-  ]);
   const [originalShopData, setOriginalShopData] = useState({}); // 기존 샵 데이터
   const [shopData, setShopData] = useState({}); // '수정하기' 버튼 클릭 시 수집된 데이터
 
   // 입력값 체크
-  const isAllFilled = true;
-  // productDataList.every(
-  //   (product) => product.name && product.price && product.imageUrl
-  // ) &&
-  // Object.keys(originalShopData).length >= 5 &&
-  // Object.values(originalShopData).every((val) => val !== "" && val !== null);
+  const isAllFilled = useMemo(() => {
+    const hasAllProducts = productDataList.every(
+      (product) => product.name && product.price && product.imageUrl
+    );
 
-  // 이미지 업로드
-  const handleImageUpload = async (imageFile) => {
-    const BASE_URL = "https://linkshop-api.vercel.app";
-    const formData = new FormData();
+    const hasShopData =
+      Object.keys(originalShopData).length >= 5 &&
+      Object.values(originalShopData).every(
+        (val) => val !== "" && val !== null
+      );
 
-    formData.append("image", imageFile);
-
-    try {
-      const response = await fetch(`${BASE_URL}/images/upload`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const responseText = await response.text();
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = JSON.parse(responseText);
-
-      if (!data.url) {
-        throw new Error("이미지 URL이 없습니다.");
-      }
-
-      return data.url; // 이미지 URL 반환
-    } catch (error) {
-      console.error("handleImageUpload 에러:", error);
-      alert("등록 중 오류가 발생했습니다.");
-    }
-  };
-
+    return hasAllProducts && hasShopData;
+  }, [productDataList, originalShopData]);
   // 샵 데이터 변경사항 추출
   const getChangedShopFields = async (original, current) => {
     const fieldMapping = {
@@ -103,9 +79,7 @@ export function LinkPostEditPage() {
     const originalImage = original?.shop?.imageUrl;
 
     if (currentImage instanceof File) {
-      // 새로 업로드한 파일
-      console.log("✅ 새 이미지 파일 업로드");
-      let shopImageUrl = await handleImageUpload(currentImage);
+      let shopImageUrl = await uploadImage(currentImage);
       changes.shopImg = shopImageUrl;
 
       if (changes.shopImg === originalImage) {
@@ -128,9 +102,9 @@ export function LinkPostEditPage() {
 
       return {
         id: current.id,
-        productName: current.productName || original.name,
-        productPrice: current.productPrice || original.price,
-        productImg: current.productImg || original.imageUrl,
+        name: current.name || original.name,
+        price: current.price || original.price,
+        imageUrl: current.imageUrl || original.imageUrl,
       };
     });
   };
@@ -156,15 +130,15 @@ export function LinkPostEditPage() {
       // Product 이미지
       const uploadedProducts = await Promise.all(
         changedProductsFields.map(async (product) => {
-          let productImageUrl = product.productImg;
+          let productImageUrl = product.imageUrl;
 
-          if (product.productImg instanceof File) {
-            productImageUrl = await handleImageUpload(product.productImg);
+          if (product.imageUrl instanceof File) {
+            productImageUrl = await uploadImage(product.imageUrl);
           }
 
           return {
-            name: product.productName?.trim() || "",
-            price: Number(product.productPrice) || 0,
+            name: product.name?.trim() || "",
+            price: Number(product.price) || 0,
             imageUrl: productImageUrl || "",
           };
         })
@@ -234,40 +208,6 @@ export function LinkPostEditPage() {
     }
   };
 
-  // 상품 인스턴스 추가 버튼 클릭 핸들러
-  const handleAddProductUploader = () => {
-    // 상품 등록 개수 제어
-    if (productDataList.length > 2) {
-      alert("최대 3개까지 등록 가능합니다.");
-      return;
-    }
-    const newProduct = {
-      id: crypto.randomUUID().slice(0, 4),
-      productName: "",
-      productPrice: "",
-      productImg: "",
-    };
-    setProductDataList([newProduct, ...productDataList]);
-  };
-
-  // 상품 데이터 업데이트 함수(자식에서 받은 데이터로 특정 객체 업데이트)
-  const updateProduct = (id, updatedData) => {
-    setProductDataList(
-      productDataList.map((product) =>
-        product.id === id ? { ...product, ...updatedData } : product
-      )
-    );
-  };
-
-  // 상품 삭제 함수
-  const removeProduct = (id) => {
-    if (productDataList.length === 1) {
-      alert("최소 1개의 상품이 필요합니다.");
-      return;
-    }
-    setProductDataList(productDataList.filter((product) => product.id !== id));
-  };
-
   useEffect(() => {
     getShopData();
   }, []);
@@ -279,11 +219,7 @@ export function LinkPostEditPage() {
           <div className={styles.container}>
             <div className={styles.head}>
               <h2 className={styles.title}>대표 상품</h2>
-              <button
-                type="button"
-                className={styles.btn}
-                onClick={handleAddProductUploader}
-              >
+              <button type="button" className={styles.btn} onClick={addProduct}>
                 추가
               </button>
             </div>

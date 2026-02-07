@@ -9,7 +9,6 @@ export function FileInput({
   initialPreview,
   onChange,
 }) {
-  const [file, setFile] = useState();
   const [preview, setPreview] = useState(initialPreview);
   const objectUrlRef = useRef(null);
   const inputRef = useRef();
@@ -93,7 +92,6 @@ export function FileInput({
         ref={inputRef}
       />
 
-      {/* 수정하기 페이지 용 */}
       {preview && (
         <div className={styles.previewContainer}>
           <img src={preview} alt="미리보기" className={styles.previewImage} />
