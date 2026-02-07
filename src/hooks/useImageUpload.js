@@ -25,8 +25,6 @@ export function useImageUpload() {
         throw new Error("이미지 URL이 없습니다.");
       }
 
-      console.log("✅ 이미지 업로드 성공:", data.url);
-
       return data.url; // 이미지 URL 반환
     } catch (error) {
       console.error("uploadImage 에러:", error);
