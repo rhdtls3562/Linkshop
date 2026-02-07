@@ -104,7 +104,6 @@ export default function LinkProfilePage() {
   const handleEdit = () => openPwModal("edit");
   const handleDelete = () => openPwModal("delete");
 
-  // ✅ 최종 삭제: 서버 요구사항에 맞게 currentPassword만 body로 전송
   const doDelete = async () => {
     if (!targetId) {
       alert("삭제할 대상이 없습니다.");
@@ -124,7 +123,7 @@ export default function LinkProfilePage() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          currentPassword: password, // ✅ password 아님
+          currentPassword: password,
         }),
       });
 
@@ -144,7 +143,9 @@ export default function LinkProfilePage() {
         alert(
           `삭제 실패 (${res.status})\n` +
             `${parsed?.message || raw || ""}` +
-            (parsed?.details ? `\n\n[details]\n${JSON.stringify(parsed.details, null, 2)}` : "")
+            (parsed?.details
+              ? `\n\n[details]\n${JSON.stringify(parsed.details, null, 2)}`
+              : "")
         );
         return false;
       }
@@ -252,6 +253,7 @@ export default function LinkProfilePage() {
       </div>
 
       {isPwOpen && (
+        // ✅ overlay는 onClick 유지해도 되지만, 버튼 터치 충돌 방지 위해 내부에서 stopPropagation 강화
         <div
           className={styles.pwOverlay}
           onClick={() => {
@@ -259,7 +261,13 @@ export default function LinkProfilePage() {
             resetPwState();
           }}
         >
-          <div className={styles.pwModal} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.pwModal}
+            onClick={(e) => e.stopPropagation()}
+            // ✅ 모바일에서 더 확실하게 이벤트 전파 차단
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+          >
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
                 {pwAction === "delete" ? "삭제 비밀번호 입력" : "비밀번호 입력"}
@@ -295,7 +303,13 @@ export default function LinkProfilePage() {
                 <button
                   type="button"
                   className={styles.pwEyeBtn}
-                  onClick={() => setShowPassword((p) => !p)}
+                  // ✅ overlay 닫힘/이벤트 충돌 방지
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPassword((p) => !p);
+                  }}
                 >
                   <img src={showPassword ? visibilityOn : visibilityOff} alt="" />
                 </button>
