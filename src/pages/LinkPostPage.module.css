@@ -30,9 +30,7 @@
   background: none;
   border: none;
   font: var(--typo-pretendard-bold-16);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  color: var(--color-dk-gray);
 }
 .createbtn {
   width: 100%;
