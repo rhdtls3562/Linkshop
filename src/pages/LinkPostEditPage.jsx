@@ -219,7 +219,11 @@ export function LinkPostEditPage() {
           <div className={styles.container}>
             <div className={styles.head}>
               <h2 className={styles.title}>대표 상품</h2>
-              <button type="button" className={styles.btn} onClick={addProduct}>
+              <button
+                type="button"
+                className={styles.addBtn}
+                onClick={addProduct}
+              >
                 추가
               </button>
             </div>
