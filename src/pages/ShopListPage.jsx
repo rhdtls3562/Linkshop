@@ -38,6 +38,8 @@ function ShopListPage() {
 
   // 필터 변경: 목록 초기화 후 새로 로드
   const handleFilterChange = (newOrderBy) => {
+    if (newOrderBy === orderBy) return; // ✅ 핵심
+
     setOrderBy(newOrderBy);
     setShops([]);
     setPage(1);
