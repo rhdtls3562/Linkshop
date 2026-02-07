@@ -9,7 +9,6 @@ export function FileInput({
   initialPreview,
   onChange,
 }) {
-  const [file, setFile] = useState();
   const [preview, setPreview] = useState(initialPreview);
   const objectUrlRef = useRef(null);
   const inputRef = useRef();
@@ -31,7 +30,6 @@ export function FileInput({
 
       // 부모에게 파일 전달
       onChange(name, nextFile);
-      console.log("nextFile", nextFile);
     } catch (error) {
       console.error("파일 미리보기 생성 실패:", error);
       alert("이미지 파일을 선택해주세요.");
@@ -93,7 +91,6 @@ export function FileInput({
         ref={inputRef}
       />
 
-      {/* 수정하기 페이지 용 */}
       {preview && (
         <div className={styles.previewContainer}>
           <img src={preview} alt="미리보기" className={styles.previewImage} />

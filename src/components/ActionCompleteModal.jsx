@@ -8,6 +8,7 @@ export function ActionCompleteModal({
   onClose,
   message,
   isCreateCompleted,
+  result,
 }) {
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ export function ActionCompleteModal({
 
   const handleChange = () => {
     onClose();
-    navigate("/");
+    navigate(`/shop/${result.id}`);
   };
 
   return createPortal(

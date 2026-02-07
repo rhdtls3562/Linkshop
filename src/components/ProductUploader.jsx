@@ -32,16 +32,19 @@ export function ProductUploader({
         </div>
         <FileInput
           id={`productImg_${productId}`}
-          name="productImg"
+          name="imageUrl"
           label="상품 대표 이미지"
           placeholder="상품 이미지를 첨부해 주세요."
           onChange={handleChange}
-          value={productData.productImg || ""}
-          initialPreview={productData?.imageUrl}
+          initialPreview={
+            productData.imageUrl instanceof File
+              ? URL.createObjectURL(productData.imageUrl)
+              : productData.imageUrl
+          }
         />
         <TextInput
           id={`productName_${productId}`}
-          name="productName"
+          name="name"
           label="상품 이름"
           placeholder="상품 이름을 입력해 주세요."
           onChange={handleChange}
@@ -50,7 +53,7 @@ export function ProductUploader({
         />
         <TextInput
           id={`productPrice_${productId}`} // 라벨, 인풋용
-          name="productPrice" // 필드용 네임
+          name="price" // 필드용 네임
           type="number"
           label="상품 가격"
           placeholder="원화로 표기해 주세요."
