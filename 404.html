@@ -4,12 +4,22 @@
     <meta charset="utf-8" />
     <title>Linkshop</title>
     <script>
-      const path = window.location.pathname.slice(1);
-      if (path && path !== "/") {
-        window.location.replace(
-          window.location.origin + "/Linkshop/?redirect=" + path
-        );
-      }
+      (function () {
+        var pathname = window.location.pathname;
+
+        // /Linkshop/list → list 추출
+        var route = pathname.replace("/Linkshop/", "");
+
+        // 이미 Linkshop이 두 번 들어간 경우 처리
+        if (route.startsWith("Linkshop/")) {
+          route = route.replace("Linkshop/", "");
+        }
+
+        if (route && route !== "index.html") {
+          sessionStorage.setItem("redirect", "/" + route);
+          window.location.replace("/Linkshop/");
+        }
+      })();
     </script>
   </head>
   <body></body>
