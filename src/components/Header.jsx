@@ -1,4 +1,3 @@
-// Header.jsx
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Header.module.css";
 import logo from "../assets/logo.svg";
@@ -9,11 +8,16 @@ export default function Header() {
   const isCreatePage =
     location.pathname === "/linkpost" || location.pathname.includes("/edit");
 
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    window.location.href = "/list"; // 항상 새로고침하면서 /list로 이동
+  };
+
   return (
     <header className={styles.header}>
-      <Link to="/list">
+      <a href="/list" onClick={handleLogoClick}>
         <img src={logo} alt="링크샵 로고" />
-      </Link>
+      </a>
 
       {isCreatePage ? (
         <Button as={Link} to="/list" className={styles.createBtn}>
