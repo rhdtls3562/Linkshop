@@ -26,10 +26,13 @@
 .title {
   font: var(--typo-pretendard-semibold-16);
 }
-.btn {
+.addBtn {
   background: none;
   border: none;
   font: var(--typo-pretendard-bold-16);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 .createbtn {
   width: 100%;

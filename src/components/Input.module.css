@@ -90,7 +90,11 @@ Password Input CSS
   border: 1px solid var(--text-error);
 }
 
-/* @media (max-width: 375px) {
-  .wrapper {
+@media (max-width: 375px) {
+  .passwordContainer {
+    gap: 0;
   }
-} */
+  p.input {
+    width: 55%;
+  }
+}
