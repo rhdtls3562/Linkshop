@@ -22,14 +22,6 @@
   margin-right: -24px;
 }
 
-@media (max-width: 798px) {
-  .imageRow {
-    width: calc(100% + 30px);
-    margin-left: -15px;
-    margin-right: -15px;
-  }
-}
-
 .noImg {
   display: block;
   width: 100%;
@@ -39,4 +31,20 @@
 
 .font {
   font-family: "Pretendard", "Sans-serif";
+}
+
+/*태블릿 사이즈, 데스크탑 사이즈*/
+@media (min-width: 769px) {
+  .imageRow {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .noImg {
+    width: 375px;
+    height: 182px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
