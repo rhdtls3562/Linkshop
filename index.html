@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/Linkshop/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>linkshop</title>
+
+    <!-- GitHub Pages SPA 리다이렉트 처리 -->
+    <script>
+      (function () {
+        const redirect = new URLSearchParams(window.location.search).get(
+          "redirect"
+        );
+        if (redirect) {
+          window.history.replaceState(null, null, "/Linkshop/" + redirect);
+        }
+      })();
+    </script>
+
+    <!-- Pretendard -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+    />
+
+    <!-- Google Fonts preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Press Start 2P -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/Linkshop/assets/index-DWTqoQwv.js"></script>
+    <link rel="stylesheet" crossorigin href="/Linkshop/assets/index-CDkuPDcR.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="modal-root"></div>
+  </body>
+</html>
