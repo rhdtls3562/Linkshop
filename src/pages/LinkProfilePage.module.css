@@ -119,7 +119,7 @@
   color: #888790;
 }
 
-/* 대표상품 영역 (프로필과 너비/기준선 동일) */
+/* 대표상품 영역 */
 .featureSection {
   width: 100%;
   max-width: 1200px;
@@ -171,8 +171,7 @@
   justify-content: center;
 
   z-index: 9999;
-  /* ✅ 모바일 터치 꼬임 방지: overlay에는 touch-action 주지 않음 */
-  /* touch-action: manipulation; 제거 */
+  /* ✅ iOS 이슈 방지: overlay에는 touch-action 주지 않음 */
 }
 
 /* 모달 박스 */
@@ -204,9 +203,8 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-
-  /* ✅ 버튼에만 touch-action */
-  touch-action: manipulation;
+  touch-action: manipulation; /* ✅ 버튼에만 */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .closeBtn img {
@@ -226,11 +224,10 @@
 .pwInput {
   width: 100%;
   height: 44px;
-  padding: 0 56px 0 12px; /* ✅ 오른쪽 여백 확대(44px 버튼 대응) */
+  padding: 0 56px 0 12px; /* ✅ 44px 버튼 자리 */
   border-radius: 10px;
   border: 1px solid #ddd;
   box-sizing: border-box;
-
   font-size: 16px;
 }
 
@@ -242,7 +239,7 @@
 
 .pwEyeBtn {
   position: absolute;
-  right: 4px; /* ✅ 터치영역 확보 */
+  right: 4px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -250,14 +247,15 @@
   padding: 0;
   cursor: pointer;
 
-  width: 44px;   /* ✅ 터치영역 확대 */
-  height: 44px;  /* ✅ 터치영역 확대 */
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  z-index: 2; /* ✅ 혹시 모를 겹침 대비 */
-  touch-action: manipulation; /* ✅ 버튼에만 */
+  z-index: 2;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pwEyeBtn img {
@@ -298,9 +296,8 @@
   border: none;
   color: #fff;
   font-weight: 600;
-
-  /* ✅ 버튼에만 touch-action */
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .pwButtonActive {

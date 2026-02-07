@@ -1,3 +1,4 @@
+// LinkProfilePage.jsx
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
@@ -253,7 +254,6 @@ export default function LinkProfilePage() {
       </div>
 
       {isPwOpen && (
-        // ✅ overlay는 onClick 유지해도 되지만, 버튼 터치 충돌 방지 위해 내부에서 stopPropagation 강화
         <div
           className={styles.pwOverlay}
           onClick={() => {
@@ -264,9 +264,7 @@ export default function LinkProfilePage() {
           <div
             className={styles.pwModal}
             onClick={(e) => e.stopPropagation()}
-            // ✅ 모바일에서 더 확실하게 이벤트 전파 차단
-            onMouseDown={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()} // ✅ iOS 안정
           >
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
@@ -303,11 +301,9 @@ export default function LinkProfilePage() {
                 <button
                   type="button"
                   className={styles.pwEyeBtn}
-                  // ✅ overlay 닫힘/이벤트 충돌 방지
-                  onMouseDown={(e) => e.stopPropagation()}
-                  onTouchStart={(e) => e.stopPropagation()}
-                  onClick={(e) => {
-                    e.stopPropagation();
+                  onPointerDown={(e) => {
+                    e.preventDefault(); // ✅ iOS에서 input 포커스/클릭 합성 꼬임 방지
+                    e.stopPropagation(); // ✅ overlay 닫힘 방지
                     setShowPassword((p) => !p);
                   }}
                 >
