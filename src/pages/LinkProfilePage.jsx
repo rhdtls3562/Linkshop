@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
+// LinkProfilePage.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
 
@@ -36,9 +37,10 @@ export default function LinkProfilePage() {
   const [password, setPassword] = useState("");
   const [pwError, setPwError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [pwAction, setPwAction] = useState(null);
+
   const isPwValid = password === CORRECT_PASSWORD;
+  const pwInputRef = useRef(null);
 
   useEffect(() => {
     if (!targetId) return;
@@ -56,7 +58,27 @@ export default function LinkProfilePage() {
         if (!preloadedShop) setShopData(null);
       })
       .finally(() => setLoading(false));
-  }, [targetId]);
+  }, [targetId, preloadedShop]);
+
+  // ✅ iOS: 모달 오픈 시 input 포커스(키보드) 안정화
+  useEffect(() => {
+    if (!isPwOpen) return;
+
+    // 한 프레임 뒤 포커스
+    const raf = requestAnimationFrame(() => {
+      pwInputRef.current?.focus?.();
+    });
+
+    // 모바일 바텀시트 애니메이션이 있는 경우를 대비해 한 번 더
+    const t = setTimeout(() => {
+      pwInputRef.current?.focus?.();
+    }, 300);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
+  }, [isPwOpen]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -104,7 +126,6 @@ export default function LinkProfilePage() {
   const handleEdit = () => openPwModal("edit");
   const handleDelete = () => openPwModal("delete");
 
-  // ✅ 최종 삭제: 서버 요구사항에 맞게 currentPassword만 body로 전송
   const doDelete = async () => {
     if (!targetId) {
       alert("삭제할 대상이 없습니다.");
@@ -124,7 +145,7 @@ export default function LinkProfilePage() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          currentPassword: password, // ✅ password 아님
+          currentPassword: password,
         }),
       });
 
@@ -144,7 +165,9 @@ export default function LinkProfilePage() {
         alert(
           `삭제 실패 (${res.status})\n` +
             `${parsed?.message || raw || ""}` +
-            (parsed?.details ? `\n\n[details]\n${JSON.stringify(parsed.details, null, 2)}` : "")
+            (parsed?.details
+              ? `\n\n[details]\n${JSON.stringify(parsed.details, null, 2)}`
+              : "")
         );
         return false;
       }
@@ -203,6 +226,11 @@ export default function LinkProfilePage() {
   const shopImageUrl = shopData.shop?.imageUrl;
   const isDefaultImage = !shopImageUrl;
 
+  const closePwModal = () => {
+    setIsPwOpen(false);
+    resetPwState();
+  };
+
   return (
     <div className={styles.marquee_top}>
       <Marquee />
@@ -254,24 +282,22 @@ export default function LinkProfilePage() {
       {isPwOpen && (
         <div
           className={styles.pwOverlay}
-          onClick={() => {
-            setIsPwOpen(false);
-            resetPwState();
-          }}
+          // ✅ iOS: click 대신 down 이벤트로 overlay 닫기(포커스 꼬임 감소)
+          onMouseDown={closePwModal}
+          onTouchStart={closePwModal}
         >
-          <div className={styles.pwModal} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.pwModal}
+            // ✅ 내부 클릭/터치가 overlay로 전파되지 않게 차단
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
                 {pwAction === "delete" ? "삭제 비밀번호 입력" : "비밀번호 입력"}
               </h3>
-              <button
-                type="button"
-                className={styles.closeBtn}
-                onClick={() => {
-                  setIsPwOpen(false);
-                  resetPwState();
-                }}
-              >
+              <button type="button" className={styles.closeBtn} onClick={closePwModal}>
                 <img src={close} alt="닫기" />
               </button>
             </div>
@@ -279,6 +305,8 @@ export default function LinkProfilePage() {
             <div className={styles.pwBody}>
               <div className={styles.pwInputWrap}>
                 <input
+                  ref={pwInputRef}
+                  autoFocus
                   type={showPassword ? "text" : "password"}
                   placeholder="비밀번호를 입력하세요"
                   value={password}
@@ -295,7 +323,17 @@ export default function LinkProfilePage() {
                 <button
                   type="button"
                   className={styles.pwEyeBtn}
-                  onClick={() => setShowPassword((p) => !p)}
+                  // ✅ iOS: pointerdown + preventDefault 조합 대신 mouse/touch 분리
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowPassword((p) => !p);
+                  }}
+                  onTouchStart={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowPassword((p) => !p);
+                  }}
                 >
                   <img src={showPassword ? visibilityOn : visibilityOff} alt="" />
                 </button>
