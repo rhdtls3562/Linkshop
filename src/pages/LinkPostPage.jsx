@@ -98,6 +98,11 @@ export function LinkPostPage() {
 
   return (
     <main className={styles.main}>
+      <div>
+        <p>작업 시간 확인 : 2/7 23:17</p>
+        <p>인풋 자동완성 css 삭제</p>
+        <p>비밀번호 인풋 width 수정</p>
+      </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.container}>
           <div className={styles.head}>
