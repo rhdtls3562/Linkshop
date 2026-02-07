@@ -23,6 +23,7 @@ export function LinkPostPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateCompleted, setIsCreateCompleted] = useState(false);
   const [shopData, setShopData] = useState({});
+  const [result, setResult] = useState({});
 
   // 입력값 체크
   const isAllFilled =
@@ -86,7 +87,8 @@ export function LinkPostPage() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      await response.json();
+      const result = await response.json();
+      setResult(result);
       setIsCreateCompleted(true); // 호출 성공 시 수정 완료 창 열기
     } catch (error) {
       console.error("handleSubmit 에러:", error);
@@ -142,6 +144,7 @@ export function LinkPostPage() {
           onClose={() => setIsModalOpen(false)}
           isOpen={isModalOpen} // 생성하기 버튼 클릭 시 오픈
           isCreateCompleted={isCreateCompleted} // api 호출 완료 시 생성 완료 창 오픈
+          result={result} // 확인 버튼 클릭 시 상세페이지로 이동
           message="등록이 완료되었습니다."
         />
       </form>

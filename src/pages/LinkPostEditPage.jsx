@@ -260,6 +260,7 @@ export function LinkPostEditPage() {
             onClose={() => setIsModalOpen(false)}
             isOpen={isModalOpen} // 수정하기 버튼 클릭 시 오픈
             isCreateCompleted={isCreateCompleted} // api 호출 완료 시 수정 완료 창 오픈
+            result={originalShopData} // 확인 버튼 클릭 시 상세페이지로 이동
             message="수정이 완료되었습니다."
           />
         </form>
