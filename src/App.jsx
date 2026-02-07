@@ -19,7 +19,7 @@ function App() {
         {/* 생성 페이지(기존 유지) */}
         <Route path="/linkpost" element={<LinkPostPage />} />
 
-        {/* 비번 맞으면 들어갈 “수정 페이지” 경로(레이아웃 안에 두고 싶으면 여기) */}
+        {/* 비번 맞으면 들어갈 "수정 페이지" 경로(레이아웃 안에 두고 싶으면 여기) */}
         <Route path="/post/:id/edit" element={<LinkPostEditPage />} />
       </Route>
 

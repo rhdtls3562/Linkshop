@@ -10,12 +10,14 @@ export default function Header() {
 
   const handleLogoClick = (e) => {
     e.preventDefault();
-    window.location.href = "/list"; // 항상 새로고침하면서 /list로 이동
+    window.location.href = "/Linkshop/list"; // ✅ 수정: /Linkshop/ 추가
   };
 
   return (
     <header className={styles.header}>
-      <a href="/list" onClick={handleLogoClick}>
+      <a href="/Linkshop/list" onClick={handleLogoClick}>
+        {" "}
+        {/* ✅ 수정 */}
         <img src={logo} alt="링크샵 로고" />
       </a>
 
