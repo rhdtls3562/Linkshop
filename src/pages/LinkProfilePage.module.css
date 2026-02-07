@@ -171,7 +171,8 @@
   align-items: center;
   justify-content: center;
 
-  z-index: 1000;
+  z-index: 9999; /* ✅ (기존 1000 -> 상향) */
+  touch-action: manipulation; /* ✅ 모바일 터치 안정 */
 }
 
 /* 모달 박스 */
@@ -226,6 +227,8 @@
   border-radius: 10px;
   border: 1px solid #ddd;
   box-sizing: border-box;
+
+  font-size: 16px; /* ✅ 모바일 입력/포커스 꼬임 방지 */
 }
 
 /* ✅ 비밀번호 보기/숨기기 */
@@ -255,6 +258,8 @@
   width: 20px;
   height: 20px;
   display: block;
+
+  pointer-events: none; /* ✅ 이미지가 터치를 가로채지 않게 */
 }
 
 /* ✅ 브라우저 기본 비밀번호 눈(자동 UI) 숨김 */
