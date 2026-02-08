@@ -186,7 +186,6 @@ export default function LinkProfilePage() {
     resetPwState();
   };
 
-  // ✅ 수정: overlay 클릭/터치 핸들러 - 정확히 overlay만 터치했을 때만 닫기
   const handleOverlayClose = (e) => {
     if (e.target === e.currentTarget) {
       setIsPwOpen(false);
@@ -278,15 +277,8 @@ export default function LinkProfilePage() {
       </div>
 
       {isPwOpen && (
-        <div
-          className={styles.pwOverlay}
-          onClick={handleOverlayClose}
-          // ✅ 수정: onTouchStart 제거 (모바일 input 입력 방해 방지)
-        >
-          <div
-            className={styles.pwModal}
-            // ✅ 수정: stopPropagation 핸들러 제거 (불필요)
-          >
+        <div className={styles.pwOverlay} onClick={handleOverlayClose}>
+          <div className={styles.pwModal}>
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
                 {pwAction === "delete" ? "삭제 비밀번호 입력" : "비밀번호 입력"}
@@ -306,6 +298,7 @@ export default function LinkProfilePage() {
             <div className={styles.pwBody}>
               <div className={styles.pwInputWrap}>
                 <input
+                  key={showPassword ? "text" : "password"}
                   type={showPassword ? "text" : "password"}
                   placeholder="비밀번호를 입력하세요"
                   value={password}
@@ -317,17 +310,15 @@ export default function LinkProfilePage() {
                     if (e.key === "Enter") handlePwConfirm();
                   }}
                   className={styles.pwInput}
+                  autoComplete="off"
                 />
 
                 <button
                   type="button"
                   className={styles.pwEyeBtn}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowPassword((p) => !p);
-                  }}
-                  // ✅ 수정: onTouchEnd 제거 (onClick으로 충분)
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => setShowPassword((p) => !p)}
+                  tabIndex={-1}
                 >
                   <img
                     src={showPassword ? visibilityOn : visibilityOff}
