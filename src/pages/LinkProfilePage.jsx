@@ -186,6 +186,7 @@ export default function LinkProfilePage() {
     resetPwState();
   };
 
+  // ✅ 수정: overlay 클릭/터치 핸들러 - 정확히 overlay만 터치했을 때만 닫기
   const handleOverlayClose = (e) => {
     if (e.target === e.currentTarget) {
       setIsPwOpen(false);
@@ -223,7 +224,11 @@ export default function LinkProfilePage() {
         </div>
 
         <div className={styles.menuWrapper}>
-          <button type="button" className={styles.iconButton} onClick={handleShare}>
+          <button
+            type="button"
+            className={styles.iconButton}
+            onClick={handleShare}
+          >
             <img src={share} alt="공유" />
           </button>
 
@@ -237,17 +242,29 @@ export default function LinkProfilePage() {
 
           {menuOpen && (
             <div className={styles.menuBox}>
-              <button type="button" className={styles.menuItem} onClick={handleEdit}>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={handleEdit}
+              >
                 수정하기
               </button>
-              <button type="button" className={styles.menuItem} onClick={handleDelete}>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={handleDelete}
+              >
                 삭제하기
               </button>
             </div>
           )}
         </div>
 
-        <div className={`${styles.shop} ${isDefaultImage ? styles.defaultShop : ""}`}>
+        <div
+          className={`${styles.shop} ${
+            isDefaultImage ? styles.defaultShop : ""
+          }`}
+        >
           <img src={shopImageUrl || shopIcon} alt="상점 이미지" />
         </div>
 
@@ -264,12 +281,11 @@ export default function LinkProfilePage() {
         <div
           className={styles.pwOverlay}
           onClick={handleOverlayClose}
-          onTouchStart={handleOverlayClose}
+          // ✅ 수정: onTouchStart 제거 (모바일 input 입력 방해 방지)
         >
           <div
             className={styles.pwModal}
-            onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
+            // ✅ 수정: stopPropagation 핸들러 제거 (불필요)
           >
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
@@ -311,12 +327,12 @@ export default function LinkProfilePage() {
                     e.stopPropagation();
                     setShowPassword((p) => !p);
                   }}
-                  onTouchEnd={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
+                  // ✅ 수정: onTouchEnd 제거 (onClick으로 충분)
                 >
-                  <img src={showPassword ? visibilityOn : visibilityOff} alt="" />
+                  <img
+                    src={showPassword ? visibilityOn : visibilityOff}
+                    alt=""
+                  />
                 </button>
               </div>
 
