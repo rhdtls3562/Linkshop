@@ -1,3 +1,12 @@
+html,
+body {
+  overflow-x: clip; /* 지원 안 되면 hidden으로 */
+}
+
+body {
+  margin: 0;
+}
+
 .container {
   padding-top: 40px;
   font-family: Pretendard;
@@ -34,7 +43,7 @@
 }
 
 /*태블릿 사이즈, 데스크탑 사이즈*/
-@media (min-width: 376px) {
+@media (min-width: 440px) {
   .imageRow {
     width: 100%;
     margin-left: 0;
