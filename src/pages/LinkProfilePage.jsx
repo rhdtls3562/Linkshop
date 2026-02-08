@@ -1,5 +1,5 @@
 // LinkProfilePage.jsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import styles from "./LinkProfilePage.module.css";
 
@@ -37,10 +37,9 @@ export default function LinkProfilePage() {
   const [password, setPassword] = useState("");
   const [pwError, setPwError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [pwAction, setPwAction] = useState(null);
 
+  const [pwAction, setPwAction] = useState(null);
   const isPwValid = password === CORRECT_PASSWORD;
-  const pwInputRef = useRef(null);
 
   useEffect(() => {
     if (!targetId) return;
@@ -58,27 +57,7 @@ export default function LinkProfilePage() {
         if (!preloadedShop) setShopData(null);
       })
       .finally(() => setLoading(false));
-  }, [targetId, preloadedShop]);
-
-  // ✅ iOS: 모달 오픈 시 input 포커스(키보드) 안정화
-  useEffect(() => {
-    if (!isPwOpen) return;
-
-    // 한 프레임 뒤 포커스
-    const raf = requestAnimationFrame(() => {
-      pwInputRef.current?.focus?.();
-    });
-
-    // 모바일 바텀시트 애니메이션이 있는 경우를 대비해 한 번 더
-    const t = setTimeout(() => {
-      pwInputRef.current?.focus?.();
-    }, 300);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(t);
-    };
-  }, [isPwOpen]);
+  }, [targetId]);
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -207,6 +186,13 @@ export default function LinkProfilePage() {
     resetPwState();
   };
 
+  const handleOverlayClose = (e) => {
+    if (e.target === e.currentTarget) {
+      setIsPwOpen(false);
+      resetPwState();
+    }
+  };
+
   const featuredProducts = useMemo(() => {
     const products = Array.isArray(shopData?.products) ? shopData.products : [];
     return products
@@ -225,11 +211,6 @@ export default function LinkProfilePage() {
 
   const shopImageUrl = shopData.shop?.imageUrl;
   const isDefaultImage = !shopImageUrl;
-
-  const closePwModal = () => {
-    setIsPwOpen(false);
-    resetPwState();
-  };
 
   return (
     <div className={styles.marquee_top}>
@@ -282,22 +263,26 @@ export default function LinkProfilePage() {
       {isPwOpen && (
         <div
           className={styles.pwOverlay}
-          // ✅ iOS: click 대신 down 이벤트로 overlay 닫기(포커스 꼬임 감소)
-          onMouseDown={closePwModal}
-          onTouchStart={closePwModal}
+          onClick={handleOverlayClose}
+          onTouchStart={handleOverlayClose}
         >
           <div
             className={styles.pwModal}
-            // ✅ 내부 클릭/터치가 overlay로 전파되지 않게 차단
-            onMouseDown={(e) => e.stopPropagation()}
-            onTouchStart={(e) => e.stopPropagation()}
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
           >
             <div className={styles.pwHeader}>
               <h3 className={styles.pwTitle}>
                 {pwAction === "delete" ? "삭제 비밀번호 입력" : "비밀번호 입력"}
               </h3>
-              <button type="button" className={styles.closeBtn} onClick={closePwModal}>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                onClick={() => {
+                  setIsPwOpen(false);
+                  resetPwState();
+                }}
+              >
                 <img src={close} alt="닫기" />
               </button>
             </div>
@@ -305,8 +290,6 @@ export default function LinkProfilePage() {
             <div className={styles.pwBody}>
               <div className={styles.pwInputWrap}>
                 <input
-                  ref={pwInputRef}
-                  autoFocus
                   type={showPassword ? "text" : "password"}
                   placeholder="비밀번호를 입력하세요"
                   value={password}
@@ -323,16 +306,14 @@ export default function LinkProfilePage() {
                 <button
                   type="button"
                   className={styles.pwEyeBtn}
-                  // ✅ iOS: pointerdown + preventDefault 조합 대신 mouse/touch 분리
-                  onMouseDown={(e) => {
+                  onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setShowPassword((p) => !p);
                   }}
-                  onTouchStart={(e) => {
+                  onTouchEnd={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setShowPassword((p) => !p);
                   }}
                 >
                   <img src={showPassword ? visibilityOn : visibilityOff} alt="" />
